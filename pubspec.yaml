@@ -11,10 +11,36 @@ dependencies:
 
   cupertino_icons: ^1.0.8
 
+  # Firebase
+  firebase_core: ^4.6.0
+  firebase_auth: ^6.3.0
+  cloud_firestore: ^6.2.0
+  firebase_storage: ^13.2.0
+  firebase_messaging: ^16.1.2
+
+  # State management
+  flutter_bloc: ^9.1.1
+  equatable: ^2.0.7
+
+  # Router
+  go_router: ^15.1.2
+
+  # Local storage
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
+  shared_preferences: ^2.3.4
+
+  # UI helpers
+  flutter_svg: ^2.0.17
+  cached_network_image: ^3.4.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^6.0.0
+  isar_generator: ^3.1.0+1
+  build_runner: 2.4.13
+
 flutter:
   uses-material-design: true
