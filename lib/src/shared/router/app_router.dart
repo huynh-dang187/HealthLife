@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.dart';
 import 'route_names.dart';
 
 class AppRouter {
@@ -11,7 +12,7 @@ class AppRouter {
     routes: [
       GoRoute(
         path: RouteNames.splash,
-        builder: (context, state) => const _TempHomePage(),
+        builder: (context, state) => const TempHomePage(),
       ),
       // Các route khác thêm dần khi code từng module
     ],
@@ -26,16 +27,5 @@ class AppRouter {
     //   return RouteNames.login;
     // }
     return null;
-  }
-}
-
-class _TempHomePage extends StatelessWidget {
-  const _TempHomePage();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('HLife App - Đang xây dựng')),
-    );
   }
 }
