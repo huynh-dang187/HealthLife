@@ -34,7 +34,10 @@ dependencies:
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4
   lottie: ^3.3.3
-
+  timezone: ^0.11.1
+  intl: ^0.20.2
+  #Languages
+  easy_localization: ^3.0.7
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -47,10 +50,31 @@ dev_dependencies:
 flutter_gen:
   output: lib/generated/
   line_length: 80
+  integrations:
+    flutter_svg: true
 
 flutter:
   uses-material-design: true
+
   assets:
     - assets/lottie/intro/
     - assets/svg/
     - assets/png/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/inter/Inter_28pt-Light.ttf
+          weight: 300
+        - asset: assets/fonts/inter/Inter_28pt-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/inter/Inter_28pt-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/inter/Inter_28pt-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/inter/Inter_28pt-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/inter/Inter_28pt-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/inter/Inter_28pt-Black.ttf
+          weight: 900
