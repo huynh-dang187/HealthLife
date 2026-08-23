@@ -1,6 +1,7 @@
-import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.dart';
+
 import 'route_names.dart';
 
 class AppRouter {
@@ -12,7 +13,7 @@ class AppRouter {
     routes: [
       GoRoute(
         path: RouteNames.splash,
-        builder: (context, state) => const TempHomePage(),
+        builder: (context, state) => SplashScreen(),
       ),
       // Các route khác thêm dần khi code từng module
     ],

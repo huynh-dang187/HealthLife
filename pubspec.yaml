@@ -38,6 +38,7 @@ dependencies:
   intl: ^0.20.2
   #Languages
   easy_localization: ^3.0.7
+  gap: ^3.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -60,6 +61,7 @@ flutter:
     - assets/lottie/intro/
     - assets/svg/
     - assets/png/
+    - assets/translations/
 
   fonts:
     - family: Inter

@@ -2,5 +2,11 @@
   "hello": "Xin chào",
   "login": "Đăng nhập",
   "password": "Mật khẩu",
-  "email": "Email"
+  "email": "Email",
+  "introduction_medication_lookup": "Tra cứu thuốc, tìm bệnh viện, gọi khẩn cấp - tất cả chỉ trong một ứng dụng duy nhất",
+  "introduction_health_tracking": "Theo dõi bữa ăn, bước chân và giấc ngủ mỗi ngày - sống khỏe chưa bao giờ dễ dàng đến vậy.",
+  "introduction_ai_health_companion": "Một người bạn AI thấu hiểu sức khỏe của bạn, luôn lắng nghe và đồng hành mọi lúc.",
+  "introduction_login": "Đăng nhập",
+  "introduction_have_account": "Bạn đã có tài khoản",
+  "introduction_get_started": "Bắt đầu"
 }
