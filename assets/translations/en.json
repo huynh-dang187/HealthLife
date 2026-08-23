@@ -2,5 +2,11 @@
   "hello": "Hello",
   "login": "Login",
   "password": "Password",
-  "email": "Email"
+  "email": "Email",
+  "introduction_medication_lookup": "Look up medications, find hospitals, and make emergency calls - all in one app",
+  "introduction_health_tracking": "Track your meals, steps, and sleep every day - staying healthy has never been easier.",
+  "introduction_ai_health_companion": "An AI companion that understands your health, always ready to listen and support you",
+  "introduction_login": "Log in",
+  "introduction_have_account": "Already have an account",
+  "introduction_get_started": "Get started"
 }

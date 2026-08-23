@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../generated/fonts.gen.dart';
 import '../../../common/constants/colors.dart';
 
-class AppText extends Text {
+class AppText extends StatelessWidget {
   AppText.light(
     String text, {
     Key? key,
@@ -15,8 +15,12 @@ class AppText extends Text {
     TextAlign? textAlign,
     TextOverflow? textOverflow = TextOverflow.ellipsis,
     TextDecoration? decoration,
-  }) : super(
-         text.tr(),
+  }) : this._(
+         text,
+         key: key,
+         maxLines: maxLines,
+         textAlign: textAlign,
+         textOverflow: textOverflow,
          style: TextStyle(
            color: color ?? UIColors.text,
            fontSize: fontSize,
@@ -24,10 +28,6 @@ class AppText extends Text {
            decoration: decoration,
            fontFamily: FontFamily.inter,
          ),
-         maxLines: maxLines,
-         key: key,
-         textAlign: textAlign,
-         overflow: textOverflow,
        );
 
   AppText.italic(
@@ -40,8 +40,12 @@ class AppText extends Text {
     TextAlign? textAlign,
     TextOverflow? textOverflow = TextOverflow.ellipsis,
     TextDecoration? decoration,
-  }) : super(
-         text.tr(),
+  }) : this._(
+         text,
+         key: key,
+         maxLines: maxLines,
+         textAlign: textAlign,
+         textOverflow: textOverflow,
          style: TextStyle(
            color: color ?? UIColors.text,
            fontSize: fontSize,
@@ -50,10 +54,6 @@ class AppText extends Text {
            fontStyle: FontStyle.italic,
            fontFamily: FontFamily.inter,
          ),
-         maxLines: maxLines,
-         key: key,
-         textAlign: textAlign,
-         overflow: textOverflow,
        );
 
   AppText.regular(
@@ -67,8 +67,12 @@ class AppText extends Text {
     TextOverflow? textOverflow = TextOverflow.ellipsis,
     TextDecoration? decoration,
     double? height,
-  }) : super(
-         text.tr(),
+  }) : this._(
+         text,
+         key: key,
+         maxLines: maxLines,
+         textAlign: textAlign,
+         textOverflow: textOverflow,
          style: TextStyle(
            color: color ?? UIColors.text,
            fontSize: fontSize,
@@ -78,10 +82,6 @@ class AppText extends Text {
            height: height,
            fontFamily: FontFamily.inter,
          ),
-         maxLines: maxLines,
-         key: key,
-         textAlign: textAlign,
-         overflow: textOverflow,
        );
 
   AppText.medium(
@@ -97,8 +97,13 @@ class AppText extends Text {
     TextDecoration? decoration,
     double? height,
     double? letterSpacing,
-  }) : super(
-         text.tr(namedArgs: namedArgs),
+  }) : this._(
+         text,
+         key: key,
+         maxLines: maxLines,
+         textAlign: textAlign,
+         textOverflow: textOverflow,
+         namedArgs: namedArgs,
          style: TextStyle(
            color: color ?? UIColors.text,
            fontSize: fontSize,
@@ -109,10 +114,6 @@ class AppText extends Text {
            fontFamily: FontFamily.inter,
            letterSpacing: letterSpacing,
          ),
-         maxLines: maxLines,
-         key: key,
-         textAlign: textAlign,
-         overflow: textOverflow,
        );
 
   AppText.semiBold(
@@ -128,8 +129,13 @@ class AppText extends Text {
     TextDecoration? decoration,
     double? height,
     String? fontFamily,
-  }) : super(
-         text.tr(namedArgs: namedArgs),
+  }) : this._(
+         text,
+         key: key,
+         maxLines: maxLines,
+         textAlign: textAlign,
+         textOverflow: textOverflow,
+         namedArgs: namedArgs,
          style: TextStyle(
            color: color ?? UIColors.text,
            fontSize: fontSize,
@@ -140,10 +146,6 @@ class AppText extends Text {
            height: height,
            fontFamily: fontFamily ?? FontFamily.inter,
          ),
-         maxLines: maxLines,
-         key: key,
-         textAlign: textAlign,
-         overflow: textOverflow,
        );
 
   AppText.bold(
@@ -157,8 +159,12 @@ class AppText extends Text {
     TextAlign? textAlign,
     TextDecoration? decoration,
     double? height,
-  }) : super(
-         text.tr(),
+  }) : this._(
+         text,
+         key: key,
+         maxLines: maxLines,
+         textAlign: textAlign,
+         textOverflow: textOverflow,
          style: TextStyle(
            color: color ?? UIColors.text,
            fontSize: fontSize,
@@ -167,9 +173,37 @@ class AppText extends Text {
            height: height,
            fontFamily: FontFamily.inter,
          ),
-         maxLines: maxLines,
-         textAlign: textAlign,
-         key: key,
-         overflow: textOverflow,
        );
+
+  const AppText._(
+    this.text, {
+    required this.style,
+    this.namedArgs,
+    this.maxLines,
+    this.textAlign,
+    this.textOverflow,
+    super.key,
+  });
+
+  final String text;
+  final TextStyle style;
+  final Map<String, String>? namedArgs;
+  final int? maxLines;
+  final TextAlign? textAlign;
+  final TextOverflow? textOverflow;
+
+  @override
+  Widget build(BuildContext context) {
+    // Đăng ký phụ thuộc locale: khi context.setLocale() được gọi,
+    // widget này tự build lại -> .tr() dịch lại theo ngôn ngữ mới.
+    context.locale;
+
+    return Text(
+      text.tr(namedArgs: namedArgs),
+      style: style,
+      maxLines: maxLines,
+      textAlign: textAlign,
+      overflow: textOverflow ?? TextOverflow.ellipsis,
+    );
+  }
 }
