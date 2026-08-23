@@ -1,5 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/assets.gen.dart';
+import 'package:healthlife/src/common/extensions/num_x.dart';
+import 'package:healthlife/src/core/presentation/widgets/dropdown.dart';
+import 'package:healthlife/src/core/presentation/widgets/text.dart';
 
 class LanguageDropdown extends StatefulWidget {
   const LanguageDropdown({super.key});
@@ -26,43 +30,34 @@ class _LanguageDropdownState extends State<LanguageDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: _selectedLanguage,
-          icon: const Icon(Icons.keyboard_arrow_down, size: 18),
-          isDense: true,
-          items: _localeByDisplay.keys
-              .map(
-                (lang) => DropdownMenuItem(
-                  value: lang,
-                  child: Text(
-                    lang,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              )
-              .toList(),
-          onChanged: (value) {
-            if (value == null || value == _selectedLanguage) return;
-            setState(() => _selectedLanguage = value);
-            context.setLocale(_localeByDisplay[value]!);
-          },
+    return AppDropdown(
+      items: _localeByDisplay.keys.toList(),
+      selected: _selectedLanguage,
+      onChanged: (value) {
+        if (value == _selectedLanguage) return;
+        setState(() => _selectedLanguage = value);
+        context.setLocale(_localeByDisplay[value]!);
+      },
+      btn: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppText.regular(_selectedLanguage, fontSize: 13,maxLines: 1,),
+            6.gap,
+            Assets.svg.icDropdown.svg(width: 20, height: 20),
+          ],
         ),
       ),
     );

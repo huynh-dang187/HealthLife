@@ -41,7 +41,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                       IntroductionPageItem(data: state.pages[index]),
                 ),
                 Positioned(
-                  top: context.topPadding + 12,
+                  top: context.topPadding,
                   right: 16,
                   child: const LanguageDropdown(),
                 ),

@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
+import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
+import 'package:healthlife/src/core/presentation/widgets/text.dart';
 
 class IntroductionBottomContent extends StatelessWidget {
   final String description;
@@ -33,14 +35,14 @@ class IntroductionBottomContent extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
+          AppText.regular(
             description.tr(),
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14, height: 1.4),
+            maxLines: 3,
           ),
-          16.gap,
+          48.gap,
           _DotsIndicator(currentPage: currentPage, pageCount: pageCount),
-          20.gap,
+          48.gap,
           SizedBox(
             width: double.infinity,
             height: 50,
@@ -54,10 +56,10 @@ class IntroductionBottomContent extends StatelessWidget {
                 ),
                 elevation: 0,
               ),
-              child: Text(isLastPage ? 'Bắt đầu ngay' : 'Bắt đầu'),
+              child: Text(isLastPage ? 'Bắt đầu' : 'Tiếp theo'),
             ),
           ),
-          12.gap,
+          48.gap,
           GestureDetector(
             onTap: onLoginPressed,
             child: RichText(
@@ -103,7 +105,7 @@ class _DotsIndicator extends StatelessWidget {
           width: isActive ? 20 : 6,
           height: 6,
           decoration: BoxDecoration(
-            color: isActive ? const Color(0xFFE91E63) : Colors.grey.shade300,
+            color: isActive ? UIColors.coral : UIColors.lightTextSecondary,
             borderRadius: BorderRadius.circular(3),
           ),
         );

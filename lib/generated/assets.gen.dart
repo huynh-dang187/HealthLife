@@ -54,6 +54,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/.gitkeep
   String get aGitkeep => 'assets/svg/.gitkeep';
 
+  /// File path: assets/svg/ic_dropdown.svg
+  SvgGenImage get icDropdown => const SvgGenImage('assets/svg/ic_dropdown.svg');
+
   /// File path: assets/svg/ic_eyeOff.svg
   SvgGenImage get icEyeOff => const SvgGenImage('assets/svg/ic_eyeOff.svg');
 
@@ -61,7 +64,20 @@ class $AssetsSvgGen {
   SvgGenImage get icEyeOn => const SvgGenImage('assets/svg/ic_eyeOn.svg');
 
   /// List of all assets
-  List<dynamic> get values => [aGitkeep, icEyeOff, icEyeOn];
+  List<dynamic> get values => [aGitkeep, icDropdown, icEyeOff, icEyeOn];
+}
+
+class $AssetsTranslationsGen {
+  const $AssetsTranslationsGen();
+
+  /// File path: assets/translations/en.json
+  String get en => 'assets/translations/en.json';
+
+  /// File path: assets/translations/vi.json
+  String get vi => 'assets/translations/vi.json';
+
+  /// List of all assets
+  List<String> get values => [en, vi];
 }
 
 class $AssetsLottieIntroGen {
@@ -78,6 +94,7 @@ abstract final class Assets {
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsPngGen png = $AssetsPngGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
+  static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
 }
 
 class AssetGenImage {
