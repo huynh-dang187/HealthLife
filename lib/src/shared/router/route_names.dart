@@ -3,6 +3,7 @@ class RouteNames {
 
   static const splash = '/splash';
   static const introduction = '/introduction';
+  static const signIn = '/signIn';
   static const onboarding = '/onboarding';
   static const login = '/login';
   static const register = '/register';

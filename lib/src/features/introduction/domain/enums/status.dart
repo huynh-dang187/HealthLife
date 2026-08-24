@@ -1,0 +1,1 @@
+enum IntroductionStatus { initial, completed }
