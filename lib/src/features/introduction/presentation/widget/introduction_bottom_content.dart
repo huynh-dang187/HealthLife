@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:healthlife/src/features/introduction/data/introduction_page_model.dart';
+import 'package:healthlife/src/features/introduction/data/model/introduction_page_model.dart';
 
 class IntroductionPageItem extends StatelessWidget {
   final IntroductionPageModel data;

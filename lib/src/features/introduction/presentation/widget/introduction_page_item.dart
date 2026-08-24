@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
+import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 
 class IntroductionBottomContent extends StatelessWidget {
@@ -10,7 +11,7 @@ class IntroductionBottomContent extends StatelessWidget {
   final int currentPage;
   final int pageCount;
   final bool isLastPage;
-  final VoidCallback? onStartPressed;
+  final VoidCallback? onNextPressed;
   final VoidCallback? onLoginPressed;
 
   const IntroductionBottomContent({
@@ -19,7 +20,7 @@ class IntroductionBottomContent extends StatelessWidget {
     required this.currentPage,
     required this.pageCount,
     required this.isLastPage,
-    this.onStartPressed,
+    required this.onNextPressed,
     this.onLoginPressed,
   });
 
@@ -46,22 +47,14 @@ class IntroductionBottomContent extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             height: 50,
-            child: ElevatedButton(
-              onPressed: onStartPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFE91E63),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                elevation: 0,
-              ),
-              child: Text(isLastPage ? 'Bắt đầu' : 'Tiếp theo'),
+            child: AppButton.fill(
+              onTap: onNextPressed ?? () {},
+              title: isLastPage ? "Bắt đầu" : "Tiếp theo",
             ),
           ),
           48.gap,
           GestureDetector(
-            onTap: onLoginPressed,
+            onTap: onLoginPressed ?? () {},
             child: RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(

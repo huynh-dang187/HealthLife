@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
+import 'package:healthlife/src/features/signIn/presentation/page/signIn_screen.dart';
 import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.dart';
 
 import 'route_names.dart';
@@ -15,6 +16,7 @@ class AppRouter {
     routes: [
       _route(RouteNames.splash, (_) => const SplashScreen()),
       _route(RouteNames.introduction, (_) => const IntroductionScreen()),
+      _route(RouteNames.signIn, (_) => const SigninScreen()),
       // Các route khác thêm dần khi code từng module
     ],
   );

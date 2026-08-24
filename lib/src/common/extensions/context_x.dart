@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
-import '../../shared/router/route_names.dart';
 
 extension ContextExtension on BuildContext {
   MediaQueryData get _mediaQuery => MediaQuery.of(this);
@@ -23,14 +20,14 @@ extension ContextExtension on BuildContext {
   // ===== AppBar =====
   double get appBarHeight => topPadding + 46;
 
-  // ===== Điều hướng =====
-  void goBack() {
-    if (canPop()) {
-      pop();
-    } else {
-      go(RouteNames.home);
-    }
-  }
+  // // ===== Điều hướng =====
+  // void goBack() {
+  //   if (canPop()) {
+  //     pop();
+  //   } else {
+  //     go(RouteNames.home);
+  //   }
+  // }
 
   // ===== Theme rút gọn (đọc nhanh không cần gõ dài) =====
   ThemeData get theme => Theme.of(this);
