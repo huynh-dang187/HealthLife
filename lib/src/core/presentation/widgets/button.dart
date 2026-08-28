@@ -35,6 +35,7 @@ class AppButton extends ElevatedButton {
     Widget? titleWidget,
     bool hideKeyboardWhenClick = false,
     Color? color,
+    BorderRadius? borderRadius,
     double? fontSize,
     double height = 46,
     FontWeight? fontWeight,

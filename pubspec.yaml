@@ -39,6 +39,7 @@ dependencies:
   #Languages
   easy_localization: ^3.0.7
   gap: ^3.0.1
+  google_sign_in: ^7.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
