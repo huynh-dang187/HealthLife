@@ -35,6 +35,7 @@ class AppButton extends ElevatedButton {
     Widget? titleWidget,
     bool hideKeyboardWhenClick = false,
     Color? color,
+    BorderRadius? borderRadius,
     double? fontSize,
     double height = 46,
     FontWeight? fontWeight,
@@ -51,7 +52,7 @@ class AppButton extends ElevatedButton {
              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
            ),
            backgroundColor: WidgetStateProperty.all(
-             enable ? (color ?? UIColors.green) : UIColors.white.withAlpha(20),
+             enable ? (color ?? UIColors.coral) : UIColors.white.withAlpha(20),
            ),
            elevation: WidgetStateProperty.all(0),
            overlayColor: WidgetStateProperty.all(
@@ -67,7 +68,7 @@ class AppButton extends ElevatedButton {
            alignment: Alignment.center,
            decoration: BoxDecoration(
              color: enable
-                 ? (color ?? UIColors.green)
+                 ? (color ?? UIColors.coral)
                  : UIColors.text.withAlpha(10),
              borderRadius: BorderRadius.circular(10),
            ),
@@ -88,9 +89,10 @@ class AppButton extends ElevatedButton {
   AppButton.outline({
     super.key,
     required VoidCallback onTap,
-    required String title,
+    String? title,
     bool isYellow = false,
     bool enable = true,
+    Widget? titleWidget,
     EdgeInsets titlePadding = EdgeInsets.zero,
     double? fontSize,
     double height = 46,
@@ -116,21 +118,22 @@ class AppButton extends ElevatedButton {
            alignment: Alignment.center,
            decoration: BoxDecoration(
              border: Border.all(
-               color: enable ? UIColors.green : UIColors.text.withAlpha(50),
+               color: enable ? UIColors.coral : UIColors.text.withAlpha(50),
              ),
              borderRadius: BorderRadius.circular(10),
            ),
            child: FittedBox(
              fit: BoxFit.scaleDown,
-             child: Padding(
-               padding: titlePadding,
-               child: AppText.semiBold(
-                 title,
-                 fontSize: fontSize ?? 14,
-                 color: enable ? UIColors.green : UIColors.text.withAlpha(100),
-                 fontWeight: fontWeight,
-               ),
-             ),
+             child:
+                 titleWidget ??
+                 AppText.semiBold(
+                   title ?? '',
+                   fontSize: fontSize ?? 14,
+                   color: enable
+                       ? UIColors.green
+                       : UIColors.text.withAlpha(100),
+                   fontWeight: fontWeight,
+                 ),
            ),
          ),
        );

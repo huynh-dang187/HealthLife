@@ -27,6 +27,9 @@ class $AssetsPngGen {
   /// File path: assets/png/.gitkeep
   String get aGitkeep => 'assets/png/.gitkeep';
 
+  /// File path: assets/png/ic_female.png
+  AssetGenImage get icFemale => const AssetGenImage('assets/png/ic_female.png');
+
   /// File path: assets/png/ic_introduction1.png
   AssetGenImage get icIntroduction1 =>
       const AssetGenImage('assets/png/ic_introduction1.png');
@@ -39,12 +42,22 @@ class $AssetsPngGen {
   AssetGenImage get icIntroduction3 =>
       const AssetGenImage('assets/png/ic_introduction3.png');
 
+  /// File path: assets/png/ic_male.png
+  AssetGenImage get icMale => const AssetGenImage('assets/png/ic_male.png');
+
+  /// File path: assets/png/ic_security.png
+  AssetGenImage get icSecurity =>
+      const AssetGenImage('assets/png/ic_security.png');
+
   /// List of all assets
   List<dynamic> get values => [
     aGitkeep,
+    icFemale,
     icIntroduction1,
     icIntroduction2,
     icIntroduction3,
+    icMale,
+    icSecurity,
   ];
 }
 
@@ -54,14 +67,57 @@ class $AssetsSvgGen {
   /// File path: assets/svg/.gitkeep
   String get aGitkeep => 'assets/svg/.gitkeep';
 
+  /// File path: assets/svg/ic_arrow_left.svg
+  SvgGenImage get icArrowLeft =>
+      const SvgGenImage('assets/svg/ic_arrow_left.svg');
+
+  /// File path: assets/svg/ic_close.svg
+  SvgGenImage get icClose => const SvgGenImage('assets/svg/ic_close.svg');
+
+  /// File path: assets/svg/ic_dropdown.svg
+  SvgGenImage get icDropdown => const SvgGenImage('assets/svg/ic_dropdown.svg');
+
+  /// File path: assets/svg/ic_email.svg
+  SvgGenImage get icEmail => const SvgGenImage('assets/svg/ic_email.svg');
+
   /// File path: assets/svg/ic_eyeOff.svg
   SvgGenImage get icEyeOff => const SvgGenImage('assets/svg/ic_eyeOff.svg');
 
   /// File path: assets/svg/ic_eyeOn.svg
   SvgGenImage get icEyeOn => const SvgGenImage('assets/svg/ic_eyeOn.svg');
 
+  /// File path: assets/svg/ic_gmail.svg
+  SvgGenImage get icGmail => const SvgGenImage('assets/svg/ic_gmail.svg');
+
+  /// File path: assets/svg/ic_phone_login.svg
+  SvgGenImage get icPhoneLogin =>
+      const SvgGenImage('assets/svg/ic_phone_login.svg');
+
   /// List of all assets
-  List<dynamic> get values => [aGitkeep, icEyeOff, icEyeOn];
+  List<dynamic> get values => [
+    aGitkeep,
+    icArrowLeft,
+    icClose,
+    icDropdown,
+    icEmail,
+    icEyeOff,
+    icEyeOn,
+    icGmail,
+    icPhoneLogin,
+  ];
+}
+
+class $AssetsTranslationsGen {
+  const $AssetsTranslationsGen();
+
+  /// File path: assets/translations/en.json
+  String get en => 'assets/translations/en.json';
+
+  /// File path: assets/translations/vi.json
+  String get vi => 'assets/translations/vi.json';
+
+  /// List of all assets
+  List<String> get values => [en, vi];
 }
 
 class $AssetsLottieIntroGen {
@@ -78,6 +134,7 @@ abstract final class Assets {
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsPngGen png = $AssetsPngGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
+  static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
 }
 
 class AssetGenImage {

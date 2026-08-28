@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:healthlife/src/common/extensions/color_extension.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
 
@@ -9,12 +10,15 @@ import '../../../common/constants/colors.dart';
 import 'text.dart';
 
 class AppTF extends Column {
+  final List<TextInputFormatter> inputFormatters;
+
   AppTF.common({
     super.key,
     required TextEditingController controller,
     String? label,
     String? hintText,
     TextInputType? keyboardType,
+    List<TextInputFormatter>? inputFormatters,
     Function(String)? onChanged,
     Function(String)? onSubmitted,
     bool showInfo = false,
@@ -26,7 +30,9 @@ class AppTF extends Column {
     Color? bgColor,
     Color? textColor,
     double? height,
-  }) : super(
+  })  : inputFormatters =
+            inputFormatters ?? _formattersFor(keyboardType),
+        super(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
            Container(
@@ -72,23 +78,24 @@ class AppTF extends Column {
                        fontSize: 14,
                        fontFamily: FontFamily.inter,
                      ),
-                     textInputAction: TextInputAction.done,
-                     keyboardType: keyboardType,
-                     onChanged: onChanged,
-                     onSubmitted: onSubmitted,
-                     keyboardAppearance: Brightness.dark,
-                   ),
-                 ),
-                 if (rightWidget != null)
-                   Padding(
-                     padding: const EdgeInsets.only(left: 12),
-                     child: rightWidget,
-                   ),
-               ],
-             ),
-           ),
-         ],
-       );
+                      textInputAction: TextInputAction.done,
+                      keyboardType: keyboardType,
+                      inputFormatters: inputFormatters,
+                      onChanged: onChanged,
+                      onSubmitted: onSubmitted,
+                      keyboardAppearance: Brightness.dark,
+                    ),
+                  ),
+                  if (rightWidget != null)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: rightWidget,
+                    ),
+                ],
+              ),
+            ),
+          ],
+        );
 
   AppTF.password({
     super.key,
@@ -96,13 +103,16 @@ class AppTF extends Column {
     String? label,
     String? hintText,
     TextInputType? keyboardType,
+    List<TextInputFormatter>? inputFormatters,
     Function(String)? onChanged,
     Function(String)? onSubmitted,
     bool showPassword = false,
     VoidCallback? onChangeShowPassword,
     Color? bgColor,
     Color? textColor,
-  }) : super(
+  })  : inputFormatters =
+            inputFormatters ?? _formattersFor(keyboardType),
+        super(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
            Container(
@@ -175,7 +185,8 @@ class AppTF extends Column {
        );
 
   AppTF.disable({super.key, String? label, required String value})
-    : super(
+    : inputFormatters = const [],
+      super(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
@@ -190,4 +201,19 @@ class AppTF extends Column {
           ),
         ],
       );
+}
+
+List<TextInputFormatter> _formattersFor(TextInputType? type) {
+  if (identical(type, TextInputType.number) ||
+      identical(type, TextInputType.phone)) {
+    return [FilteringTextInputFormatter.digitsOnly];
+  }
+  if (identical(type, TextInputType.name)) {
+    return [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-ZÀ-ỹ ]'))];
+  }
+  if (identical(type, TextInputType.emailAddress) ||
+      identical(type, TextInputType.url)) {
+    return [FilteringTextInputFormatter.deny(RegExp(r'\s'))];
+  }
+  return [];
 }
