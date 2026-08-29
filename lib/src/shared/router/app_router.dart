@@ -5,6 +5,7 @@ import 'package:healthlife/src/features/complete_profile/presentation/pages/prof
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_gender_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_height_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_name_screen.dart';
+import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_weight_screen.dart';
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/signIn_screen.dart';
 import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.dart';
@@ -30,13 +31,7 @@ class AppRouter {
       _route(RouteNames.profile_gender, (_) => ProfileGender()),
       _route(RouteNames.profile_date, (_) => ProfileDate()),
       _route(RouteNames.profile_height, (_) => const ProfileHeight()),
-      _route(
-        RouteNames.profile_weight,
-        (_) => const Scaffold(
-          body: Center(child: Text('TODO: màn cân nặng')),
-        ),
-      ),
-
+      _route(RouteNames.profile_weight, (_) => const ProfileWeightScreen()),
       // Các route khác thêm dần khi code từng module
     ],
   );
