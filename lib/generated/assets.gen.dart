@@ -27,6 +27,10 @@ class $AssetsPngGen {
   /// File path: assets/png/.gitkeep
   String get aGitkeep => 'assets/png/.gitkeep';
 
+  /// File path: assets/png/ic_chatbotAI.png
+  AssetGenImage get icChatbotAI =>
+      const AssetGenImage('assets/png/ic_chatbotAI.png');
+
   /// File path: assets/png/ic_female.png
   AssetGenImage get icFemale => const AssetGenImage('assets/png/ic_female.png');
 
@@ -52,6 +56,7 @@ class $AssetsPngGen {
   /// List of all assets
   List<dynamic> get values => [
     aGitkeep,
+    icChatbotAI,
     icFemale,
     icIntroduction1,
     icIntroduction2,
@@ -80,6 +85,10 @@ class $AssetsSvgGen {
   /// File path: assets/svg/ic_email.svg
   SvgGenImage get icEmail => const SvgGenImage('assets/svg/ic_email.svg');
 
+  /// File path: assets/svg/ic_extension.svg
+  SvgGenImage get icExtension =>
+      const SvgGenImage('assets/svg/ic_extension.svg');
+
   /// File path: assets/svg/ic_eyeOff.svg
   SvgGenImage get icEyeOff => const SvgGenImage('assets/svg/ic_eyeOff.svg');
 
@@ -88,6 +97,12 @@ class $AssetsSvgGen {
 
   /// File path: assets/svg/ic_gmail.svg
   SvgGenImage get icGmail => const SvgGenImage('assets/svg/ic_gmail.svg');
+
+  /// File path: assets/svg/ic_home.svg
+  SvgGenImage get icHome => const SvgGenImage('assets/svg/ic_home.svg');
+
+  /// File path: assets/svg/ic_nutrion.svg
+  SvgGenImage get icNutrion => const SvgGenImage('assets/svg/ic_nutrion.svg');
 
   /// File path: assets/svg/ic_phone_login.svg
   SvgGenImage get icPhoneLogin =>
@@ -100,9 +115,12 @@ class $AssetsSvgGen {
     icClose,
     icDropdown,
     icEmail,
+    icExtension,
     icEyeOff,
     icEyeOn,
     icGmail,
+    icHome,
+    icNutrion,
     icPhoneLogin,
   ];
 }

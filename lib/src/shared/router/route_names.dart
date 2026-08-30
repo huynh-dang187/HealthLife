@@ -10,7 +10,6 @@ class RouteNames {
   static const profile_date = '/profile_date';
   static const profile_height = '/profile_height';
   static const profile_weight = '/profile_weight';
-  static const profile_completed = '/profile_completed';
   static const onboarding = '/onboarding';
   static const login = '/login';
   static const register = '/register';

@@ -71,7 +71,7 @@ class ProfileWeightScreen extends StatelessWidget {
                         final ok = await cubit.saveWeight();
                         if (!context.mounted) return;
                         if (ok) {
-                          context.go(RouteNames.profile_completed);
+                          context.go(RouteNames.activity);
                         } else {
                           if (context.canPop()) context.pop();
                           ScaffoldMessenger.of(context).showSnackBar(

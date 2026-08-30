@@ -6,9 +6,14 @@ import 'package:healthlife/src/features/complete_profile/presentation/pages/prof
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_height_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_name_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_weight_screen.dart';
+import 'package:healthlife/src/features/home/presentation/pages/home_screen.dart';
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/signIn_screen.dart';
 import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.dart';
+import 'package:healthlife/src/features/tab_bar/presentation/page/activity_screen.dart';
+import 'package:healthlife/src/features/tab_bar/presentation/page/chatbot_screen.dart';
+import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_screen.dart';
+import 'package:healthlife/src/features/tab_bar/presentation/page/nutrition_screen.dart';
 
 import 'route_names.dart';
 
@@ -21,7 +26,7 @@ class AppRouter {
   //   RouteNames.signIn,
   // ];
   static final GoRouter router = GoRouter(
-    initialLocation: RouteNames.splash,
+    initialLocation: RouteNames.home,
     redirect: _guard,
     routes: [
       _route(RouteNames.splash, (_) => const SplashScreen()),
@@ -33,6 +38,33 @@ class AppRouter {
       _route(RouteNames.profile_height, (_) => const ProfileHeight()),
       _route(RouteNames.profile_weight, (_) => const ProfileWeightScreen()),
       // Các route khác thêm dần khi code từng module
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            MainTabScreen(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            routes: [_route(RouteNames.home, (_) => const HomeScreen())],
+          ),
+          StatefulShellBranch(
+            routes: [
+              _route(RouteNames.activity, (_) => const ActivityScreen()),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              _route(RouteNames.nutrition, (_) => const NutritionScreen()),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              _route(RouteNames.activity, (_) => const ProfileGender()),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [_route(RouteNames.chatbot, (_) => const ChatbotScreen())],
+          ),
+        ],
+      ),
     ],
   );
 
