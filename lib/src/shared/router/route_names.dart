@@ -10,11 +10,10 @@ class RouteNames {
   static const profile_date = '/profile_date';
   static const profile_height = '/profile_height';
   static const profile_weight = '/profile_weight';
-  static const onboarding = '/onboarding';
-  static const login = '/login';
-  static const register = '/register';
-  static const forgotPassword = '/forgot-password';
-
+  static const sos_device = '/sos_device';
+  static const drug_lookup = '/drug_lookup';
+  static const hospital_finder = '/hospital_finder';
+  static const water_reminder = '/water_reminder';
   static const home = '/home';
   static const activity = '/activity';
   static const chatbot = '/chatbot';
