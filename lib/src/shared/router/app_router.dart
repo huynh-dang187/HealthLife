@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_date_screen.dart';
@@ -23,14 +25,16 @@ import 'route_names.dart';
 
 class AppRouter {
   AppRouter._();
+
   // Các route KHÔNG cần kiểm tra đăng nhập (public)
-  // static const _publicRoutes = [
-  //   RouteNames.splash,
-  //   RouteNames.introduction,
-  //   RouteNames.signIn,
-  // ];
+  static const _publicRoutes = [
+    RouteNames.splash,
+    RouteNames.introduction,
+    RouteNames.signIn,
+  ];
+
   static final GoRouter router = GoRouter(
-    initialLocation: RouteNames.home,
+    initialLocation: RouteNames.splash,
     redirect: _guard,
     routes: [
       //Router flow newbie
@@ -82,53 +86,52 @@ class AppRouter {
     BuildContext context,
     GoRouterState state,
   ) async {
-    // final currentPath = state.matchedLocation;
-    // final user = FirebaseAuth.instance.currentUser;
+    final currentPath = state.matchedLocation;
+    final user = FirebaseAuth.instance.currentUser;
 
-    // // TH1: Đang ở Splash — để SplashCubit tự xử lý logic điều hướng riêng,
-    // // guard không can thiệp vào route này
-    // if (currentPath == RouteNames.splash) {
-    //   return null;
-    // }
+    // TH1: Đang ở Splash — để Splash tự xử lý logic điều hướng riêng,
+    // guard không can thiệp vào route này
+    if (currentPath == RouteNames.splash) {
+      return null;
+    }
 
-    // // TH2: Chưa đăng nhập mà cố vào route cần đăng nhập → đá về SignIn
-    // if (user == null) {
-    //   if (_publicRoutes.contains(currentPath)) {
-    //     return null; // đang ở đúng route public, cho đi tiếp
-    //   }
-    //   return RouteNames
-    //       .signIn; // cố vào route riêng tư mà chưa đăng nhập → chặn lại
-    // }
+    // TH2: Chưa đăng nhập mà cố vào route cần đăng nhập → đá về SignIn
+    if (user == null) {
+      if (_publicRoutes.contains(currentPath)) {
+        return null; // đang ở đúng route public, cho đi tiếp
+      }
+      return RouteNames
+          .signIn; // cố vào route riêng tư mà chưa đăng nhập → chặn lại
+    }
 
-    // // TH3: Đã đăng nhập nhưng đang cố quay lại SignIn/Introduction → đẩy đi tiếp
-    // if (_publicRoutes.contains(currentPath) &&
-    //     currentPath != RouteNames.splash) {
-    //   final completed = await _isProfileCompleted(user.uid);
-    //   return completed ? RouteNames.home : RouteNames.complete_information;
-    // }
+    // TH3: Đã đăng nhập nhưng đang cố quay lại SignIn/Introduction → đẩy đi tiếp
+    if (_publicRoutes.contains(currentPath)) {
+      final completed = await _isProfileCompleted(user.uid);
+      return completed ? RouteNames.home : RouteNames.profile_name;
+    }
 
-    // // // TH4: Đã đăng nhập, đang ở đúng CompleteProfile → cho phép (không redirect)
-    // // if (currentPath == RouteNames.complete_information) {
-    // //   return null;
-    // // }
+    // TH4: Đã đăng nhập, đang ở trong luồng điền hồ sơ → cho phép (không redirect)
+    if (currentPath.startsWith('/profile_')) {
+      return null;
+    }
 
-    // // TH5: Đã đăng nhập, cố vào route khác (Home, Nutrition...) nhưng CHƯA hoàn thiện hồ sơ
-    // final completed = await _isProfileCompleted(user.uid);
-    // if (!completed) {
-    //   return RouteNames.complete_information;
-    // }
+    // TH5: Đã đăng nhập, cố vào route khác (Home, Nutrition...) nhưng CHƯA hoàn thiện hồ sơ
+    final completed = await _isProfileCompleted(user.uid);
+    if (!completed) {
+      return RouteNames.profile_name;
+    }
 
-    // // Mọi điều kiện đều ổn, cho đi tiếp
-    // return null;
+    // Mọi điều kiện đều ổn, cho đi tiếp
+    return null;
   }
 
-  // static Future<bool> _isProfileCompleted(String uid) async {
-  //   final doc = await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(uid)
-  //       .get();
-  //   return doc.data()?['profileCompleted'] ?? false;
-  // }
+  static Future<bool> _isProfileCompleted(String uid) async {
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get();
+    return doc.data()?['profileCompleted'] ?? false;
+  }
 
   static GoRoute _route(String path, WidgetBuilder page) => GoRoute(
     path: path,

@@ -39,6 +39,7 @@ class ProfileWeightCubit extends Cubit<ProfileWeightState> {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
       await _repository.updateDisplayWeight(state.weightKg);
+      await _repository.markProfileCompleted();
       emit(state.copyWith(status: BlocStatus.success, message: null));
       return true;
     } catch (e) {

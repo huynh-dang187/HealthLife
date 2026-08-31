@@ -56,4 +56,12 @@ class ProfileRepository {
       'weight': weight,
     });
   }
+
+  Future<void> markProfileCompleted() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    await FirebaseFirestore.instance.collection('users').doc(uid).set({
+      'profileCompleted': true,
+      'updatedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+  }
 }
