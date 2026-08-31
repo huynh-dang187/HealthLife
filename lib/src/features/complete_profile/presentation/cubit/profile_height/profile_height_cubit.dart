@@ -29,19 +29,38 @@ class ProfileHeightCubit extends Cubit<ProfileHeightState> {
   void selectHeight(int cm) {
     final value = cm.clamp(minCm, maxCm);
     if (value == state.heightCm) return;
-    emit(state.copyWith(heightCm: value));
+    emit(state.copyWith(heightCm: value, heightError: false));
     _syncText();
   }
 
   void onHeightTextChanged(String text) {
-    final cm = _parseToCm(text);
-    if (cm == null || cm == state.heightCm) return;
-    emit(state.copyWith(heightCm: cm));
+    final trimmed = text.trim();
+    if (trimmed.isEmpty) {
+      emit(state.copyWith(heightError: true));
+      return;
+    }
+    final cm = _parseToCm(trimmed);
+    if (cm == null) {
+      emit(state.copyWith(heightError: true));
+      return;
+    }
+    emit(
+      state.copyWith(heightCm: cm, heightError: false),
+    );
   }
 
   void setUnit(HeightUnit unit) {
     if (unit == state.unit) return;
-    emit(state.copyWith(unit: unit));
+    final newMax = unit == HeightUnit.cm ? _cmMax : _ftMax;
+    final newMin = unit == HeightUnit.cm ? _cmMin : _ftMin;
+    final clamped = state.heightCm.clamp(newMin, newMax);
+    emit(
+      state.copyWith(
+        unit: unit,
+        heightCm: clamped,
+        heightError: false,
+      ),
+    );
     _syncText();
   }
 
@@ -63,11 +82,16 @@ class ProfileHeightCubit extends Cubit<ProfileHeightState> {
     if (state.unit == HeightUnit.cm) {
       final cm = int.tryParse(trimmed);
       if (cm == null) return null;
-      return cm.clamp(minCm, maxCm);
+      if (cm < minCm || cm > maxCm) {
+        return null;
+      }
+      return cm;
     }
     final ft = double.tryParse(trimmed);
     if (ft == null) return null;
-    return (ft * cmPerFt).round().clamp(minCm, maxCm);
+    final cm = (ft * cmPerFt).round();
+    if (cm < minCm || cm > maxCm) return null; // ← chặn
+    return cm;
   }
 
   void _syncText() {
@@ -78,6 +102,14 @@ class ProfileHeightCubit extends Cubit<ProfileHeightState> {
     heightController.value = TextEditingValue(
       text: text,
       selection: TextSelection.collapsed(offset: text.length),
+    );
+  }
+
+  void onChangeHeight(String text) {
+    emit(
+      state.copyWith(
+        changeHeight: text,
+      ),
     );
   }
 }

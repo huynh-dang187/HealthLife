@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/src/core/presentation/widgets/text_field.dart';
@@ -12,6 +13,8 @@ class DateFieldItem extends StatelessWidget {
     this.keyboardType,
     required this.maxNum,
     this.hintText = '',
+    this.onChanged,
+    this.hasError = false, // thêm param
   });
 
   final String label;
@@ -19,6 +22,8 @@ class DateFieldItem extends StatelessWidget {
   final TextInputType? keyboardType;
   final int maxNum;
   final String hintText;
+  final ValueChanged<String>? onChanged;
+  final bool hasError;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +33,26 @@ class DateFieldItem extends StatelessWidget {
         children: [
           AppText.bold(label),
           6.gap,
-          AppTF.common(
-            controller: controller,
-            keyboardType: keyboardType,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              LengthLimitingTextInputFormatter(maxNum),
-            ],
-            hintText: hintText,
+          Container(
+            decoration: BoxDecoration(
+              border: hasError
+                  ? Border.all(
+                      color: UIColors.coral,
+                      width: 2.0,
+                    )
+                  : null,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: AppTF.common(
+              controller: controller,
+              keyboardType: keyboardType,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(maxNum),
+              ],
+              onChanged: onChanged,
+              hintText: hintText,
+            ),
           ),
         ],
       ),
