@@ -28,6 +28,9 @@ class ProfileDate extends StatelessWidget {
             appBar: AppAppBar(
               title: "Nhập ngày sinh",
               centerTitle: true,
+              onBack: () {
+                context.pop();
+              },
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -91,8 +94,9 @@ class ProfileDate extends StatelessWidget {
                         AppLoadingScreen.show(context, message: "Đang lưu...");
                         final ok = await cubit.saveDate();
                         if (!context.mounted) return;
+                        Navigator.of(context).pop();
                         if (ok) {
-                          context.go(RouteNames.profile_height);
+                          context.push(RouteNames.profile_height);
                         } else {
                           if (context.canPop()) context.pop();
                           ScaffoldMessenger.of(context).showSnackBar(

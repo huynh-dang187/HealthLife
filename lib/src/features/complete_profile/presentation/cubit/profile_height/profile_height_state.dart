@@ -6,12 +6,16 @@ final class ProfileHeightState {
   final String? message;
   final int heightCm;
   final HeightUnit unit;
+  final bool heightError;
+  final String changeHeight;
 
   const ProfileHeightState({
     this.status = BlocStatus.initial,
     this.message,
     this.heightCm = 160,
     this.unit = HeightUnit.cm,
+    this.heightError = false,
+    this.changeHeight = '',
   });
 
   ProfileHeightState copyWith({
@@ -19,12 +23,16 @@ final class ProfileHeightState {
     String? message,
     int? heightCm,
     HeightUnit? unit,
+    bool? heightError,
+    String? changeHeight,
   }) {
     return ProfileHeightState(
       status: status ?? this.status,
       message: message ?? this.message,
       heightCm: heightCm ?? this.heightCm,
       unit: unit ?? this.unit,
+      heightError: heightError ?? this.heightError,
+      changeHeight: changeHeight ?? this.changeHeight,
     );
   }
 }

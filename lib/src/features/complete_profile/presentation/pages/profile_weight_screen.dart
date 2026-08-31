@@ -29,6 +29,9 @@ class ProfileWeightScreen extends StatelessWidget {
             appBar: AppAppBar(
               title: "Nhập cân nặng của bạn",
               centerTitle: true,
+              onBack: () {
+                context.pop();
+              },
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -60,18 +63,28 @@ class ProfileWeightScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  if (state.weightError) ...[
+                    16.gap,
+                    AppText.semiBold(
+                      "Có lỗi xảy ra vui lòng nhập cân nặng hợp lệ!",
+                      color: UIColors.coral,
+                      maxLines: 3,
+                    ),
+                  ],
                   const Spacer(),
                   Padding(
                     padding: EdgeInsets.only(bottom: 16),
                     child: AppButton.fill(
                       title: "Tiếp theo",
-                      color: UIColors.pink,
+                      enable: !state.weightError,
+                      color: UIColors.coral,
                       onTap: () async {
                         AppLoadingScreen.show(context, message: "Đang lưu...");
                         final ok = await cubit.saveWeight();
                         if (!context.mounted) return;
+                        Navigator.of(context).pop();
                         if (ok) {
-                          context.go(RouteNames.home);
+                          context.push(RouteNames.home);
                         } else {
                           if (context.canPop()) context.pop();
                           ScaffoldMessenger.of(context).showSnackBar(

@@ -29,6 +29,9 @@ class ProfileGender extends StatelessWidget {
             appBar: AppAppBar(
               title: "Nhập giới tính của bạn",
               centerTitle: true,
+              onBack: () {
+                context.pop();
+              },
             ),
             body: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
@@ -84,10 +87,11 @@ class ProfileGender extends StatelessWidget {
                               .read<ProfileGenderCubit>()
                               .saveGender(state.selectedGender!);
                           if (!context.mounted) return;
+                          Navigator.of(context).pop();
                           if (ok) {
-                            context.go(
+                            context.push(
                               RouteNames.profile_date,
-                            ); // TODO: route kế tiếp
+                            );
                           } else {
                             if (context.canPop()) context.pop();
                             ScaffoldMessenger.of(context).showSnackBar(

@@ -24,14 +24,22 @@ class ProfileWeightCubit extends Cubit<ProfileWeightState> {
   }
 
   void onWeightTextChanged(String text) {
-    final kg = _parseToKg(text);
-    if (kg == null || kg == state.weightKg) return;
-    emit(state.copyWith(weightKg: kg));
+    final trimmed = text.trim();
+    if (trimmed.isEmpty) {
+      emit(state.copyWith(weightError: true));
+      return;
+    }
+    final kg = _parseToKg(trimmed);
+    if (kg == null) {
+      emit(state.copyWith(weightError: true));
+      return;
+    }
+    emit(state.copyWith(weightKg: kg, weightError: false));
   }
 
   void setUnit(WeightUnit unit) {
     if (unit == state.unit) return;
-    emit(state.copyWith(unit: unit));
+    emit(state.copyWith(unit: unit, weightError: false));
     _syncText();
   }
 
@@ -52,9 +60,10 @@ class ProfileWeightCubit extends Cubit<ProfileWeightState> {
     final trimmed = text.trim();
     if (trimmed.isEmpty) return null;
     final value = double.tryParse(trimmed);
-    if (value == null) return null;
+    if (value == null || value <= 0) return null;
     final kg = state.unit == WeightUnit.kg ? value : value / lbsPerKg;
-    return kg.clamp(minKg, maxKg);
+    if (kg < minKg || kg > maxKg) return null;
+    return kg;
   }
 
   void _syncText() {

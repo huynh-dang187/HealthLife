@@ -26,7 +26,13 @@ class ProfileName extends StatelessWidget {
         builder: (context, state) {
           final cubit = context.read<ProfileNameCubit>();
           return Scaffold(
-            appBar: AppAppBar(title: "Nhập tên của bạn", centerTitle: true),
+            appBar: AppAppBar(
+              title: "Nhập tên của bạn",
+              centerTitle: true,
+              onBack: () {
+                context.pop();
+              },
+            ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
@@ -65,20 +71,15 @@ class ProfileName extends StatelessWidget {
                     padding: EdgeInsets.only(bottom: context.bottomPadding),
                     child: AppButton.fill(
                       title: "Tiếp theo",
-                      enable: state.changeName.isNotEmpty,
                       onTap: () async {
-                        AppLoadingScreen.show(
-                          context,
-                          message: "Đang lưu...",
-                        );
-                        final ok = await cubit.saveName(
-                          state.changeName,
-                        );
+                        AppLoadingScreen.show(context, message: "Đang lưu...");
+                        final ok = await cubit.saveName(state.changeName);
                         if (!context.mounted) return;
+                        Navigator.of(context).pop();
+
                         if (ok) {
-                          context.go(RouteNames.profile_gender);
+                          context.push(RouteNames.profile_gender);
                         } else {
-                          if (context.canPop()) context.pop();
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text("Lưu thất bại, thử lại"),

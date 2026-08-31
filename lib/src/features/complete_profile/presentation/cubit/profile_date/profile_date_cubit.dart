@@ -112,7 +112,7 @@ class ProfileDateCubit extends Cubit<ProfileDateState> {
     final value = int.tryParse(text);
     final now = DateTime.now().year;
     if (text.isEmpty) {
-      emit(state.copyWith(yearError: false)); // rỗng → cho qua
+      emit(state.copyWith(yearError: false));
       return;
     }
 

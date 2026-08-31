@@ -31,6 +31,9 @@ class ProfileHeight extends StatelessWidget {
             appBar: AppAppBar(
               title: "Chiều cao của bạn",
               centerTitle: true,
+              onBack: () {
+                context.pop();
+              },
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -72,18 +75,28 @@ class ProfileHeight extends StatelessWidget {
                     minCm: cubit.minCm,
                     maxCm: cubit.maxCm,
                   ),
+                  if (state.heightError) ...[
+                    16.gap,
+                    AppText.semiBold(
+                      "Có lỗi xảy ra vui lòng nhập chiều cao hợp lệ!",
+                      color: UIColors.coral,
+                      maxLines: 3,
+                    ),
+                  ],
                   const Spacer(),
                   Padding(
                     padding: EdgeInsets.only(bottom: context.bottomPadding),
                     child: AppButton.fill(
                       title: "Tiếp theo",
-                      color: UIColors.pink,
+                      color: UIColors.coral,
+                      enable: !state.heightError,
                       onTap: () async {
                         AppLoadingScreen.show(context, message: "Đang lưu...");
                         final ok = await cubit.saveHeight();
                         if (!context.mounted) return;
+                        Navigator.of(context).pop();
                         if (ok) {
-                          context.go(RouteNames.profile_weight);
+                          context.push(RouteNames.profile_weight);
                         } else {
                           if (context.canPop()) context.pop();
                           ScaffoldMessenger.of(context).showSnackBar(
