@@ -46,14 +46,15 @@ class NewsSection extends StatelessWidget {
           ),
         ),
         12.gap,
-        SizedBox(
-          height: 146,
-          child: ListView.separated(
-            scrollDirection: Axis.vertical,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: _news.length,
-            separatorBuilder: (_, __) => 10.gap,
-            itemBuilder: (context, index) => _news[index],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              for (var i = 0; i < _news.length; i++) ...[
+                if (i > 0) 12.gap,
+                _news[i],
+              ],
+            ],
           ),
         ),
       ],

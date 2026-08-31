@@ -12,10 +12,29 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final statusBarHeight = MediaQuery.paddingOf(context).top;
+
     return Scaffold(
       backgroundColor: UIColors.lightBackground,
+      // Thanh search ghim cố định
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(statusBarHeight + 54),
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFFFBD5E3), Color(0xFFE877A0)],
+            ),
+          ),
+          child: SafeArea(
+            bottom: false,
+            child: const DashboardAppBar(),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -24,36 +43,34 @@ class HomeScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Color(0xFFFBD5E3), Color(0xFFE877A0)],
+                  colors: [Color(0xFFE877A0), Color(0xFFFBD5E3)],
                 ),
               ),
-              child: SafeArea(
+              child: const SafeArea(
                 bottom: false,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    DashboardAppBar(),
-                    GreetingBanner(),
-                  ],
-                ),
+                top: false,
+                child: GreetingBanner(),
               ),
             ),
-            Container(
-              decoration: const BoxDecoration(
-                color: UIColors.lightBackground,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
+            Transform.translate(
+              offset: const Offset(0, -20),
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: UIColors.lightBackground,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
+                  ),
                 ),
-              ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  QuickFeatures(),
-                  HealthExperience(),
-                  NewsSection(),
-                  SizedBox(height: 16),
-                ],
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    QuickFeatures(),
+                    HealthExperience(),
+                    NewsSection(),
+                    SizedBox(height: 16),
+                  ],
+                ),
               ),
             ),
           ],

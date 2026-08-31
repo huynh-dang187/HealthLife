@@ -23,7 +23,8 @@ class NewsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = imageColor ?? UIColors.pinkLight;
     return Container(
-      width: 210,
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: UIColors.white,
         borderRadius: BorderRadius.circular(14),
@@ -35,41 +36,40 @@ class NewsCard extends StatelessWidget {
           ),
         ],
       ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
           Container(
-            height: 72,
-            width: double.infinity,
+            width: 84,
+            height: 84,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [color, color.withValues(alpha: 0.6)],
               ),
+              borderRadius: BorderRadius.circular(10),
             ),
             alignment: Alignment.center,
             child: Icon(
               icon,
-              size: 28,
+              size: 26,
               color: Colors.white.withValues(alpha: 0.9),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(10),
+          12.gap,
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText.medium(title, fontSize: 12, maxLines: 2),
+                AppText.medium(title, fontSize: 13, maxLines: 2),
                 6.gap,
                 Row(
                   children: [
-                    AppText.regular(source, fontSize: 10, color: UIColors.pink),
+                    AppText.regular(source, fontSize: 11, color: UIColors.pink),
                     const Spacer(),
                     AppText.regular(
                       time,
-                      fontSize: 10,
+                      fontSize: 11,
                       color: UIColors.textBody,
                     ),
                   ],
