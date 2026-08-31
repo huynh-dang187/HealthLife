@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/generated/assets.gen.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
-import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/widget/tab_bar_item.dart';
 
@@ -144,7 +143,6 @@ class _MainTabScreenState extends State<MainTabScreen>
       bottomNavigationBar: Padding(
         padding: EdgeInsets.only(
           left: 16,
-          bottom: context.bottomPadding,
         ),
         child: SizedBox(
           height: 80,
@@ -161,7 +159,7 @@ class _MainTabScreenState extends State<MainTabScreen>
                             child: ScaleTransition(
                               scale: _scaleAnimation,
                               child: SizedBox(
-                                height: 65,
+                                height: 55,
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(32),
