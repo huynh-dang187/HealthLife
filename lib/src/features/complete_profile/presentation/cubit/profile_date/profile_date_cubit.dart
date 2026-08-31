@@ -18,6 +18,19 @@ class ProfileDateCubit extends Cubit<ProfileDateState> {
   final monthController = TextEditingController();
   final yearController = TextEditingController();
 
+  void _validateDay() {
+    final text = dayController.text;
+    if (text.isEmpty) return;
+    final d = int.tryParse(text);
+    final m = int.tryParse(monthController.text);
+    final y = int.tryParse(yearController.text);
+    if (d == null || m == null || y == null) {
+      emit(state.copyWith(dayError: false));
+      return;
+    }
+    emit(state.copyWith(dayError: d > daysInMonth(y, m)));
+  }
+
   @override
   Future<void> close() {
     dayController.dispose();
@@ -57,5 +70,57 @@ class ProfileDateCubit extends Cubit<ProfileDateState> {
       emit(state.copyWith(status: BlocStatus.failure, message: e.toString()));
       return false;
     }
+  }
+
+  void onChangeDay(String text) {
+    final value = int.tryParse(text);
+    final m = int.tryParse(monthController.text);
+    final y = int.tryParse(yearController.text);
+    if (text.isEmpty) {
+      emit(state.copyWith(dayError: false));
+      return;
+    }
+
+    if (value == null || value <= 0) {
+      emit(state.copyWith(dayError: true));
+      return;
+    }
+    if (m == null || y == null) {
+      emit(state.copyWith(dayError: false));
+      return;
+    }
+    final maxDay = daysInMonth(y, m);
+    emit(state.copyWith(dayError: value > maxDay));
+  }
+
+  void onChangeMonth(String text) {
+    final value = int.tryParse(text);
+    if (text.isEmpty) {
+      emit(state.copyWith(monthError: false)); // rỗng → cho qua
+      return;
+    }
+
+    if (value == null || value <= 0 || value > 12) {
+      emit(state.copyWith(monthError: true));
+      return;
+    }
+    emit(state.copyWith(monthError: false));
+    _validateDay(); // cross-field
+  }
+
+  void onChangeYear(String text) {
+    final value = int.tryParse(text);
+    final now = DateTime.now().year;
+    if (text.isEmpty) {
+      emit(state.copyWith(yearError: false)); // rỗng → cho qua
+      return;
+    }
+
+    if (value == null || value < 1900 || value > now) {
+      emit(state.copyWith(yearError: true));
+      return;
+    }
+    emit(state.copyWith(yearError: false));
+    _validateDay(); // cross-field
   }
 }

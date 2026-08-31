@@ -20,4 +20,12 @@ class ProfileNameCubit extends Cubit<ProfileNameState> {
       return false;
     }
   }
+
+  void onChangeName(String text) {
+    emit(
+      state.copyWith(
+        changeName: text,
+      ),
+    );
+  }
 }

@@ -45,7 +45,17 @@ class ProfileName extends StatelessWidget {
                           AppTF.common(
                             controller: nameController,
                             hintText: "Nhập tên của bạn",
-                            rightWidget: Assets.svg.icClose.svg(width: 32),
+                            rightWidget: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InkWell(
+                                onTap: () {
+                                  nameController.clear();
+                                  cubit.onChangeName("");
+                                },
+                                child: Assets.svg.icClose.svg(width: 32),
+                              ),
+                            ),
+                            onChanged: (text) => cubit.onChangeName(text),
                           ),
                         ],
                       ),
@@ -55,9 +65,15 @@ class ProfileName extends StatelessWidget {
                     padding: EdgeInsets.only(bottom: context.bottomPadding),
                     child: AppButton.fill(
                       title: "Tiếp theo",
+                      enable: state.changeName.isNotEmpty,
                       onTap: () async {
-                        AppLoadingScreen.show(context, message: "Đang lưu...");
-                        final ok = await cubit.saveName(nameController.text);
+                        AppLoadingScreen.show(
+                          context,
+                          message: "Đang lưu...",
+                        );
+                        final ok = await cubit.saveName(
+                          state.changeName,
+                        );
                         if (!context.mounted) return;
                         if (ok) {
                           context.go(RouteNames.profile_gender);

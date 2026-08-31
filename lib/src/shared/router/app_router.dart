@@ -34,7 +34,7 @@ class AppRouter {
   ];
 
   static final GoRouter router = GoRouter(
-    initialLocation: RouteNames.splash,
+    initialLocation: RouteNames.profile_date,
     redirect: _guard,
     routes: [
       //Router flow newbie
