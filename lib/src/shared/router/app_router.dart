@@ -5,9 +5,19 @@ import 'package:healthlife/src/features/complete_profile/presentation/pages/prof
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_gender_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_height_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_name_screen.dart';
+import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_weight_screen.dart';
+import 'package:healthlife/src/features/drug_lookup/presentation/pages/drug_lookup_screen.dart';
+import 'package:healthlife/src/features/home/presentation/pages/home_screen.dart';
+import 'package:healthlife/src/features/hospital_finder/presentation/pages/hospital_finder_screen.dart';
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/signIn_screen.dart';
+import 'package:healthlife/src/features/sos_iot/presentation/pages/sos_device_screen.dart';
 import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.dart';
+import 'package:healthlife/src/features/tab_bar/presentation/page/activity_screen.dart';
+import 'package:healthlife/src/features/tab_bar/presentation/page/chatbot_screen.dart';
+import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_screen.dart';
+import 'package:healthlife/src/features/tab_bar/presentation/page/nutrition_screen.dart';
+import 'package:healthlife/src/features/water_reminder/presentation/pages/water_reminder_screen.dart';
 
 import 'route_names.dart';
 
@@ -20,9 +30,10 @@ class AppRouter {
   //   RouteNames.signIn,
   // ];
   static final GoRouter router = GoRouter(
-    initialLocation: RouteNames.splash,
+    initialLocation: RouteNames.home,
     redirect: _guard,
     routes: [
+      //Router flow newbie
       _route(RouteNames.splash, (_) => const SplashScreen()),
       _route(RouteNames.introduction, (_) => const IntroductionScreen()),
       _route(RouteNames.signIn, (_) => const SigninScreen()),
@@ -30,14 +41,40 @@ class AppRouter {
       _route(RouteNames.profile_gender, (_) => ProfileGender()),
       _route(RouteNames.profile_date, (_) => ProfileDate()),
       _route(RouteNames.profile_height, (_) => const ProfileHeight()),
-      _route(
-        RouteNames.profile_weight,
-        (_) => const Scaffold(
-          body: Center(child: Text('TODO: màn cân nặng')),
-        ),
+      _route(RouteNames.profile_weight, (_) => const ProfileWeightScreen()),
+      //Router HomeScreen QuickActions
+      _route(RouteNames.sos_device, (_) => const SosDeviceScreen()),
+      _route(RouteNames.drug_lookup, (_) => const DrugLookScreen()),
+      _route(RouteNames.hospital_finder, (_) => const HospitalScreen()),
+      _route(RouteNames.water_reminder, (_) => const WaterReminderScreen()),
+      //Router bottom bar đã cố định sẽ sửa lại trong tương lai
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            MainTabScreen(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            routes: [_route(RouteNames.home, (_) => const HomeScreen())],
+          ),
+          StatefulShellBranch(
+            routes: [
+              _route(RouteNames.activity, (_) => const ActivityScreen()),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              _route(RouteNames.nutrition, (_) => const NutritionScreen()),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              _route(RouteNames.activity, (_) => const ProfileGender()),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [_route(RouteNames.chatbot, (_) => const ChatbotScreen())],
+          ),
+        ],
       ),
-
-      // Các route khác thêm dần khi code từng module
     ],
   );
 

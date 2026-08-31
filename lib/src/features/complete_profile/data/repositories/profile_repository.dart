@@ -49,4 +49,11 @@ class ProfileRepository {
       'height': height,
     });
   }
+
+  Future<void> updateDisplayWeight(double weight) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    await FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'weight': weight,
+    });
+  }
 }
