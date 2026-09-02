@@ -1,1 +1,6 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"healthlife-e89fd","appId":"1:265215699847:android:a0a57f05de3b4c42a9c122","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"healthlife-e89fd","configurations":{"android":"1:265215699847:android:a0a57f05de3b4c42a9c122","ios":"1:265215699847:ios:4ec50cc843744c2aa9c122"}}}}}}
+{ "functions": {
+    "source": "functions",
+    "runtime": "nodejs20"
+  },
+
+    "flutter":{"platforms":{"android":{"default":{"projectId":"healthlife-e89fd","appId":"1:265215699847:android:a0a57f05de3b4c42a9c122","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"healthlife-e89fd","configurations":{"android":"1:265215699847:android:a0a57f05de3b4c42a9c122","ios":"1:265215699847:ios:4ec50cc843744c2aa9c122"}}}}}}
