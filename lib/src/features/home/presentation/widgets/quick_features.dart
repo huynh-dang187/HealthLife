@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/generated/assets.gen.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
 
 import '../../../../common/constants/colors.dart';
@@ -26,7 +27,7 @@ class QuickFeatures extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemCount: _features.length,
-            separatorBuilder: (_, __) => 8.gap,
+            separatorBuilder: (_, __) => 12.gap,
             itemBuilder: (context, index) {
               final f = _features[index];
               return QuickFeatureItem(
@@ -50,35 +51,41 @@ class _FeatureData {
     this.color,
     this.router,
   );
-  final IconData icon;
+  final Widget icon;
   final String title;
   final Color color;
   final String router;
 }
 
-const _features = [
+final _features = [
   _FeatureData(
-    Icons.sos,
+    Assets.png.icSosDevice.image(width: 40, height: 40),
     'Thiết bị SOS',
     UIColors.coral,
     RouteNames.sos_device,
   ),
   _FeatureData(
-    Icons.medication,
+    Assets.png.icDrugLookup.image(),
     'Tra cứu thuốc',
-    UIColors.pink,
+    UIColors.green,
     RouteNames.drug_lookup,
   ),
   _FeatureData(
-    Icons.local_hospital,
+    Assets.png.icHospitalFinder.image(),
     'Tìm bệnh viện',
-    UIColors.pink,
+    Colors.teal,
     RouteNames.hospital_finder,
   ),
   _FeatureData(
-    Icons.water_drop,
+    Assets.png.icWaterReminder.image(),
     'Nhắc uống nước',
-    UIColors.vibrantBlue,
+    Colors.blueAccent,
+    RouteNames.water_reminder,
+  ),
+  _FeatureData(
+    Assets.png.icFootCounter.image(),
+    'Đếm bước chân',
+    Colors.yellow,
     RouteNames.water_reminder,
   ),
 ];

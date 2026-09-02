@@ -12,7 +12,7 @@ class QuickFeatureItem extends StatelessWidget {
     this.onTap,
   });
 
-  final IconData icon;
+  final Widget icon;
   final String title;
   final Color color;
   final VoidCallback? onTap;
@@ -22,32 +22,33 @@ class QuickFeatureItem extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap ?? () {},
-      child: SizedBox(
-        width: 72,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: color.withValues(alpha: 0.25)),
-              ),
-              alignment: Alignment.center,
-              child: Icon(icon, size: 24, color: color),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: color.withValues(alpha: 0.25)),
             ),
-            8.gap,
-            AppText.regular(
-              title,
-              fontSize: 11,
-              color: UIColors.text,
-              maxLines: 2,
-              textAlign: TextAlign.center,
+            alignment: Alignment.center,
+            child: SizedBox(
+              width: 60,
+              height: 60,
+              child: Center(child: icon),
             ),
-          ],
-        ),
+          ),
+          8.gap,
+          AppText.semiBold(
+            title,
+            fontSize: 11,
+            color: UIColors.text,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }
