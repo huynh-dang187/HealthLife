@@ -79,6 +79,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/ic_close.svg
   SvgGenImage get icClose => const SvgGenImage('assets/svg/ic_close.svg');
 
+  /// File path: assets/svg/ic_drawer.svg
+  SvgGenImage get icDrawer => const SvgGenImage('assets/svg/ic_drawer.svg');
+
   /// File path: assets/svg/ic_dropdown.svg
   SvgGenImage get icDropdown => const SvgGenImage('assets/svg/ic_dropdown.svg');
 
@@ -101,6 +104,10 @@ class $AssetsSvgGen {
   /// File path: assets/svg/ic_home.svg
   SvgGenImage get icHome => const SvgGenImage('assets/svg/ic_home.svg');
 
+  /// File path: assets/svg/ic_notification.svg
+  SvgGenImage get icNotification =>
+      const SvgGenImage('assets/svg/ic_notification.svg');
+
   /// File path: assets/svg/ic_nutrion.svg
   SvgGenImage get icNutrion => const SvgGenImage('assets/svg/ic_nutrion.svg');
 
@@ -108,11 +115,15 @@ class $AssetsSvgGen {
   SvgGenImage get icPhoneLogin =>
       const SvgGenImage('assets/svg/ic_phone_login.svg');
 
+  /// File path: assets/svg/icon_search.svg
+  SvgGenImage get iconSearch => const SvgGenImage('assets/svg/icon_search.svg');
+
   /// List of all assets
   List<dynamic> get values => [
     aGitkeep,
     icArrowLeft,
     icClose,
+    icDrawer,
     icDropdown,
     icEmail,
     icExtension,
@@ -120,8 +131,10 @@ class $AssetsSvgGen {
     icEyeOn,
     icGmail,
     icHome,
+    icNotification,
     icNutrion,
     icPhoneLogin,
+    iconSearch,
   ];
 }
 

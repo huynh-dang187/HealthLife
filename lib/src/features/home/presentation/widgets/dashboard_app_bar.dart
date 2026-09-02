@@ -1,54 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/assets.gen.dart';
+import 'package:healthlife/src/core/presentation/widgets/text_field.dart';
 
 import '../../../../common/constants/colors.dart';
 import '../../../../common/extensions/num_x.dart';
-import '../../../../core/presentation/widgets/text.dart';
 
+// ignore: must_be_immutable
 class DashboardAppBar extends StatelessWidget {
-  const DashboardAppBar({super.key});
-
+  DashboardAppBar({super.key});
+  TextEditingController searchHome = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Row(
         children: [
           Expanded(
-            child: Container(
-              height: 46,
-              padding: const EdgeInsets.only(left: 14, right: 14),
-              decoration: BoxDecoration(
-                color: UIColors.white.withValues(alpha: 0.92),
-                borderRadius: BorderRadius.circular(23),
-                boxShadow: [
-                  BoxShadow(
-                    color: UIColors.black.withValues(alpha: 0.06),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+            child: AppTF.common(
+              controller: searchHome,
+              rightWidget: Assets.svg.iconSearch.svg(
+                width: 18,
+                color: UIColors.darkBackground,
               ),
-              child: Row(
-                children: [
-                  const Icon(Icons.search, size: 20, color: UIColors.textBody),
-                  10.gap,
-                  Expanded(
-                    child: AppText.regular(
-                      'Tìm kiếm các chức năng bạn cần',
-                      fontSize: 13,
-                      color: UIColors.textBody.withValues(alpha: 0.8),
-                    ),
-                  ),
-                ],
-              ),
+              borderCicular: 23,
+              hintText: "Nhập nội dung tìm kiếm của bạn",
             ),
           ),
           10.gap,
-          _RoundAction(icon: Icons.qr_code_scanner, onTap: () {}),
+          _RoundAction(
+            icon: Assets.svg.icNotification.svg(width: 18),
+            onTap: () {},
+          ),
           8.gap,
           _RoundAction(
-            icon: Icons.notifications_none,
-            hasDot: true,
+            icon: Assets.svg.icDrawer.svg(width: 18),
             onTap: () {},
           ),
         ],
@@ -64,7 +49,7 @@ class _RoundAction extends StatelessWidget {
     this.hasDot = false,
   });
 
-  final IconData icon;
+  final Widget icon;
   final VoidCallback onTap;
   final bool hasDot;
 
@@ -74,8 +59,8 @@ class _RoundAction extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Container(
-        width: 46,
-        height: 46,
+        width: 42,
+        height: 42,
         decoration: BoxDecoration(
           color: UIColors.white.withValues(alpha: 0.92),
           shape: BoxShape.circle,
@@ -91,7 +76,7 @@ class _RoundAction extends StatelessWidget {
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            Icon(icon, size: 22, color: UIColors.black),
+            icon,
             if (hasDot)
               Positioned(
                 right: 0,
