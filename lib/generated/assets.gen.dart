@@ -31,8 +31,20 @@ class $AssetsPngGen {
   AssetGenImage get icChatbotAI =>
       const AssetGenImage('assets/png/ic_chatbotAI.png');
 
+  /// File path: assets/png/ic_drug_lookup.png
+  AssetGenImage get icDrugLookup =>
+      const AssetGenImage('assets/png/ic_drug_lookup.png');
+
   /// File path: assets/png/ic_female.png
   AssetGenImage get icFemale => const AssetGenImage('assets/png/ic_female.png');
+
+  /// File path: assets/png/ic_foot_counter.png
+  AssetGenImage get icFootCounter =>
+      const AssetGenImage('assets/png/ic_foot_counter.png');
+
+  /// File path: assets/png/ic_hospital_finder.png
+  AssetGenImage get icHospitalFinder =>
+      const AssetGenImage('assets/png/ic_hospital_finder.png');
 
   /// File path: assets/png/ic_introduction1.png
   AssetGenImage get icIntroduction1 =>
@@ -53,16 +65,29 @@ class $AssetsPngGen {
   AssetGenImage get icSecurity =>
       const AssetGenImage('assets/png/ic_security.png');
 
+  /// File path: assets/png/ic_sos_device.png
+  AssetGenImage get icSosDevice =>
+      const AssetGenImage('assets/png/ic_sos_device.png');
+
+  /// File path: assets/png/ic_water_reminder.png
+  AssetGenImage get icWaterReminder =>
+      const AssetGenImage('assets/png/ic_water_reminder.png');
+
   /// List of all assets
   List<dynamic> get values => [
     aGitkeep,
     icChatbotAI,
+    icDrugLookup,
     icFemale,
+    icFootCounter,
+    icHospitalFinder,
     icIntroduction1,
     icIntroduction2,
     icIntroduction3,
     icMale,
     icSecurity,
+    icSosDevice,
+    icWaterReminder,
   ];
 }
 
