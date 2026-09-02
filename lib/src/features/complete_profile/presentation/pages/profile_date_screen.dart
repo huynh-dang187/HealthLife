@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
@@ -27,6 +28,9 @@ class ProfileDate extends StatelessWidget {
             appBar: AppAppBar(
               title: "Nhập ngày sinh",
               centerTitle: true,
+              onBack: () {
+                context.pop();
+              },
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -45,6 +49,8 @@ class ProfileDate extends StatelessWidget {
                               controller: cubit.dayController,
                               keyboardType: TextInputType.number,
                               maxNum: 2,
+                              onChanged: cubit.onChangeDay,
+                              hasError: state.dayError,
                             ),
                             17.gap,
                             DateFieldItem(
@@ -52,6 +58,8 @@ class ProfileDate extends StatelessWidget {
                               controller: cubit.monthController,
                               keyboardType: TextInputType.number,
                               maxNum: 2,
+                              onChanged: cubit.onChangeMonth,
+                              hasError: state.monthError,
                             ),
                             17.gap,
                             DateFieldItem(
@@ -60,9 +68,21 @@ class ProfileDate extends StatelessWidget {
                               keyboardType: TextInputType.number,
                               maxNum: 4,
                               hintText: "2005",
+                              onChanged: cubit.onChangeYear,
+                              hasError: state.yearError,
                             ),
                           ],
                         ),
+                        16.gap,
+                        if (state.yearError ||
+                            state.dayError ||
+                            state.monthError) ...[
+                          AppText.semiBold(
+                            "Có lỗi xảy ra vui lòng nhập đúng ngày tháng năm sinh của bạn!",
+                            color: UIColors.coral,
+                            maxLines: 3,
+                          ),
+                        ],
                       ],
                     ),
                   ),
@@ -74,8 +94,9 @@ class ProfileDate extends StatelessWidget {
                         AppLoadingScreen.show(context, message: "Đang lưu...");
                         final ok = await cubit.saveDate();
                         if (!context.mounted) return;
+                        Navigator.of(context).pop();
                         if (ok) {
-                          context.go(RouteNames.profile_height);
+                          context.push(RouteNames.profile_height);
                         } else {
                           if (context.canPop()) context.pop();
                           ScaffoldMessenger.of(context).showSnackBar(

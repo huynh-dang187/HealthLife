@@ -16,7 +16,6 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: UIColors.lightBackground,
-      // Thanh search ghim cố định
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(statusBarHeight + 54),
         child: Container(
@@ -29,7 +28,7 @@ class HomeScreen extends StatelessWidget {
           ),
           child: SafeArea(
             bottom: false,
-            child: const DashboardAppBar(),
+            child: DashboardAppBar(),
           ),
         ),
       ),

@@ -26,7 +26,13 @@ class ProfileName extends StatelessWidget {
         builder: (context, state) {
           final cubit = context.read<ProfileNameCubit>();
           return Scaffold(
-            appBar: AppAppBar(title: "Nhập tên của bạn", centerTitle: true),
+            appBar: AppAppBar(
+              title: "Nhập tên của bạn",
+              centerTitle: true,
+              onBack: () {
+                context.pop();
+              },
+            ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
@@ -45,7 +51,17 @@ class ProfileName extends StatelessWidget {
                           AppTF.common(
                             controller: nameController,
                             hintText: "Nhập tên của bạn",
-                            rightWidget: Assets.svg.icClose.svg(width: 32),
+                            rightWidget: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InkWell(
+                                onTap: () {
+                                  nameController.clear();
+                                  cubit.onChangeName("");
+                                },
+                                child: Assets.svg.icClose.svg(width: 32),
+                              ),
+                            ),
+                            onChanged: (text) => cubit.onChangeName(text),
                           ),
                         ],
                       ),
@@ -57,12 +73,13 @@ class ProfileName extends StatelessWidget {
                       title: "Tiếp theo",
                       onTap: () async {
                         AppLoadingScreen.show(context, message: "Đang lưu...");
-                        final ok = await cubit.saveName(nameController.text);
+                        final ok = await cubit.saveName(state.changeName);
                         if (!context.mounted) return;
+                        Navigator.of(context).pop();
+
                         if (ok) {
-                          context.go(RouteNames.profile_gender);
+                          context.push(RouteNames.profile_gender);
                         } else {
-                          if (context.canPop()) context.pop();
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text("Lưu thất bại, thử lại"),

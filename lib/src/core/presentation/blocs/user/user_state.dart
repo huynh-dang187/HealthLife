@@ -1,25 +1,26 @@
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
+import 'package:healthlife/src/shared/models/user_model.dart';
 
-final class ProfileNameState {
+final class UserState {
   final BlocStatus status;
   final String? message;
-  final String changeName;
+  final UserModel? user;
 
-  const ProfileNameState({
+  const UserState({
     this.status = BlocStatus.initial,
     this.message,
-    this.changeName = '',
+    this.user,
   });
 
-  ProfileNameState copyWith({
+  UserState copyWith({
     BlocStatus? status,
     String? message,
-    String? changeName,
+    UserModel? user,
   }) {
-    return ProfileNameState(
+    return UserState(
       status: status ?? this.status,
       message: message ?? this.message,
-      changeName: changeName ?? this.changeName,
+      user: user ?? this.user,
     );
   }
 }
