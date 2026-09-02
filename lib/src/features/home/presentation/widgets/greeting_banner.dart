@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthlife/src/core/presentation/blocs/user/user_cubit.dart';
 
 import '../../../../common/constants/colors.dart';
 import '../../../../common/extensions/num_x.dart';
@@ -20,11 +22,31 @@ class GreetingBanner extends StatelessWidget {
             color: UIColors.black.withValues(alpha: 0.7),
           ),
           4.gap,
-          AppText.bold('Huỳnh Nguyễn Đang', fontSize: 20),
-          AppText.medium(
-            'chào mừng bạn đến với HLIFE!',
-            fontSize: 13,
-            color: UIColors.black.withValues(alpha: 0.75),
+          AppText.bold(
+            _greetingName(context),
+            fontSize: 20,
+          ),
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: 'chào mừng bạn đến với ',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: UIColors.black.withValues(alpha: 0.75),
+                  ),
+                ),
+                TextSpan(
+                  text: 'HLIFE',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: UIColors.coral, // ← HLIFE màu hồng
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const TextSpan(text: '!'),
+              ],
+            ),
           ),
           20.gap,
           Container(
@@ -87,4 +109,10 @@ class GreetingBanner extends StatelessWidget {
       ),
     );
   }
+}
+
+String _greetingName(BuildContext context) {
+  final user = context.watch<UserCubit>().state.user;
+  final name = user?.displayName?.trim();
+  return (name?.isNotEmpty ?? false) ? name! : 'Bạn yêu quý';
 }

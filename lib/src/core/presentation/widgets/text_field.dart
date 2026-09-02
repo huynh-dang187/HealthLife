@@ -30,9 +30,9 @@ class AppTF extends Column {
     Color? bgColor,
     Color? textColor,
     double? height,
-  })  : inputFormatters =
-            inputFormatters ?? _formattersFor(keyboardType),
-        super(
+    double? borderCicular,
+  }) : inputFormatters = inputFormatters ?? _formattersFor(keyboardType),
+       super(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
            Container(
@@ -43,7 +43,7 @@ class AppTF extends Column {
                border: bgColor != null
                    ? null
                    : Border.all(color: UIColors.separate),
-               borderRadius: BorderRadius.circular(12),
+               borderRadius: BorderRadius.circular(borderCicular ?? 12),
              ),
              alignment: Alignment.centerLeft,
              child: Row(
@@ -78,24 +78,24 @@ class AppTF extends Column {
                        fontSize: 14,
                        fontFamily: FontFamily.inter,
                      ),
-                      textInputAction: TextInputAction.done,
-                      keyboardType: keyboardType,
-                      inputFormatters: inputFormatters,
-                      onChanged: onChanged,
-                      onSubmitted: onSubmitted,
-                      keyboardAppearance: Brightness.dark,
-                    ),
-                  ),
-                  if (rightWidget != null)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12),
-                      child: rightWidget,
-                    ),
-                ],
-              ),
-            ),
-          ],
-        );
+                     textInputAction: TextInputAction.done,
+                     keyboardType: keyboardType,
+                     inputFormatters: inputFormatters,
+                     onChanged: onChanged,
+                     onSubmitted: onSubmitted,
+                     keyboardAppearance: Brightness.dark,
+                   ),
+                 ),
+                 if (rightWidget != null)
+                   Padding(
+                     padding: const EdgeInsets.only(left: 12),
+                     child: rightWidget,
+                   ),
+               ],
+             ),
+           ),
+         ],
+       );
 
   AppTF.password({
     super.key,
@@ -110,9 +110,8 @@ class AppTF extends Column {
     VoidCallback? onChangeShowPassword,
     Color? bgColor,
     Color? textColor,
-  })  : inputFormatters =
-            inputFormatters ?? _formattersFor(keyboardType),
-        super(
+  }) : inputFormatters = inputFormatters ?? _formattersFor(keyboardType),
+       super(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
            Container(
