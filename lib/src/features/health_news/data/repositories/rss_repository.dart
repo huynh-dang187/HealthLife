@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:hive_ce/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:webfeed_revised/domain/rss_feed.dart';
@@ -20,7 +22,7 @@ class RssRepository {
       throw Exception('HTTP ${res.statusCode}');
     }
 
-    final feed = RssFeed.parse(res.body);
+    final feed = RssFeed.parse(utf8.decode(res.bodyBytes));
 
     return (feed.items ?? []).map(_toModel).toList();
   }
