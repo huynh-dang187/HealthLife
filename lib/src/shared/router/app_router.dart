@@ -9,6 +9,8 @@ import 'package:healthlife/src/features/complete_profile/presentation/pages/prof
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_name_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_weight_screen.dart';
 import 'package:healthlife/src/features/drug_lookup/presentation/pages/drug_lookup_screen.dart';
+import 'package:healthlife/src/features/health_news/presentation/pages/health_news_screen.dart';
+import 'package:healthlife/src/features/health_news/presentation/pages/news_webview_screen.dart';
 import 'package:healthlife/src/features/home/presentation/pages/home_screen.dart';
 import 'package:healthlife/src/features/hospital_finder/presentation/pages/hospital_finder_screen.dart';
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
@@ -46,6 +48,15 @@ class AppRouter {
       _route(RouteNames.profile_date, (_) => ProfileDate()),
       _route(RouteNames.profile_height, (_) => const ProfileHeight()),
       _route(RouteNames.profile_weight, (_) => const ProfileWeightScreen()),
+      //Router homeScreen features
+      _route(RouteNames.health_news, (_) => const HealthNewsScreen()),
+      GoRoute(
+        path: RouteNames.news_webview,
+        builder: (context, state) {
+          final link = Uri.decodeComponent(state.pathParameters['link'] ?? '');
+          return NewsWebViewScreen(link: link);
+        },
+      ),
       //Router HomeScreen QuickActions
       _route(RouteNames.sos_device, (_) => const SosDeviceScreen()),
       _route(RouteNames.drug_lookup, (_) => const DrugLookScreen()),
