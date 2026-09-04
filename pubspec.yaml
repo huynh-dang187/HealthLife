@@ -36,6 +36,12 @@ dependencies:
   lottie: ^3.3.3
   timezone: ^0.11.1
   intl: ^0.20.2
+  # RSS
+  webfeed_revised: ^0.9.0
+  # WebView
+  webview_flutter: ^4.14.1
+  # HTTP (đọc RSS)
+  http: ^1.6.0
   #Languages
   easy_localization: ^3.0.7
   gap: ^3.0.1
