@@ -11,6 +11,7 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  await Hive.openBox('health_news');
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GoogleSignIn.instance.initialize(); // giảm độ trễ khi mở Login google
   await EasyLocalization.ensureInitialized();

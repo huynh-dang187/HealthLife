@@ -14,6 +14,8 @@ class RouteNames {
   static const drug_lookup = '/drug_lookup';
   static const hospital_finder = '/hospital_finder';
   static const water_reminder = '/water_reminder';
+  static const health_news = '/health_news';
+  static const news_webview = '/news_webview/:link';
   static const home = '/home';
   static const activity = '/activity';
   static const chatbot = '/chatbot';

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-
-import '../../../../common/constants/colors.dart';
-import '../../../../common/extensions/num_x.dart';
-import '../../../../core/presentation/widgets/button.dart';
-import '../../../../core/presentation/widgets/text.dart';
-import 'items/news_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthlife/src/common/constants/colors.dart';
+import 'package:healthlife/src/common/extensions/num_x.dart';
+import 'package:healthlife/src/core/presentation/widgets/button.dart';
+import 'package:healthlife/src/core/presentation/widgets/text.dart';
+import 'package:healthlife/src/features/health_news/presentation/cubit/health_news_cubit.dart';
+import 'package:healthlife/src/features/health_news/presentation/cubit/health_news_state.dart';
+import 'package:healthlife/src/features/health_news/presentation/widgets/news_list_item.dart';
+import 'package:healthlife/src/features/health_news/presentation/widgets/news_skeleton.dart';
+import 'package:healthlife/src/shared/enums/bloc_status.dart';
 
 class NewsSection extends StatelessWidget {
   const NewsSection({super.key});
@@ -14,6 +18,7 @@ class NewsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Header "Bảng tin sức khỏe hôm nay" + nút "Xem tất cả" (onTap: () {} để sau)
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 12, top: 24),
           child: Row(
@@ -46,45 +51,42 @@ class NewsSection extends StatelessWidget {
           ),
         ),
         12.gap,
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              for (var i = 0; i < _news.length; i++) ...[
-                if (i > 0) 12.gap,
-                _news[i],
-              ],
-            ],
-          ),
+        BlocBuilder<HealthNewsCubit, HealthNewsState>(
+          builder: (context, state) {
+            // Loading: chưa có tin → skeleton
+            if (state.status == BlocStatus.loading && state.news.isEmpty) {
+              return const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: NewsSkeleton(itemCount: 3),
+                    ),
+                  ],
+                ),
+              );
+            }
+            // Failure: chưa có tin → ẩn section
+            if (state.status == BlocStatus.failure && state.news.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            // Có tin → hiện 3 tin mới nhất (ảnh thật + thời gian tương đối)
+            final items = state.news.take(3).toList();
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  for (var i = 0; i < items.length; i++) ...[
+                    if (i > 0) 12.gap,
+                    NewsListItem(article: items[i]),
+                  ],
+                ],
+              ),
+            );
+          },
         ),
       ],
     );
   }
 }
-
-final _news = [
-  const NewsCard(
-    title: '5 thói quen buổi sáng giúp bạn tràn đầy năng lượng cả ngày',
-    source: 'HLIFE',
-    time: '08:00',
-    icon: Icons.wb_sunny_outlined,
-  ),
-  const NewsCard(
-    title: 'Chế độ ăn giảm cân an toàn cho người ít tập luyện',
-    source: 'Báo Sức Khỏe',
-    time: '07:30',
-    icon: Icons.restaurant_outlined,
-  ),
-  const NewsCard(
-    title: 'Tại sao giấc ngủ sâu quan trọng với trí nhớ của bạn?',
-    source: 'HLIFE',
-    time: '06:45',
-    icon: Icons.bedtime_outlined,
-  ),
-  const NewsCard(
-    title: 'Tập yoga 10 phút mỗi ngày: lợi ích không ngờ',
-    source: 'Chuyên gia',
-    time: '05:20',
-    icon: Icons.self_improvement,
-  ),
-];

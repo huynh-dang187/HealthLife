@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthlife/src/features/health_news/data/repositories/rss_repository.dart';
+import 'package:healthlife/src/features/health_news/presentation/cubit/health_news_cubit.dart';
+import 'package:hive_ce/hive.dart';
 
 import '../../../../common/constants/colors.dart';
 import '../../../../features/daily_tips/data/repositories/daily_tip_repository.dart';
@@ -24,65 +27,69 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return BlocProvider(
       create: (_) => DailyTipCubit(DailyTipRepository())..loadTip(),
-      child: Scaffold(
-        backgroundColor: UIColors.lightBackground,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(statusBarHeight + 54),
-          child: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xFFFBD5E3), Color(0xFFE877A0)],
+      child: BlocProvider(
+        create: (_) =>
+            HealthNewsCubit(RssRepository(Hive.box('health_news')))..loadNews(),
+        child: Scaffold(
+          backgroundColor: UIColors.lightBackground,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(statusBarHeight + 54),
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0xFFFBD5E3), Color(0xFFE877A0)],
+                ),
               ),
-            ),
-            child: SafeArea(
-              bottom: false,
-              child: DashboardAppBar(),
+              child: SafeArea(
+                bottom: false,
+                child: DashboardAppBar(),
+              ),
             ),
           ),
-        ),
-        body: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Color(0xFFE877A0), Color(0xFFFBD5E3)],
-                  ),
-                ),
-                child: const SafeArea(
-                  bottom: false,
-                  top: false,
-                  child: GreetingBanner(),
-                ),
-              ),
-              Transform.translate(
-                offset: const Offset(0, -20),
-                child: Container(
+          body: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
                   decoration: const BoxDecoration(
-                    color: UIColors.lightBackground,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Color(0xFFE877A0), Color(0xFFFBD5E3)],
                     ),
                   ),
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      QuickFeatures(),
-                      HealthExperience(),
-                      NewsSection(),
-                      SizedBox(height: 16),
-                    ],
+                  child: const SafeArea(
+                    bottom: false,
+                    top: false,
+                    child: GreetingBanner(),
                   ),
                 ),
-              ),
-            ],
+                Transform.translate(
+                  offset: const Offset(0, -20),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: UIColors.lightBackground,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(24),
+                        topRight: Radius.circular(24),
+                      ),
+                    ),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        QuickFeatures(),
+                        HealthExperience(),
+                        NewsSection(),
+                        SizedBox(height: 16),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
