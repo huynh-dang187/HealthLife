@@ -9,7 +9,9 @@ import 'package:healthlife/src/features/complete_profile/presentation/pages/prof
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_name_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_weight_screen.dart';
 import 'package:healthlife/src/features/drug_lookup/presentation/pages/drug_lookup_screen.dart';
+import 'package:healthlife/src/features/health_news/data/models/news_article_model.dart';
 import 'package:healthlife/src/features/health_news/presentation/pages/health_news_screen.dart';
+import 'package:healthlife/src/features/health_news/presentation/pages/news_detail_screen.dart';
 import 'package:healthlife/src/features/health_news/presentation/pages/news_webview_screen.dart';
 import 'package:healthlife/src/features/home/presentation/pages/home_screen.dart';
 import 'package:healthlife/src/features/hospital_finder/presentation/pages/hospital_finder_screen.dart';
@@ -52,10 +54,13 @@ class AppRouter {
       _route(RouteNames.health_news, (_) => const HealthNewsScreen()),
       GoRoute(
         path: RouteNames.news_webview,
-        builder: (context, state) {
-          final link = Uri.decodeComponent(state.pathParameters['link'] ?? '');
-          return NewsWebViewScreen(link: link);
-        },
+        builder: (context, state) =>
+            NewsWebViewScreen(link: state.extra as String),
+      ),
+      GoRoute(
+        path: RouteNames.news_detail,
+        builder: (context, state) =>
+            NewsDetailScreen(article: state.extra as NewsArticleModel),
       ),
       //Router HomeScreen QuickActions
       _route(RouteNames.sos_device, (_) => const SosDeviceScreen()),

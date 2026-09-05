@@ -5,8 +5,8 @@ import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
+import 'package:healthlife/src/features/health_news/presentation/widgets/news_time.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
-import 'package:intl/intl.dart';
 
 import '../../data/models/news_article_model.dart';
 
@@ -21,7 +21,8 @@ class NewsListItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => context.push(
-        '${RouteNames.news_webview}/${Uri.encodeComponent(article.link)}',
+        RouteNames.news_detail,
+        extra: article,
       ),
       child: Container(
         padding: const EdgeInsets.all(12),
@@ -110,14 +111,4 @@ class _Thumbnail extends StatelessWidget {
       ),
     );
   }
-}
-
-String formatRelativeTime(DateTime dateTime) {
-  final now = DateTime.now();
-  final diff = now.difference(dateTime);
-
-  if (diff.inMinutes < 1) return 'Vừa xong';
-  if (diff.inHours < 1) return '${diff.inMinutes} phút trước';
-  if (diff.inDays < 1) return '${diff.inHours} giờ trước';
-  return DateFormat('dd/MM/yyyy').format(dateTime);
 }
