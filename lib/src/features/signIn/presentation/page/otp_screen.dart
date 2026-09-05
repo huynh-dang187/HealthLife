@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +13,6 @@ import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/src/features/signIn/data/models/otp_args_model.dart';
 import 'package:healthlife/src/features/signIn/data/repositories/auth_repository.dart';
 import 'package:healthlife/src/features/signIn/presentation/cubit/otp/otp_verification_cubit.dart';
-import 'package:healthlife/src/shared/router/route_names.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({super.key, required this.otpArgs});
@@ -46,7 +44,9 @@ class _OtpScreenState extends State<OtpScreen> {
     super.initState();
     _startCountdown();
     _authSub = FirebaseAuth.instance.authStateChanges().listen((user) {
-      if (user != null && !_handled) _goAfterAuth();
+      if (user != null && !_handled && mounted) {
+        context.read<OtpVerificationCubit>().completeAuth();
+      }
     });
   }
 
@@ -86,40 +86,10 @@ class _OtpScreenState extends State<OtpScreen> {
 
   String get _code => _controllers.map((c) => c.text).join();
 
-  Future<void> _goAfterAuth() async {
-    if (_handled) return;
-    _handled = true;
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-    final doc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .get();
-    final completed = doc.data()?['profileCompleted'] ?? false;
-    if (!mounted) return;
-    context.go(completed ? RouteNames.home : RouteNames.profile_name);
-  }
-
-  Future<void> _resend(OtpVerificationCubit cubit) async {
+  void _resend(OtpVerificationCubit cubit) {
     final token = _resendToken;
     if (token == null) return;
-    final channel = await cubit.resend(
-      fullPhone: _fullPhone,
-      resendToken: token,
-    );
-    if (!mounted) return;
-    switch (channel) {
-      case OtpCodeSent(:final verificationId, :final resendToken):
-        setState(() {
-          _verificationId = verificationId;
-          _resendToken = resendToken;
-        });
-        _startCountdown();
-      case OtpAutoVerified():
-        _goAfterAuth();
-      default:
-        break;
-    }
+    cubit.resend(fullPhone: _fullPhone, resendToken: token);
   }
 
   void _verify(OtpVerificationCubit cubit) {
@@ -136,7 +106,17 @@ class _OtpScreenState extends State<OtpScreen> {
       child: BlocConsumer<OtpVerificationCubit, OtpState>(
         listener: (context, state) {
           if (state is OtpSuccess) {
-            _goAfterAuth();
+            if (!_handled) context.read<OtpVerificationCubit>().completeAuth();
+          } else if (state is OtpDestination) {
+            if (_handled) return;
+            _handled = true;
+            context.go(state.route);
+          } else if (state is OtpResent) {
+            setState(() {
+              _verificationId = state.verificationId;
+              _resendToken = state.resendToken;
+            });
+            _startCountdown();
           } else if (state is OtpFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),

@@ -1,11 +1,12 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healthlife/src/features/signIn/data/models/country_codes_model.dart';
 import 'package:healthlife/src/features/signIn/data/repositories/auth_repository.dart';
+import 'package:healthlife/src/shared/router/route_names.dart';
 
 sealed class PhoneInputState extends Equatable {
   const PhoneInputState();
-
   @override
   List<Object?> get props => [];
 }
@@ -13,7 +14,6 @@ sealed class PhoneInputState extends Equatable {
 final class PhoneInputInitial extends PhoneInputState {
   final CountryCode country;
   const PhoneInputInitial(this.country);
-
   @override
   List<Object?> get props => [country];
 }
@@ -25,7 +25,6 @@ final class PhoneOtpSent extends PhoneInputState {
   final String fullPhone;
   final int? resendToken;
   const PhoneOtpSent(this.verificationId, this.fullPhone, this.resendToken);
-
   @override
   List<Object?> get props => [verificationId, fullPhone, resendToken];
 }
@@ -35,9 +34,15 @@ final class PhoneAutoSignedIn extends PhoneInputState {}
 final class PhoneInputFailure extends PhoneInputState {
   final String message;
   const PhoneInputFailure(this.message);
-
   @override
   List<Object?> get props => [message];
+}
+
+final class PhoneDestination extends PhoneInputState {
+  final String route;
+  const PhoneDestination(this.route);
+  @override
+  List<Object?> get props => [route];
 }
 
 class PhoneInputCubit extends Cubit<PhoneInputState> {
@@ -70,6 +75,17 @@ class PhoneInputCubit extends Cubit<PhoneInputState> {
     } catch (e) {
       emit(PhoneInputFailure(_repo.mapAuthError(e)));
     }
+  }
+
+  Future<void> completeAuth() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+    final completed = await _repo.isProfileCompleted(user.uid);
+    emit(
+      PhoneDestination(
+        completed ? RouteNames.home : RouteNames.profile_name,
+      ),
+    );
   }
 
   String _normalize(String dialCode, String raw) {

@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,18 +27,6 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
   void dispose() {
     _phoneController.dispose();
     super.dispose();
-  }
-
-  Future<void> _goAfterAuth(BuildContext context) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-    final doc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .get();
-    final completed = doc.data()?['profileCompleted'] ?? false;
-    if (!context.mounted) return;
-    context.go(completed ? RouteNames.home : RouteNames.profile_name);
   }
 
   Future<void> _pickCountry() async {
@@ -89,7 +75,9 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                 ),
               );
             case PhoneAutoSignedIn():
-              _goAfterAuth(context);
+              context.read<PhoneInputCubit>().completeAuth();
+            case PhoneDestination(:final route):
+              context.go(route);
             case PhoneInputFailure(:final message):
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(message)),
@@ -132,7 +120,6 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                     color: UIColors.textBody,
                   ),
                   24.gap,
-                  // Ô chọn quốc gia
                   InkWell(
                     onTap: _pickCountry,
                     borderRadius: BorderRadius.circular(12),
