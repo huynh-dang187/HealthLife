@@ -1,10 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/generated/assets.gen.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
+import 'package:healthlife/src/features/tab_bar/presentation/widget/app_glass.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/widget/tab_bar_item.dart';
 
 class MainTabScreen extends StatefulWidget {
@@ -101,7 +100,7 @@ class _MainTabScreenState extends State<MainTabScreen>
     widget.navigationShell.goBranch(_aiIndex);
   }
 
-  buildAiButton(int index) {
+  GestureDetector buildAiButton(int index) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: _onTapAi,
@@ -163,12 +162,6 @@ class _MainTabScreenState extends State<MainTabScreen>
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(32),
-                                    border: Border.all(
-                                      color: UIColors.white.withValues(
-                                        alpha: 25,
-                                      ),
-                                      width: 1,
-                                    ),
                                     boxShadow: [
                                       BoxShadow(
                                         color: UIColors.darkTextPrimary
@@ -180,34 +173,53 @@ class _MainTabScreenState extends State<MainTabScreen>
                                       ),
                                     ],
                                   ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(32),
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(
-                                        sigmaX: 24,
-                                        sigmaY: 24,
-                                      ),
-                                      child: Container(
-                                        padding: const EdgeInsets.all(6),
-                                        child: Row(
-                                          children: [
-                                            for (
-                                              var i = 0;
-                                              i < _tabs.length;
-                                              i++
-                                            ) ...[
-                                              if (i > 0) 4.gap,
-                                              Expanded(
-                                                child: TabBarItem(
-                                                  icon: _tabs[i].icon,
-                                                  title: _tabs[i].title,
-                                                  selected: index == i,
-                                                  onTap: () => _onTap(i),
-                                                ),
-                                              ),
-                                            ],
-                                          ],
+                                  child: AppGlass(
+                                    borderRadius: 32,
+                                    border: Border.all(
+                                      color: const Color.fromARGB(
+                                        255,
+                                        255,
+                                        45,
+                                        125,
+                                      ).withValues(alpha: 0.3),
+                                      width: 1,
+                                    ),
+                                    // ==== Preset "tấm gương" ====
+                                    refraction: 80, // bóng/khúc xạ nhiều hơn
+                                    depth: 20, // kính dày hơn → viền nổi rõ
+                                    dispersion:
+                                        12, // giảm viền cầu vồng để không loè
+                                    frost:
+                                        2, // blur mờ RẤT nhiều → nền chỉ còn màu loang như gương
+                                    glassColor:
+                                        const Color.fromARGB(
+                                          255,
+                                          255,
+                                          45,
+                                          125,
+                                        ).withValues(
+                                          alpha: 0.01,
                                         ),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(6),
+                                      child: Row(
+                                        children: [
+                                          for (
+                                            var i = 0;
+                                            i < _tabs.length;
+                                            i++
+                                          ) ...[
+                                            if (i > 0) 4.gap,
+                                            Expanded(
+                                              child: TabBarItem(
+                                                icon: _tabs[i].icon,
+                                                title: _tabs[i].title,
+                                                selected: index == i,
+                                                onTap: () => _onTap(i),
+                                              ),
+                                            ),
+                                          ],
+                                        ],
                                       ),
                                     ),
                                   ),

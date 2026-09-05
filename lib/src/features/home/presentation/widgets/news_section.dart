@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
@@ -9,6 +10,7 @@ import 'package:healthlife/src/features/health_news/presentation/cubit/health_ne
 import 'package:healthlife/src/features/health_news/presentation/widgets/news_list_item.dart';
 import 'package:healthlife/src/features/health_news/presentation/widgets/news_skeleton.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
+import 'package:healthlife/src/shared/router/route_names.dart';
 
 class NewsSection extends StatelessWidget {
   const NewsSection({super.key});
@@ -30,7 +32,7 @@ class NewsSection extends StatelessWidget {
                 ),
               ),
               AppButton.widget(
-                onTap: () {},
+                onTap: () => context.push(RouteNames.health_news),
                 child: Row(
                   children: [
                     AppText.medium(
@@ -59,7 +61,7 @@ class NewsSection extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   children: [
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       child: NewsSkeleton(itemCount: 3),
                     ),
@@ -72,7 +74,7 @@ class NewsSection extends StatelessWidget {
               return const SizedBox.shrink();
             }
             // Có tin → hiện 3 tin mới nhất (ảnh thật + thời gian tương đối)
-            final items = state.news.take(3).toList();
+            final items = state.news.take(10).toList();
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
