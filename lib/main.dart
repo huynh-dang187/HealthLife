@@ -5,15 +5,25 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:healthlife/src/core/presentation/page/app.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Hive.initFlutter();
   await Hive.openBox('health_news');
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GoogleSignIn.instance.initialize(); // giảm độ trễ khi mở Login google
   await EasyLocalization.ensureInitialized();
+
+  // Khởi tạo kết nối Supabase
+  await Supabase.initialize(
+    url: 'https://ttdvkuuwxynvtenquueb.supabase.co',
+    anonKey: 'sb_publishable_a5Vhhso3Uz-wZwjYRnwGuQ_cxjo2sKi',
+  );
+
   runApp(const MyApp());
 }

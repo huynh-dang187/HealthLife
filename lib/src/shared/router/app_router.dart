@@ -16,6 +16,7 @@ import 'package:healthlife/src/features/health_news/presentation/pages/news_webv
 import 'package:healthlife/src/features/home/presentation/pages/home_screen.dart';
 import 'package:healthlife/src/features/hospital_finder/presentation/pages/hospital_finder_screen.dart';
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
+import 'package:healthlife/src/features/medicine_search/presentation/page/medicine_search_page.dart';
 import 'package:healthlife/src/features/signIn/data/models/otp_args_model.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/phone_input_screen.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/signIn_screen.dart';
@@ -38,7 +39,7 @@ class AppRouter {
     RouteNames.splash,
     RouteNames.introduction,
     RouteNames.signIn,
-    RouteNames.phone_input, // +2 dòng này
+    RouteNames.phone_input,
     RouteNames.phone_otp,
   ];
 
@@ -46,7 +47,7 @@ class AppRouter {
     initialLocation: RouteNames.splash,
     redirect: _guard,
     routes: [
-      //Router flow newbie
+      // Router flow newbie
       _route(RouteNames.splash, (_) => const SplashScreen()),
       _route(RouteNames.introduction, (_) => const IntroductionScreen()),
       _route(RouteNames.signIn, (_) => const SigninScreen()),
@@ -60,7 +61,11 @@ class AppRouter {
       _route(RouteNames.profile_date, (_) => ProfileDate()),
       _route(RouteNames.profile_height, (_) => const ProfileHeight()),
       _route(RouteNames.profile_weight, (_) => const ProfileWeightScreen()),
-      //Router homeScreen features
+
+      // THÊM MỚI: Route tra cứu thuốc
+      _route('/medicine-search', (_) => const MedicineSearchPage()),
+
+      // Router homeScreen features
       _route(RouteNames.health_news, (_) => const HealthNewsScreen()),
       GoRoute(
         path: RouteNames.news_webview,
@@ -72,12 +77,14 @@ class AppRouter {
         builder: (context, state) =>
             NewsDetailScreen(article: state.extra as NewsArticleModel),
       ),
-      //Router HomeScreen QuickActions
+
+      // Router HomeScreen QuickActions
       _route(RouteNames.sos_device, (_) => const SosDeviceScreen()),
       _route(RouteNames.drug_lookup, (_) => const DrugLookScreen()),
       _route(RouteNames.hospital_finder, (_) => const HospitalScreen()),
       _route(RouteNames.water_reminder, (_) => const WaterReminderScreen()),
-      //Router bottom bar đã cố định sẽ sửa lại trong tương lai
+
+      // Router bottom bar đã cố định sẽ sửa lại trong tương lai
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             MainTabScreen(navigationShell: navigationShell),
@@ -109,14 +116,13 @@ class AppRouter {
   );
 
   static Future<String?> _guard(
-    BuildContext context,
-    GoRouterState state,
-  ) async {
+      BuildContext context,
+      GoRouterState state,
+      ) async {
     final currentPath = state.matchedLocation;
     final user = FirebaseAuth.instance.currentUser;
 
-    // TH1: Đang ở Splash — để Splash tự xử lý logic điều hướng riêng,
-    // guard không can thiệp vào route này
+    // TH1: Đang ở Splash — để Splash tự xử lý logic điều hướng riêng
     if (currentPath == RouteNames.splash) {
       return null;
     }
@@ -124,10 +130,9 @@ class AppRouter {
     // TH2: Chưa đăng nhập mà cố vào route cần đăng nhập → đá về SignIn
     if (user == null) {
       if (_publicRoutes.contains(currentPath)) {
-        return null; // đang ở đúng route public, cho đi tiếp
+        return null;
       }
-      return RouteNames
-          .signIn; // cố vào route riêng tư mà chưa đăng nhập → chặn lại
+      return RouteNames.signIn;
     }
 
     // TH3: Đã đăng nhập nhưng đang cố quay lại SignIn/Introduction → đẩy đi tiếp
@@ -136,12 +141,12 @@ class AppRouter {
       return completed ? RouteNames.home : RouteNames.profile_name;
     }
 
-    // TH4: Đã đăng nhập, đang ở trong luồng điền hồ sơ → cho phép (không redirect)
+    // TH4: Đã đăng nhập, đang ở trong luồng điền hồ sơ → cho phép
     if (currentPath.startsWith('/profile_')) {
       return null;
     }
 
-    // TH5: Đã đăng nhập, cố vào route khác (Home, Nutrition...) nhưng CHƯA hoàn thiện hồ sơ
+    // TH5: Đã đăng nhập, cố vào route khác nhưng CHƯA hoàn thiện hồ sơ
     final completed = await _isProfileCompleted(user.uid);
     if (!completed) {
       return RouteNames.profile_name;

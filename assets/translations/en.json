@@ -8,5 +8,21 @@
   "introduction_ai_health_companion": "An AI companion that understands your health, always ready to listen and support you",
   "introduction_login": "Log in",
   "introduction_have_account": "Already have an account",
-  "introduction_get_started": "Get started"
+  "introduction_get_started": "Get started",
+
+  "search_title": "Medicine Lookup",
+  "search_hint": "Enter medicine name, active ingredient, or symptom",
+  "pain_relief": "PAIN RELIEF &\nFEVER",
+  "respiratory": "FLU &\nRESPIRATORY",
+  "digestive": "DIGESTIVE",
+  "dermatology": "DERMATOLOGY &\nSKIN CARE",
+  "popular_otc": "Popular OTC Medicines",
+  "searching_for": "You searched for",
+  "related_keywords": "Related keywords:",
+  "not_found": "No matching medicine found",
+  "no_name": "Unnamed",
+  "see_package_details": "See package details...",
+  "price": "Price",
+  "updating": "Updating"
+
 }

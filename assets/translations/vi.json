@@ -8,5 +8,30 @@
   "introduction_ai_health_companion": "Một người bạn AI thấu hiểu sức khỏe của bạn, luôn lắng nghe và đồng hành mọi lúc.",
   "introduction_login": "Đăng nhập",
   "introduction_have_account": "Bạn đã có tài khoản",
-  "introduction_get_started": "Bắt đầu"
+  "introduction_get_started": "Bắt đầu",
+  "searchTitle": "Tra cứu thuốc",
+  "searchHint": "Nhập tên thuốc, hoạt chất, hoặc triệu chứng",
+  "popularOtc": "Thuốc OTC phổ biến",
+  "relatedKeywords": "Từ khóa liên quan:",
+  "notFound": "Không tìm thấy thuốc phù hợp",
+  "painRelief": "GIẢM ĐAU &\nHẠ SỐT",
+  "respiratory": "CẢM CÚM &\nHÔ HẤP",
+  "digestive": "TIÊU HÓA",
+  "dermatology": "DA LIỄU &\nCHĂM SÓC DA",
+
+  "search_title": "Tra cứu thuốc",
+  "search_hint": "Nhập tên thuốc, hoạt chất, hoặc triệu chứng",
+  "pain_relief": "GIẢM ĐAU &\nHẠ SỐT",
+  "respiratory": "CẢM CÚM &\nHÔ HẤP",
+  "digestive": "TIÊU HÓA",
+  "dermatology": "DA LIỄU &\nCHĂM SÓC DA",
+  "popular_otc": "Danh mục OTC phổ biến",
+  "searching_for": "Bạn đã tìm kiếm",
+  "related_keywords": "Từ khóa liên quan:",
+  "not_found": "Không tìm thấy thuốc phù hợp",
+  "no_name": "Chưa có tên",
+  "see_package_details": "Xem chi tiết trên bao bì...",
+  "price": "Giá",
+  "updating": "Đang cập nhật"
+
 }

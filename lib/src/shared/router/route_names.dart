@@ -25,4 +25,5 @@ class RouteNames {
   static const nutrition = '/nutrition';
   static const profile = '/profile';
   //thêm dần khi code từng module
+  static const String medicineSearch = '/medicine-search';
 }
