@@ -28,6 +28,7 @@ class HealthNewsScreen extends StatelessWidget {
           onPressed: () => Navigator.of(context).maybePop(),
         ),
         title: AppText.bold('Bảng tin sức khỏe', fontSize: 18),
+        centerTitle: true,
       ),
       body: BlocProvider(
         create: (_) =>
