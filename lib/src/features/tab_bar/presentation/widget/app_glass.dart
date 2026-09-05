@@ -10,6 +10,13 @@ class AppGlass extends StatelessWidget {
   final Color? color;
   final BoxBorder? border;
 
+  // Tham số tinh chỉnh hiệu ứng (mặc định = cũ)
+  final double refraction;
+  final double depth;
+  final double dispersion;
+  final double frost;
+  final Color? glassColor;
+
   const AppGlass({
     super.key,
     required this.child,
@@ -17,7 +24,13 @@ class AppGlass extends StatelessWidget {
     this.isFigma = true,
     this.color,
     this.border,
+    this.refraction = 80,
+    this.depth = 20,
+    this.dispersion = 50,
+    this.frost = 4,
+    this.glassColor,
   });
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,11 +41,13 @@ class AppGlass extends StatelessWidget {
       child: LiquidGlassLayer(
         settings: isFigma
             ? LiquidGlassSettings.figma(
-                refraction: 80,
-                depth: 20,
-                dispersion: 50,
-                frost: 4,
+                refraction: refraction,
+                depth: depth,
+                dispersion: dispersion,
+                frost: frost,
                 lightAngle: -pi / 4,
+                glassColor:
+                    glassColor ?? const Color.fromARGB(0, 255, 255, 255),
               )
             : LiquidGlassSettings(
                 ambientStrength: 0,
