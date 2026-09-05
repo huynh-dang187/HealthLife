@@ -26,6 +26,7 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
     _fetchRelatedMedicines();
   }
 
+  // Tải danh sách thuốc cùng danh mục từ Supabase
   Future<void> _fetchRelatedMedicines() async {
     final category = widget.medicine['category'];
     final currentId = widget.medicine['id'];

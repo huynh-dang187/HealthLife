@@ -80,6 +80,7 @@ flutter:
     - assets/translations/
     - assets/data/
 
+
   fonts:
     - family: Inter
       fonts:

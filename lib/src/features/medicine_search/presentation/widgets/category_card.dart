@@ -82,4 +82,42 @@ class CategoryCard extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildImagesOrIcon() {
+    // Trường hợp 1: Truyền danh sách nhiều ảnh nằm ngang
+    if (imagePaths != null && imagePaths!.isNotEmpty) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: imagePaths!.map((path) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 4.0),
+            child: Image.asset(
+              path,
+              height: 58, // Tăng kích thước ảnh lớn
+              fit: BoxFit.contain,
+              errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, color: Colors.grey),
+            ),
+          );
+        }).toList(),
+      );
+    }
+
+    // Trường hợp 2: Truyền 1 ảnh đơn
+    if (imagePath != null) {
+      return Image.asset(
+        imagePath!,
+        height: 68, // Tăng kích thước ảnh lớn
+        fit: BoxFit.contain,
+        errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, color: Colors.grey),
+      );
+    }
+
+    // Trường hợp 3: Mặc định hiển thị Icon nếu chưa truyền ảnh
+    return Icon(
+      icon ?? Icons.medication,
+      size: 45,
+      color: const Color(0xFF8C4A4A),
+    );
+  }
 }
