@@ -29,6 +29,8 @@ class _OtpScreenState extends State<OtpScreen> {
   late String _verificationId = widget.otpArgs.verificationId;
   late int? _resendToken = widget.otpArgs.resendToken;
   late final String _fullPhone = widget.otpArgs.fullPhone;
+  StreamSubscription<User?>? _authSub;
+  bool _handled = false;
 
   late final List<TextEditingController> _controllers = List.generate(
     6,
@@ -43,11 +45,15 @@ class _OtpScreenState extends State<OtpScreen> {
   void initState() {
     super.initState();
     _startCountdown();
+    _authSub = FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user != null && !_handled) _goAfterAuth();
+    });
   }
 
   @override
   void dispose() {
     _timer?.cancel();
+    _authSub?.cancel();
     for (final c in _controllers) {
       c.dispose();
     }
@@ -81,6 +87,8 @@ class _OtpScreenState extends State<OtpScreen> {
   String get _code => _controllers.map((c) => c.text).join();
 
   Future<void> _goAfterAuth() async {
+    if (_handled) return;
+    _handled = true;
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
     final doc = await FirebaseFirestore.instance

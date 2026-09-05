@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healthlife/src/features/signIn/data/repositories/auth_repository.dart';
 
@@ -33,6 +34,10 @@ class OtpVerificationCubit extends Cubit<OtpState> {
     required String verificationId,
     required String smsCode,
   }) async {
+    if (FirebaseAuth.instance.currentUser != null) {
+      emit(OtpSuccess());
+      return;
+    }
     emit(OtpVerifying());
     try {
       final user = await _repo.verifyOtp(
