@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:healthlife/src/features/signIn/data/auth_repository.dart';
+import 'package:healthlife/src/features/signIn/data/repositories/auth_repository.dart';
 
 sealed class GoogleSigninState extends Equatable {
   const GoogleSigninState();

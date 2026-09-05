@@ -14,6 +14,16 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart' as _svg;
 import 'package:vector_graphics/vector_graphics.dart' as _vg;
 
+class $AssetsDataGen {
+  const $AssetsDataGen();
+
+  /// File path: assets/data/daily_tips.json
+  String get dailyTips => 'assets/data/daily_tips.json';
+
+  /// List of all assets
+  List<String> get values => [dailyTips];
+}
+
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
@@ -187,6 +197,7 @@ class $AssetsLottieIntroGen {
 }
 
 abstract final class Assets {
+  static const $AssetsDataGen data = $AssetsDataGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsPngGen png = $AssetsPngGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
