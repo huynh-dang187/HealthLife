@@ -30,70 +30,79 @@ class NewsDetailScreen extends StatelessWidget {
         ),
         title: AppText.bold('Chi tiết tin', fontSize: 18),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Ảnh lớn
-            _ArticleImage(imageUrl: article.imageUrl),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Ngày đăng
-                  AppText.regular(
-                    formatRelativeTime(article.pubDate),
-                    fontSize: 12,
-                    color: isDark
-                        ? UIColors.darkTextSecondary
-                        : UIColors.textBody,
-                  ),
-                  12.gap,
-                  // Tiêu đề
-                  AppText.bold(
-                    article.title,
-                    fontSize: 20,
-                    maxLines: 4,
-                    textOverflow: TextOverflow.ellipsis,
-                    color: isDark ? UIColors.darkTextPrimary : UIColors.text,
-                  ),
-                  16.gap,
-                  // Nội dung
-                  article.description.trim().isEmpty
-                      ? AppText.regular(
-                          'Chưa có nội dung chi tiết cho bài viết này.',
-                          fontSize: 14,
-                          height: 1.5,
+                  // Ảnh lớn
+                  _ArticleImage(imageUrl: article.imageUrl),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Ngày đăng
+                        AppText.regular(
+                          formatRelativeTime(article.pubDate),
+                          fontSize: 12,
                           color: isDark
                               ? UIColors.darkTextSecondary
                               : UIColors.textBody,
-                        )
-                      : AppText.regular(
-                          article.description,
-                          fontSize: 14,
-                          height: 1.6,
-                          textOverflow: TextOverflow.visible,
+                        ),
+                        12.gap,
+                        // Tiêu đề
+                        AppText.bold(
+                          article.title,
+                          fontSize: 20,
+                          maxLines: 4,
+                          textOverflow: TextOverflow.ellipsis,
                           color: isDark
                               ? UIColors.darkTextPrimary
                               : UIColors.text,
                         ),
-                  24.gap,
-                  // Nút mở bài gốc
-                  AppButton.fill(
-                    onTap: () => context.push(
-                      RouteNames.news_webview,
-                      extra: article.link,
+                        16.gap,
+                        // Nội dung
+                        article.description.trim().isEmpty
+                            ? AppText.regular(
+                                'Chưa có nội dung chi tiết cho bài viết này.',
+                                fontSize: 14,
+                                height: 1.5,
+                                color: isDark
+                                    ? UIColors.darkTextSecondary
+                                    : UIColors.textBody,
+                              )
+                            : AppText.regular(
+                                article.description,
+                                fontSize: 14,
+                                height: 1.6,
+                                textOverflow: TextOverflow.visible,
+                                color: isDark
+                                    ? UIColors.darkTextPrimary
+                                    : UIColors.text,
+                              ),
+                      ],
                     ),
-                    title: 'Mở bài gốc',
-                    height: 48,
-                    width: double.infinity,
                   ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: AppButton.fill(
+              onTap: () => context.push(
+                RouteNames.news_webview,
+                extra: article.link,
+              ),
+              title: 'Mở bài gốc',
+              height: 48,
+              width: double.infinity,
+            ),
+          ),
+        ],
       ),
     );
   }
