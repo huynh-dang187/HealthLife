@@ -7,8 +7,8 @@ import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/divider.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
-import 'package:healthlife/src/features/signIn/data/auth_repository.dart';
-import 'package:healthlife/src/features/signIn/presentation/cubit/google_signin_cubit.dart';
+import 'package:healthlife/src/features/signIn/data/repositories/auth_repository.dart';
+import 'package:healthlife/src/features/signIn/presentation/cubit/google/google_signin_cubit.dart';
 import 'package:healthlife/src/features/signIn/presentation/widgets/continue_button.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
 
@@ -67,7 +67,7 @@ class SigninScreen extends StatelessWidget {
                   ),
                   24.gap,
                   ContinueButton(
-                    onTap: () {},
+                    onTap: () => context.push(RouteNames.phone_input),
                     isFilled: true,
                     textColor: UIColors.lightBackground,
                     icon: Assets.svg.icPhoneLogin.svg(width: 20),
