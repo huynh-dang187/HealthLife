@@ -16,6 +16,8 @@ import 'package:healthlife/src/features/health_news/presentation/pages/news_webv
 import 'package:healthlife/src/features/home/presentation/pages/home_screen.dart';
 import 'package:healthlife/src/features/hospital_finder/presentation/pages/hospital_finder_screen.dart';
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
+import 'package:healthlife/src/features/signIn/data/models/otp_args_model.dart';
+import 'package:healthlife/src/features/signIn/presentation/page/phone_input_screen.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/signIn_screen.dart';
 import 'package:healthlife/src/features/sos_iot/presentation/pages/sos_device_screen.dart';
 import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.dart';
@@ -25,6 +27,7 @@ import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_scree
 import 'package:healthlife/src/features/tab_bar/presentation/page/nutrition_screen.dart';
 import 'package:healthlife/src/features/water_reminder/presentation/pages/water_reminder_screen.dart';
 
+import '../../features/signIn/presentation/page/otp_screen.dart';
 import 'route_names.dart';
 
 class AppRouter {
@@ -35,6 +38,8 @@ class AppRouter {
     RouteNames.splash,
     RouteNames.introduction,
     RouteNames.signIn,
+    RouteNames.phone_input, // +2 dòng này
+    RouteNames.phone_otp,
   ];
 
   static final GoRouter router = GoRouter(
@@ -45,6 +50,11 @@ class AppRouter {
       _route(RouteNames.splash, (_) => const SplashScreen()),
       _route(RouteNames.introduction, (_) => const IntroductionScreen()),
       _route(RouteNames.signIn, (_) => const SigninScreen()),
+      _route(RouteNames.phone_input, (_) => const PhoneInputScreen()),
+      GoRoute(
+        path: RouteNames.phone_otp,
+        builder: (context, state) => OtpScreen(otpArgs: state.extra as OtpArgs),
+      ),
       _route(RouteNames.profile_name, (_) => ProfileName()),
       _route(RouteNames.profile_gender, (_) => ProfileGender()),
       _route(RouteNames.profile_date, (_) => ProfileDate()),
