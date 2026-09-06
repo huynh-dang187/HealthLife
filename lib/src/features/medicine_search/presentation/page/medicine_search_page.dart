@@ -15,24 +15,48 @@ class MedicineSearchPage extends StatefulWidget {
 
 class _MedicineSearchPageState extends State<MedicineSearchPage> {
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
   List<Map<String, dynamic>> _searchResults = [];
   List<String> _relatedKeywords = [];
   bool _isLoading = false;
 
+  // Cấu hình Phân trang (Pagination)
+  int _page = 0;
+  final int _pageSize = 10;
+  bool _hasMore = true;
+  bool _isLoadingMore = false;
+
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
     _fetchInitialMedicines();
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
+  // Tự động tải thêm khi cuộn gần đến cuối danh sách
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      if (_hasMore && !_isLoadingMore && !_isLoading) {
+        _loadMoreMedicines();
+      }
+    }
+  }
+
   Future<void> _fetchInitialMedicines() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _page = 0;
+      _hasMore = true;
+    });
     try {
       final response = await Supabase.instance.client
           .rpc('get_random_otc_medicines', params: {'limit_count': 6});
@@ -47,6 +71,7 @@ class _MedicineSearchPageState extends State<MedicineSearchPage> {
     }
   }
 
+  // Tìm kiếm trang đầu tiên
   Future<void> _searchMedicine(String query) async {
     final cleanQuery = query.trim();
     if (cleanQuery.isEmpty) {
@@ -54,13 +79,19 @@ class _MedicineSearchPageState extends State<MedicineSearchPage> {
       return;
     }
 
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _page = 0;
+      _hasMore = true;
+      _searchResults = [];
+    });
 
     try {
       final response = await Supabase.instance.client
           .from('medicines')
           .select()
-          .or('name.ilike.%$cleanQuery%,active_ingredient.ilike.%$cleanQuery%,category.ilike.%$cleanQuery%');
+          .or('name.ilike.%$cleanQuery%,active_ingredient.ilike.%$cleanQuery%,category.ilike.%$cleanQuery%')
+          .range(0, _pageSize - 1); // Chỉ lấy 10 trang đầu
 
       final results = List<Map<String, dynamic>>.from(response);
 
@@ -86,9 +117,40 @@ class _MedicineSearchPageState extends State<MedicineSearchPage> {
         _searchResults = results;
         _relatedKeywords = extractedKeywords.take(4).toList();
         _isLoading = false;
+        _hasMore = results.length == _pageSize;
       });
     } catch (e) {
       setState(() => _isLoading = false);
+    }
+  }
+
+  // Tải thêm dữ liệu khi cuộn xuống (Lazy Load)
+  Future<void> _loadMoreMedicines() async {
+    final cleanQuery = _searchController.text.trim();
+    if (cleanQuery.isEmpty) return;
+
+    setState(() => _isLoadingMore = true);
+    final nextPage = _page + 1;
+    final from = nextPage * _pageSize;
+    final to = from + _pageSize - 1;
+
+    try {
+      final response = await Supabase.instance.client
+          .from('medicines')
+          .select()
+          .or('name.ilike.%$cleanQuery%,active_ingredient.ilike.%$cleanQuery%,category.ilike.%$cleanQuery%')
+          .range(from, to);
+
+      final newResults = List<Map<String, dynamic>>.from(response);
+
+      setState(() {
+        _page = nextPage;
+        _searchResults.addAll(newResults);
+        _isLoadingMore = false;
+        _hasMore = newResults.length == _pageSize;
+      });
+    } catch (e) {
+      setState(() => _isLoadingMore = false);
     }
   }
 
@@ -117,6 +179,7 @@ class _MedicineSearchPageState extends State<MedicineSearchPage> {
         backgroundColor: const Color(0xFFF7F7F7),
         body: SafeArea(
           child: SingleChildScrollView(
+            controller: _scrollController, // Gắn ScrollController vào đây
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,68 +387,78 @@ class _MedicineSearchPageState extends State<MedicineSearchPage> {
                         );
                       },
                     )
-                  else
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _searchResults.length,
-                      itemBuilder: (context, index) {
-                        final item = _searchResults[index];
-                        final String imageUrl = (item['image_url'] ?? '').toString().trim();
-                        return GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () => _navigateToDetail(item),
-                          child: Container(
-                            margin: const EdgeInsets.only(bottom: 12),
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: const Color(0xFFE5B8B7), width: 1),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 70,
-                                  height: 70,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFFDF0F0),
-                                    borderRadius: BorderRadius.circular(10),
+                  else ...[
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _searchResults.length,
+                        itemBuilder: (context, index) {
+                          final item = _searchResults[index];
+                          final String imageUrl = (item['image_url'] ?? '').toString().trim();
+                          return GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () => _navigateToDetail(item),
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 12),
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(color: const Color(0xFFE5B8B7), width: 1),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 70,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFFDF0F0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: imageUrl.isNotEmpty
+                                        ? Image.network(imageUrl, fit: BoxFit.contain, errorBuilder: (_, __, ___) => const Icon(Icons.medication, color: Colors.grey))
+                                        : const Icon(Icons.medication, color: Colors.grey),
                                   ),
-                                  child: imageUrl.isNotEmpty
-                                      ? Image.network(imageUrl, fit: BoxFit.contain, errorBuilder: (_, __, ___) => const Icon(Icons.medication, color: Colors.grey))
-                                      : const Icon(Icons.medication, color: Colors.grey),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        item['name'] ?? 'no_name'.tr(),
-                                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        item['usage_dosage'] ?? 'see_package_details'.tr(),
-                                        style: const TextStyle(fontSize: 12, color: Colors.grey),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        '${'price'.tr()}: ${item['price_text'] ?? 'updating'.tr()}',
-                                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black87),
-                                      ),
-                                    ],
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          item['name'] ?? 'no_name'.tr(),
+                                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          item['usage_dosage'] ?? 'see_package_details'.tr(),
+                                          style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          '${'price'.tr()}: ${item['price_text'] ?? 'updating'.tr()}',
+                                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black87),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                          );
+                        },
+                      ),
+
+                      // Indicator hiển thị đang tải trang tiếp theo ở cuối danh sách
+                      if (_isLoadingMore)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          child: Center(
+                            child: CircularProgressIndicator(color: Color(0xFFE5B8B7)),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                    ],
               ],
             ),
           ),
