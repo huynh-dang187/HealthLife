@@ -49,7 +49,7 @@ class AppRouter {
   ];
 
   static final GoRouter router = GoRouter(
-    initialLocation: RouteNames.splash,
+    initialLocation: RouteNames.medicine_search,
     redirect: _guard,
     routes: [
       // Router flow newbie

@@ -151,7 +151,7 @@ class _MedicineSearchBodyState extends State<_MedicineSearchBody> {
                         crossAxisCount: 2,
                         crossAxisSpacing: 12,
                         mainAxisSpacing: 12,
-                        childAspectRatio: 1.45,
+                        childAspectRatio: 1.4,
                         children: [
                           CategoryCard(
                             title: 'pain_relief'.tr(),
