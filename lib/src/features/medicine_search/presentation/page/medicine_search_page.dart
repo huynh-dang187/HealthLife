@@ -4,20 +4,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../generated/assets.gen.dart';
 import '../../../../common/constants/colors.dart';
-import '../../../../shared/enums/bloc_status.dart'; // Chú ý kiểm tra đúng đường dẫn của bạn
+import '../../../../shared/enums/bloc_status.dart';
 import '../cubit/medicine_search_cubit.dart';
 import '../widgets/category_card.dart';
 import '../widgets/medicine_product_card.dart';
 import 'medicine_detail_page.dart';
 
-class MedicineSearchPage extends StatefulWidget {
+class MedicineSearchPage extends StatelessWidget {
   const MedicineSearchPage({super.key});
 
   @override
-  State<MedicineSearchPage> createState() => _MedicineSearchPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => MedicineSearchCubit(),
+      child: const _MedicineSearchBody(),
+    );
+  }
 }
 
-class _MedicineSearchPageState extends State<MedicineSearchPage> {
+class _MedicineSearchBody extends StatefulWidget {
+  const _MedicineSearchBody();
+
+  @override
+  State<_MedicineSearchBody> createState() => _MedicineSearchBodyState();
+}
+
+class _MedicineSearchBodyState extends State<_MedicineSearchBody> {
   final TextEditingController _searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
@@ -25,7 +37,6 @@ class _MedicineSearchPageState extends State<MedicineSearchPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    // Gọi hàm fetch ban đầu thông qua Cubit
     context.read<MedicineSearchCubit>().fetchInitialMedicines();
   }
 
