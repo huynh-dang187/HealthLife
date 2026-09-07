@@ -68,7 +68,7 @@ final _features = [
     Assets.png.icDrugLookup.image(),
     'Tra cứu thuốc',
     UIColors.green,
-    RouteNames.drug_lookup,
+    RouteNames.medicine_search,
   ),
   _FeatureData(
     Assets.png.icHospitalFinder.image(),

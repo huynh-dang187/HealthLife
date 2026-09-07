@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../../../generated/assets.gen.dart';
+import '../../../../common/constants/colors.dart';
+import '../../../../common/extensions/num_x.dart';
+import '../../../../core/presentation/widgets/text.dart';
 
 class MedicineDetailPage extends StatefulWidget {
   final Map<String, dynamic> medicine;
@@ -20,7 +26,6 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
     _fetchRelatedMedicines();
   }
 
-  // Tải danh sách thuốc cùng danh mục từ Supabase
   Future<void> _fetchRelatedMedicines() async {
     final category = widget.medicine['category'];
     final currentId = widget.medicine['id'];
@@ -58,37 +63,37 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
     final String notes = widget.medicine['notes'] ?? 'Đang cập nhật lưu ý khi dùng.';
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDF7F7),
+      backgroundColor: UIColors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header đồng bộ chuẩn khoảng cách với Tra cứu thuốc
               Row(
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  const Expanded(
-                    child: Text(
-                      'Chi tiết thuốc',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                  InkWell(
+                    onTap: () => context.pop(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Assets.svg.icArrowLeft.svg(
+                        colorFilter: const ColorFilter.mode(UIColors.black, BlendMode.srcIn),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 48), // Cân bằng kích thước với nút back (48px)
+                  Expanded(
+                    child: AppText.bold(
+                      'Chi tiết thuốc',
+                      textAlign: TextAlign.center,
+                      fontSize: 22,
+                      color: Colors.black,
+                    ),
+                  ),
+                  48.gap,
                 ],
               ),
-              const SizedBox(height: 16),
+              16.gap,
 
-              // 1. Khung ảnh thuốc
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
@@ -103,31 +108,33 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: imageUrl.isNotEmpty
-                          ? Image.network(
-                        imageUrl,
-                        fit: BoxFit.contain,
-                        errorBuilder: (_, __, ___) => const Icon(Icons.medication, size: 90, color: Colors.grey),
-                      )
-                          : const Icon(Icons.medication, size: 90, color: Colors.grey),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: imageUrl.isNotEmpty
+                            ? Image.network(
+                          imageUrl,
+                          fit: BoxFit.contain,
+                          errorBuilder: (_, __, ___) => Assets.png.icSot.image(height: 90, fit: BoxFit.contain),
+                        )
+                            : Assets.png.icSot.image(height: 90, fit: BoxFit.contain),
+                      ),
                     ),
-                    const SizedBox(height: 12),
+                    12.gap,
                     Text(
                       name.toUpperCase(),
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.5,
+                        fontWeight: FontWeight.bold,
                         color: Colors.black,
+                        height: 1.3,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
+              16.gap,
 
-              // 2. Badge Loại thuốc & Giá
               Center(
                 child: Column(
                   children: [
@@ -137,54 +144,48 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
                         color: const Color(0xFFE2E2E2),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Text(
+                      child: AppText.bold(
                         'LOẠI THUỐC: $category',
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black87),
+                        fontSize: 12,
+                        color: Colors.black87,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    8.gap,
 
-                    // Giá tiền
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Image.asset(
-                          'assets/png/ic_tien.png',
+                        Assets.png.icTien.image(
                           width: 22,
                           height: 22,
                           fit: BoxFit.contain,
                         ),
-                        const SizedBox(width: 6),
-                        Text(
+                        6.gap,
+                        AppText.bold(
                           priceText,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFB71C1C),
-                          ),
+                          fontSize: 20,
+                          color: const Color(0xFFB71C1C),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              20.gap,
 
-              // 3. Khung thông tin xổ xuống (Accordion)
               _buildExpandableCard('Mô tả', mainEffect, defaultExpanded: true),
               _buildExpandableCard('Liều dùng, cách dùng', usage),
               _buildExpandableCard('Chống chỉ định', contraindications),
               _buildExpandableCard('Lưu ý', notes),
 
-              const SizedBox(height: 24),
+              24.gap,
 
-              // 4. Sản phẩm cùng loại (Động từ Supabase)
-              const Text(
+              AppText.bold(
                 'SẢN PHẨM CÙNG LOẠI',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, letterSpacing: 0.5),
+                fontSize: 15,
               ),
-              const SizedBox(height: 12),
+              12.gap,
 
               if (_isLoadingRelated)
                 const Center(child: CircularProgressIndicator(color: Color(0xFFE5B8B7)))
@@ -225,15 +226,18 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
                                     ? Image.network(
                                   relImageUrl,
                                   fit: BoxFit.contain,
-                                  errorBuilder: (_, __, ___) => const Icon(Icons.medication, color: Color(0xFFE5B8B7), size: 36),
+                                  errorBuilder: (_, __, ___) => Assets.png.icSot.image(height: 36, fit: BoxFit.contain),
                                 )
-                                    : const Icon(Icons.medication, color: Color(0xFFE5B8B7), size: 36),
+                                    : Assets.png.icSot.image(height: 36, fit: BoxFit.contain),
                               ),
-                              const SizedBox(height: 6),
+                              6.gap,
                               Text(
                                 item['name'] ?? '',
-                                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
-                                maxLines: 1,
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
                               ),
@@ -244,7 +248,7 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
                     },
                   ),
                 ),
-              const SizedBox(height: 20),
+              20.gap,
             ],
           ),
         ),
@@ -264,9 +268,10 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
         shape: const Border(),
         collapsedShape: const Border(),
         initiallyExpanded: defaultExpanded,
-        title: Text(
+        title: AppText.bold(
           title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black87),
+          fontSize: 14,
+          color: Colors.black87,
         ),
         children: [
           Padding(
@@ -275,7 +280,11 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
               alignment: Alignment.centerLeft,
               child: Text(
                 content,
-                style: const TextStyle(fontSize: 13, color: Colors.black87, height: 1.4),
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: Colors.black87,
+                  height: 1.4,
+                ),
               ),
             ),
           ),

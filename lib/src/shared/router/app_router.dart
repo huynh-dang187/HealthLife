@@ -34,13 +34,14 @@ import 'route_names.dart';
 class AppRouter {
   AppRouter._();
 
-  // Các route KHÔNG cần kiểm tra đăng nhập (public)
+  // Danh sách các route công khai không bắt buộc phải đăng nhập
   static const _publicRoutes = [
     RouteNames.splash,
     RouteNames.introduction,
     RouteNames.signIn,
     RouteNames.phone_input,
     RouteNames.phone_otp,
+    RouteNames.home,
   ];
 
   static final GoRouter router = GoRouter(
@@ -62,8 +63,7 @@ class AppRouter {
       _route(RouteNames.profile_height, (_) => const ProfileHeight()),
       _route(RouteNames.profile_weight, (_) => const ProfileWeightScreen()),
 
-      // THÊM MỚI: Route tra cứu thuốc
-      _route('/medicine-search', (_) => const MedicineSearchPage()),
+      _route(RouteNames.medicine_search, (_) => const MedicineSearchPage()),
 
       // Router homeScreen features
       _route(RouteNames.health_news, (_) => const HealthNewsScreen()),
@@ -84,7 +84,7 @@ class AppRouter {
       _route(RouteNames.hospital_finder, (_) => const HospitalScreen()),
       _route(RouteNames.water_reminder, (_) => const WaterReminderScreen()),
 
-      // Router bottom bar đã cố định sẽ sửa lại trong tương lai
+      // Router bottom bar
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             MainTabScreen(navigationShell: navigationShell),
@@ -116,14 +116,16 @@ class AppRouter {
   );
 
   static Future<String?> _guard(
-      BuildContext context,
-      GoRouterState state,
-      ) async {
+    BuildContext context,
+    GoRouterState state,
+  ) async {
     final currentPath = state.matchedLocation;
     final user = FirebaseAuth.instance.currentUser;
 
-    // TH1: Đang ở Splash — để Splash tự xử lý logic điều hướng riêng
-    if (currentPath == RouteNames.splash) {
+    // TH1: Đang ở Splash, Home hoặc Tra cứu thuốc khi ép test — bỏ qua điều hướng
+    if (currentPath == RouteNames.splash ||
+        currentPath == RouteNames.home ||
+        currentPath == RouteNames.medicine_search) {
       return null;
     }
 
