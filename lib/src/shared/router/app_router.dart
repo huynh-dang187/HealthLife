@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_date_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_gender_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_height_screen.dart';
@@ -16,6 +18,7 @@ import 'package:healthlife/src/features/health_news/presentation/pages/news_webv
 import 'package:healthlife/src/features/home/presentation/pages/home_screen.dart';
 import 'package:healthlife/src/features/hospital_finder/presentation/pages/hospital_finder_screen.dart';
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
+import 'package:healthlife/src/features/medicine_search/presentation/cubit/medicine_search_cubit.dart';
 import 'package:healthlife/src/features/medicine_search/presentation/page/medicine_search_page.dart';
 import 'package:healthlife/src/features/signIn/data/models/otp_args_model.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/phone_input_screen.dart';
@@ -34,13 +37,15 @@ import 'route_names.dart';
 class AppRouter {
   AppRouter._();
 
-  // Các route KHÔNG cần kiểm tra đăng nhập (public)
+  // Danh sách các route công khai không bắt buộc phải đăng nhập
   static const _publicRoutes = [
     RouteNames.splash,
     RouteNames.introduction,
     RouteNames.signIn,
     RouteNames.phone_input,
     RouteNames.phone_otp,
+    RouteNames.home,
+    RouteNames.medicine_search,
   ];
 
   static final GoRouter router = GoRouter(
@@ -62,8 +67,14 @@ class AppRouter {
       _route(RouteNames.profile_height, (_) => const ProfileHeight()),
       _route(RouteNames.profile_weight, (_) => const ProfileWeightScreen()),
 
-      // THÊM MỚI: Route tra cứu thuốc
-      _route('/medicine-search', (_) => const MedicineSearchPage()),
+      // Route tra cứu thuốc bọc BlocProvider
+      _route(
+        RouteNames.medicine_search,
+            (_) => BlocProvider(
+          create: (context) => MedicineSearchCubit(),
+          child: const MedicineSearchPage(),
+        ),
+      ),
 
       // Router homeScreen features
       _route(RouteNames.health_news, (_) => const HealthNewsScreen()),
@@ -84,7 +95,7 @@ class AppRouter {
       _route(RouteNames.hospital_finder, (_) => const HospitalScreen()),
       _route(RouteNames.water_reminder, (_) => const WaterReminderScreen()),
 
-      // Router bottom bar đã cố định sẽ sửa lại trong tương lai
+      // Router bottom bar
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             MainTabScreen(navigationShell: navigationShell),
@@ -122,8 +133,10 @@ class AppRouter {
     final currentPath = state.matchedLocation;
     final user = FirebaseAuth.instance.currentUser;
 
-    // TH1: Đang ở Splash — để Splash tự xử lý logic điều hướng riêng
-    if (currentPath == RouteNames.splash) {
+    // TH1: Đang ở Splash, Home hoặc Tra cứu thuốc khi ép test — bỏ qua điều hướng
+    if (currentPath == RouteNames.splash ||
+        currentPath == RouteNames.home ||
+        currentPath == RouteNames.medicine_search) {
       return null;
     }
 

@@ -24,6 +24,5 @@ class RouteNames {
   static const chatbot = '/chatbot';
   static const nutrition = '/nutrition';
   static const profile = '/profile';
-  //thêm dần khi code từng module
-  static const String medicineSearch = '/medicine-search';
+  static const medicine_search = '/medicine-search';
 }
