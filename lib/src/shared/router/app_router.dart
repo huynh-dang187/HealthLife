@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_date_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_gender_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_height_screen.dart';
@@ -20,6 +19,7 @@ import 'package:healthlife/src/features/hospital_finder/presentation/pages/hospi
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
 import 'package:healthlife/src/features/medicine_search/presentation/cubit/medicine_search_cubit.dart';
 import 'package:healthlife/src/features/medicine_search/presentation/page/medicine_search_page.dart';
+import 'package:healthlife/src/features/profile/presentation/pages/profile_screen.dart';
 import 'package:healthlife/src/features/signIn/data/models/otp_args_model.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/phone_input_screen.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/signIn_screen.dart';
@@ -70,7 +70,7 @@ class AppRouter {
       // Route tra cứu thuốc bọc BlocProvider
       _route(
         RouteNames.medicine_search,
-            (_) => BlocProvider(
+        (_) => BlocProvider(
           create: (context) => MedicineSearchCubit(),
           child: const MedicineSearchPage(),
         ),
@@ -115,7 +115,7 @@ class AppRouter {
           ),
           StatefulShellBranch(
             routes: [
-              _route(RouteNames.activity, (_) => const ProfileGender()),
+              _route(RouteNames.profile, (_) => const ProfileScreen()),
             ],
           ),
           StatefulShellBranch(
@@ -127,9 +127,9 @@ class AppRouter {
   );
 
   static Future<String?> _guard(
-      BuildContext context,
-      GoRouterState state,
-      ) async {
+    BuildContext context,
+    GoRouterState state,
+  ) async {
     final currentPath = state.matchedLocation;
     final user = FirebaseAuth.instance.currentUser;
 
