@@ -9,12 +9,13 @@ import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/src/features/daily_tips/data/repositories/daily_tip_repository.dart';
 import 'package:healthlife/src/features/daily_tips/presentation/cubit/daily_tip_cubit.dart';
-import 'package:healthlife/src/features/profile/presentation/cubit/profile_screen_cubit.dart';
-import 'package:healthlife/src/features/profile/presentation/cubit/profile_screen_state.dart';
-import 'package:healthlife/src/features/profile/presentation/widgets/profile_header.dart';
-import 'package:healthlife/src/features/profile/presentation/widgets/profile_menu_item.dart';
-import 'package:healthlife/src/features/profile/presentation/widgets/profile_menu_section.dart';
-import 'package:healthlife/src/features/profile/presentation/widgets/profile_tip_card.dart';
+import 'package:healthlife/src/features/profile/presentation/cubit/profile/profile_screen_cubit.dart';
+import 'package:healthlife/src/features/profile/presentation/cubit/profile/profile_screen_state.dart';
+import 'package:healthlife/src/features/profile/presentation/widgets/changeProfile/change_profile_bottom_sheet.dart';
+import 'package:healthlife/src/features/profile/presentation/widgets/profile/profile_header.dart';
+import 'package:healthlife/src/features/profile/presentation/widgets/profile/profile_menu_item.dart';
+import 'package:healthlife/src/features/profile/presentation/widgets/profile/profile_menu_section.dart';
+import 'package:healthlife/src/features/profile/presentation/widgets/profile/profile_tip_card.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
 
@@ -116,7 +117,7 @@ class _ProfileBody extends StatelessWidget {
                     ProfileMenuItem(
                       icon: Icons.person_outline,
                       label: 'Thông tin cơ bản',
-                      onTap: () {},
+                      onTap: () => showChangeProfileSheet(context),
                     ),
                     ProfileMenuItem(
                       icon: Icons.language_outlined,
