@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
+import 'package:healthlife/src/core/presentation/blocs/user/user_cubit.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/src/features/signIn/data/models/otp_args_model.dart';
@@ -110,6 +111,7 @@ class _OtpScreenState extends State<OtpScreen> {
           } else if (state is OtpDestination) {
             if (_handled) return;
             _handled = true;
+            context.read<UserCubit>().loadUser();
             context.go(state.route);
           } else if (state is OtpResent) {
             setState(() {

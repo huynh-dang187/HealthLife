@@ -37,9 +37,24 @@ class $AssetsPngGen {
   /// File path: assets/png/.gitkeep
   String get aGitkeep => 'assets/png/.gitkeep';
 
+  /// File path: assets/png/ic_camcumhohap (2).png
+  AssetGenImage get icCamcumhohap2 =>
+      const AssetGenImage('assets/png/ic_camcumhohap (2).png');
+
+  /// File path: assets/png/ic_camcumhohap.png
+  AssetGenImage get icCamcumhohap =>
+      const AssetGenImage('assets/png/ic_camcumhohap.png');
+
   /// File path: assets/png/ic_chatbotAI.png
   AssetGenImage get icChatbotAI =>
       const AssetGenImage('assets/png/ic_chatbotAI.png');
+
+  /// File path: assets/png/ic_dalieu (2).png
+  AssetGenImage get icDalieu2 =>
+      const AssetGenImage('assets/png/ic_dalieu (2).png');
+
+  /// File path: assets/png/ic_dalieu.png
+  AssetGenImage get icDalieu => const AssetGenImage('assets/png/ic_dalieu.png');
 
   /// File path: assets/png/ic_drug_lookup.png
   AssetGenImage get icDrugLookup =>
@@ -79,6 +94,24 @@ class $AssetsPngGen {
   AssetGenImage get icSosDevice =>
       const AssetGenImage('assets/png/ic_sos_device.png');
 
+  /// File path: assets/png/ic_sot.png
+  AssetGenImage get icSot => const AssetGenImage('assets/png/ic_sot.png');
+
+  /// File path: assets/png/ic_tien.png
+  AssetGenImage get icTien => const AssetGenImage('assets/png/ic_tien.png');
+
+  /// File path: assets/png/ic_tieuhoa (2).png
+  AssetGenImage get icTieuhoa2 =>
+      const AssetGenImage('assets/png/ic_tieuhoa (2).png');
+
+  /// File path: assets/png/ic_tieuhoa.png
+  AssetGenImage get icTieuhoa =>
+      const AssetGenImage('assets/png/ic_tieuhoa.png');
+
+  /// File path: assets/png/ic_timkiem.png
+  AssetGenImage get icTimkiem =>
+      const AssetGenImage('assets/png/ic_timkiem.png');
+
   /// File path: assets/png/ic_water_reminder.png
   AssetGenImage get icWaterReminder =>
       const AssetGenImage('assets/png/ic_water_reminder.png');
@@ -86,7 +119,11 @@ class $AssetsPngGen {
   /// List of all assets
   List<dynamic> get values => [
     aGitkeep,
+    icCamcumhohap2,
+    icCamcumhohap,
     icChatbotAI,
+    icDalieu2,
+    icDalieu,
     icDrugLookup,
     icFemale,
     icFootCounter,
@@ -97,6 +134,11 @@ class $AssetsPngGen {
     icMale,
     icSecurity,
     icSosDevice,
+    icSot,
+    icTien,
+    icTieuhoa2,
+    icTieuhoa,
+    icTimkiem,
     icWaterReminder,
   ];
 }

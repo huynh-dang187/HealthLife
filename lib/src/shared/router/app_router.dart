@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_date_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_gender_screen.dart';
@@ -16,6 +17,9 @@ import 'package:healthlife/src/features/health_news/presentation/pages/news_webv
 import 'package:healthlife/src/features/home/presentation/pages/home_screen.dart';
 import 'package:healthlife/src/features/hospital_finder/presentation/pages/hospital_finder_screen.dart';
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
+import 'package:healthlife/src/features/medicine_search/presentation/cubit/medicine_search_cubit.dart';
+import 'package:healthlife/src/features/medicine_search/presentation/page/medicine_search_page.dart';
+import 'package:healthlife/src/features/profile/presentation/pages/profile_screen.dart';
 import 'package:healthlife/src/features/signIn/data/models/otp_args_model.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/phone_input_screen.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/signIn_screen.dart';
@@ -33,20 +37,22 @@ import 'route_names.dart';
 class AppRouter {
   AppRouter._();
 
-  // Các route KHÔNG cần kiểm tra đăng nhập (public)
+  // Danh sách các route công khai không bắt buộc phải đăng nhập
   static const _publicRoutes = [
     RouteNames.splash,
     RouteNames.introduction,
     RouteNames.signIn,
-    RouteNames.phone_input, // +2 dòng này
+    RouteNames.phone_input,
     RouteNames.phone_otp,
+    RouteNames.home,
+    RouteNames.medicine_search,
   ];
 
   static final GoRouter router = GoRouter(
     initialLocation: RouteNames.splash,
     redirect: _guard,
     routes: [
-      //Router flow newbie
+      // Router flow newbie
       _route(RouteNames.splash, (_) => const SplashScreen()),
       _route(RouteNames.introduction, (_) => const IntroductionScreen()),
       _route(RouteNames.signIn, (_) => const SigninScreen()),
@@ -60,7 +66,17 @@ class AppRouter {
       _route(RouteNames.profile_date, (_) => ProfileDate()),
       _route(RouteNames.profile_height, (_) => const ProfileHeight()),
       _route(RouteNames.profile_weight, (_) => const ProfileWeightScreen()),
-      //Router homeScreen features
+
+      // Route tra cứu thuốc bọc BlocProvider
+      _route(
+        RouteNames.medicine_search,
+        (_) => BlocProvider(
+          create: (context) => MedicineSearchCubit(),
+          child: const MedicineSearchPage(),
+        ),
+      ),
+
+      // Router homeScreen features
       _route(RouteNames.health_news, (_) => const HealthNewsScreen()),
       GoRoute(
         path: RouteNames.news_webview,
@@ -72,12 +88,14 @@ class AppRouter {
         builder: (context, state) =>
             NewsDetailScreen(article: state.extra as NewsArticleModel),
       ),
-      //Router HomeScreen QuickActions
+
+      // Router HomeScreen QuickActions
       _route(RouteNames.sos_device, (_) => const SosDeviceScreen()),
       _route(RouteNames.drug_lookup, (_) => const DrugLookScreen()),
       _route(RouteNames.hospital_finder, (_) => const HospitalScreen()),
       _route(RouteNames.water_reminder, (_) => const WaterReminderScreen()),
-      //Router bottom bar đã cố định sẽ sửa lại trong tương lai
+
+      // Router bottom bar
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             MainTabScreen(navigationShell: navigationShell),
@@ -97,7 +115,7 @@ class AppRouter {
           ),
           StatefulShellBranch(
             routes: [
-              _route(RouteNames.activity, (_) => const ProfileGender()),
+              _route(RouteNames.profile, (_) => const ProfileScreen()),
             ],
           ),
           StatefulShellBranch(
@@ -115,19 +133,19 @@ class AppRouter {
     final currentPath = state.matchedLocation;
     final user = FirebaseAuth.instance.currentUser;
 
-    // TH1: Đang ở Splash — để Splash tự xử lý logic điều hướng riêng,
-    // guard không can thiệp vào route này
-    if (currentPath == RouteNames.splash) {
+    // TH1: Đang ở Splash, Home hoặc Tra cứu thuốc khi ép test — bỏ qua điều hướng
+    if (currentPath == RouteNames.splash ||
+        currentPath == RouteNames.home ||
+        currentPath == RouteNames.medicine_search) {
       return null;
     }
 
     // TH2: Chưa đăng nhập mà cố vào route cần đăng nhập → đá về SignIn
     if (user == null) {
       if (_publicRoutes.contains(currentPath)) {
-        return null; // đang ở đúng route public, cho đi tiếp
+        return null;
       }
-      return RouteNames
-          .signIn; // cố vào route riêng tư mà chưa đăng nhập → chặn lại
+      return RouteNames.signIn;
     }
 
     // TH3: Đã đăng nhập nhưng đang cố quay lại SignIn/Introduction → đẩy đi tiếp
@@ -136,12 +154,12 @@ class AppRouter {
       return completed ? RouteNames.home : RouteNames.profile_name;
     }
 
-    // TH4: Đã đăng nhập, đang ở trong luồng điền hồ sơ → cho phép (không redirect)
+    // TH4: Đã đăng nhập, đang ở trong luồng điền hồ sơ → cho phép
     if (currentPath.startsWith('/profile_')) {
       return null;
     }
 
-    // TH5: Đã đăng nhập, cố vào route khác (Home, Nutrition...) nhưng CHƯA hoàn thiện hồ sơ
+    // TH5: Đã đăng nhập, cố vào route khác nhưng CHƯA hoàn thiện hồ sơ
     final completed = await _isProfileCompleted(user.uid);
     if (!completed) {
       return RouteNames.profile_name;
