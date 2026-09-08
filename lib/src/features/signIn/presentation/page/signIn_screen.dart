@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:healthlife/generated/assets.gen.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
+import 'package:healthlife/src/core/presentation/blocs/user/user_cubit.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/divider.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
@@ -22,7 +23,16 @@ class SigninScreen extends StatelessWidget {
       child: BlocConsumer<GoogleSigninCubit, GoogleSigninState>(
         listener: (context, state) {
           if (state is GoogleSigninSuccess) {
-            context.go(RouteNames.profile_name);
+            debugPrint(
+              '[signIn] google success, profileCompleted='
+              '${state.profileCompleted}',
+            );
+            context.read<UserCubit>().loadUser();
+            context.go(
+              state.profileCompleted
+                  ? RouteNames.home
+                  : RouteNames.profile_name,
+            );
           } else if (state is GoogleSigninFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Đăng nhập thất bại: ${state.message}')),
