@@ -9,10 +9,9 @@ import 'profile_avatar.dart';
 import 'profile_banner.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key, required this.user, this.onLogout});
+  const ProfileHeader({super.key, required this.user});
 
   final UserModel? user;
-  final VoidCallback? onLogout;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class ProfileHeader extends StatelessWidget {
         Stack(
           clipBehavior: Clip.none,
           children: [
-            ProfileBanner(height: bannerHeight, onClose: onLogout),
+            ProfileBanner(height: bannerHeight),
             Positioned(
               top: bannerHeight - avatarSize / 2,
               left: 0,

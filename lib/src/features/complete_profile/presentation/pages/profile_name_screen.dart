@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -19,9 +20,10 @@ class ProfileName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nameController = TextEditingController();
+    final prefill = FirebaseAuth.instance.currentUser?.displayName?.trim() ?? '';
+    final nameController = TextEditingController(text: prefill);
     return BlocProvider(
-      create: (_) => ProfileNameCubit(ProfileRepository()),
+      create: (_) => ProfileNameCubit(ProfileRepository())..onChangeName(prefill),
       child: BlocBuilder<ProfileNameCubit, ProfileNameState>(
         builder: (context, state) {
           final cubit = context.read<ProfileNameCubit>();

@@ -83,19 +83,16 @@ class _DashedRoundedPainter extends CustomPainter {
   const _DashedRoundedPainter({
     required this.color,
     this.radius = 20,
-    this.strokeWidth = 1.4,
-    this.dashSize = 7,
-    this.gapSize = 5,
   });
 
   final Color color;
   final double radius;
-  final double strokeWidth;
-  final double dashSize;
-  final double gapSize;
 
   @override
   void paint(Canvas canvas, Size size) {
+    const strokeWidth = 1.4;
+    const dashSize = 7.0;
+    const gapSize = 5.0;
     final rrectPath = Path()
       ..addRRect(
         RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(radius)),

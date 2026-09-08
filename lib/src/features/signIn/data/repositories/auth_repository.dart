@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 /// Kết quả của luồng verifyPhoneNumber.
@@ -43,7 +44,33 @@ class AuthRepository {
     );
 
     final userCredential = await _firebaseAuth.signInWithCredential(credential);
-    return userCredential.user;
+    final firebaseUser = userCredential.user;
+    if (firebaseUser != null) {
+      await _saveGoogleUserIfNew(firebaseUser);
+    }
+    return firebaseUser;
+  }
+
+  /// Lưu thông tin Google xuống Firestore khi tài khoản mới chưa có doc.
+  /// Chỉ ghi khi doc chưa tồn tại để không đè lên tên người dùng đã chỉnh sửa.
+  Future<void> _saveGoogleUserIfNew(User firebaseUser) async {
+    final ref = FirebaseFirestore.instance
+        .collection('users')
+        .doc(firebaseUser.uid);
+    final doc = await ref.get();
+    if (doc.exists) {
+      debugPrint('[signInWithGoogle] user doc exists, skip creating');
+      return;
+    }
+    debugPrint('[signInWithGoogle] creating user doc ${firebaseUser.uid}');
+    await ref.set({
+      'displayName': firebaseUser.displayName,
+      'email': firebaseUser.email,
+      'photoURL': firebaseUser.photoURL,
+      'provider': 'google',
+      'profileCompleted': false,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
   }
 
   /// Gửi OTP về SĐT (dạng E.164: +84912345678).

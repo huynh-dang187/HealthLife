@@ -12,7 +12,12 @@ final class GoogleSigninInitial extends GoogleSigninState {}
 
 final class GoogleSigninLoading extends GoogleSigninState {}
 
-final class GoogleSigninSuccess extends GoogleSigninState {}
+final class GoogleSigninSuccess extends GoogleSigninState {
+  final bool profileCompleted;
+  const GoogleSigninSuccess(this.profileCompleted);
+  @override
+  List<Object?> get props => [profileCompleted];
+}
 
 final class GoogleSigninFailure extends GoogleSigninState {
   final String message;
@@ -30,7 +35,8 @@ class GoogleSigninCubit extends Cubit<GoogleSigninState> {
     try {
       final user = await _authRepository.signInWithGoogle();
       if (user != null) {
-        emit(GoogleSigninSuccess());
+        final completed = await _authRepository.isProfileCompleted(user.uid);
+        emit(GoogleSigninSuccess(completed));
       } else {
         // Người dùng tự hủy, quay về trạng thái ban đầu, không coi là lỗi
         emit(GoogleSigninInitial());
