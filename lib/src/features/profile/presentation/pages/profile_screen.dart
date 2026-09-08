@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,7 @@ import 'package:healthlife/src/features/daily_tips/presentation/cubit/daily_tip_
 import 'package:healthlife/src/features/profile/presentation/cubit/profile/profile_screen_cubit.dart';
 import 'package:healthlife/src/features/profile/presentation/cubit/profile/profile_screen_state.dart';
 import 'package:healthlife/src/features/profile/presentation/widgets/changeProfile/change_profile_bottom_sheet.dart';
+import 'package:healthlife/src/features/profile/presentation/widgets/languages/language_modal.dart';
 import 'package:healthlife/src/features/profile/presentation/widgets/profile/profile_header.dart';
 import 'package:healthlife/src/features/profile/presentation/widgets/profile/profile_menu_item.dart';
 import 'package:healthlife/src/features/profile/presentation/widgets/profile/profile_menu_section.dart';
@@ -122,11 +124,14 @@ class _ProfileBody extends StatelessWidget {
                     ProfileMenuItem(
                       icon: Icons.language_outlined,
                       label: 'Ngôn ngữ',
+                      onTap: () => showLanguageModal(context),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           AppText.medium(
-                            'Tiếng Việt',
+                            context.locale.languageCode == 'en'
+                                ? 'English'
+                                : 'Tiếng Việt',
                             fontSize: 13,
                             color: UIColors.textBody,
                           ),
