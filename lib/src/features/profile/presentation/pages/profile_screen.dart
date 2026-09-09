@@ -21,6 +21,8 @@ import 'package:healthlife/src/features/profile/presentation/widgets/profile/pro
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
 
+import '../../../../../generated/assets.gen.dart';
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -108,12 +110,18 @@ class ProfileScreen extends StatelessWidget {
                           title: 'Cài đặt',
                           items: [
                             ProfileMenuItem(
-                              icon: Icons.person_outline,
+                              icon: Assets.svg.icChangeInfo.svg(
+                                width: 18,
+                                color: UIColors.coral,
+                              ),
                               label: 'Thông tin cơ bản',
                               onTap: () => showChangeProfileSheet(context),
                             ),
                             ProfileMenuItem(
-                              icon: Icons.language_outlined,
+                              icon: Assets.svg.icChangeLanguage.svg(
+                                width: 18,
+                                color: UIColors.coral,
+                              ),
                               label: 'Ngôn ngữ',
                               onTap: () => showLanguageModal(context),
                               trailing: Row(
@@ -126,21 +134,22 @@ class ProfileScreen extends StatelessWidget {
                                     fontSize: 13,
                                     color: UIColors.textBody,
                                   ),
-                                  6.gap,
-                                  const Icon(
-                                    Icons.chevron_right,
-                                    color: UIColors.textBody,
-                                  ),
                                 ],
                               ),
                             ),
-                            const ProfileMenuItem(
-                              icon: Icons.notifications_none,
+                            ProfileMenuItem(
+                              icon: Assets.svg.icNotification.svg(
+                                width: 18,
+                                color: UIColors.coral,
+                              ),
                               label: 'Thông báo',
                               trailing: _NotificationSwitch(),
                             ),
-                            const ProfileMenuItem(
-                              icon: Icons.volunteer_activism_outlined,
+                            ProfileMenuItem(
+                              icon: Assets.svg.icSponsor.svg(
+                                width: 18,
+                                color: UIColors.coral,
+                              ),
                               label: 'Nhà tài trợ',
                             ),
                           ],
