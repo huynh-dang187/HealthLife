@@ -3,6 +3,8 @@ import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 
+import '../../../../../../generated/assets.gen.dart';
+
 class ProfileMenuItem extends StatelessWidget {
   const ProfileMenuItem({
     super.key,
@@ -12,7 +14,7 @@ class ProfileMenuItem extends StatelessWidget {
     this.onTap,
   });
 
-  final IconData icon;
+  final Widget icon;
   final String label;
   final Widget? trailing;
   final VoidCallback? onTap;
@@ -45,13 +47,20 @@ class ProfileMenuItem extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               alignment: Alignment.center,
-              child: Icon(icon, size: 20, color: UIColors.pink),
+              child: icon,
             ),
             14.gap,
             Expanded(
-              child: AppText.medium(label, fontSize: 15),
+              child: AppText.medium(
+                label,
+                fontSize: 15,
+              ),
             ),
-            trailing ?? Icon(Icons.chevron_right, color: UIColors.textBody),
+            trailing ??
+                Assets.svg.icChevronRight.svg(
+                  width: 18,
+                  color: UIColors.black,
+                ),
           ],
         ),
       ),
