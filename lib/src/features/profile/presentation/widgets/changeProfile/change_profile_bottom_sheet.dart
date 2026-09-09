@@ -22,12 +22,13 @@ Future<void> showChangeProfileSheet(BuildContext context) async {
   await showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
+    isDismissible: true,
     showDragHandle: true,
     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
-    builder: (ctx) => BlocProvider(
+    builder: (_) => BlocProvider(
       create: (_) => ChangeProfileCubit(ProfileRepository(), user: user),
       child: const _ChangeProfileSheet(),
     ),
@@ -75,12 +76,43 @@ class _ChangeProfileSheet extends StatelessWidget {
               20,
               0,
               20,
-              context.paddingBottomForButton + 16,
+              context.paddingBottomForButton +
+                  MediaQuery.viewInsetsOf(context).bottom +
+                  16,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText.semiBold('Thông tin cơ bản', fontSize: 18),
+                Row(
+                  children: [
+                    Expanded(
+                      child: AppText.semiBold(
+                        'Thông tin cơ bản',
+                        fontSize: 18,
+                      ),
+                    ),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: UIColors.black.withValues(alpha: 0.12),
+                          ),
+                        ),
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.close,
+                          size: 16,
+                          color: UIColors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 20.gap,
                 AppText.medium('Họ tên', fontSize: 13),
                 6.gap,
@@ -200,7 +232,7 @@ class _ChangeProfileSheet extends StatelessWidget {
                   height: 46,
                   width: double.infinity,
                   color: UIColors.pink,
-                  enable: !isSaving,
+                  enable: !isSaving && cubit.hasChanges,
                   titleWidget: isSaving
                       ? const SizedBox(
                           width: 20,

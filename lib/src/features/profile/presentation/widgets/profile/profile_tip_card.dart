@@ -10,8 +10,8 @@ class ProfileTipCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tip = context.watch<DailyTipCubit>().state.tip;
-    final emoji = tip?.emoji;
+    final state = context.watch<DailyTipCubit>().state;
+    final emoji = state.displayEmoji;
 
     return Container(
       decoration: BoxDecoration(
@@ -46,7 +46,7 @@ class ProfileTipCard extends StatelessWidget {
                     ),
                     6.gap,
                     AppText.medium(
-                      tip?.tip ?? 'Chăm sóc sức khỏe mỗi ngày bạn nhé',
+                      state.displayTip,
                       fontSize: 13,
                       color: UIColors.text,
                       maxLines: 4,
@@ -63,8 +63,8 @@ class ProfileTipCard extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 alignment: Alignment.center,
-                child: (emoji?.isNotEmpty ?? false)
-                    ? Text(emoji!, style: const TextStyle(fontSize: 20))
+                child: emoji != null
+                    ? Text(emoji, style: const TextStyle(fontSize: 20))
                     : Icon(
                         Icons.medical_services_outlined,
                         size: 20,
