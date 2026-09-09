@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../common/constants/colors.dart';
 import '../../../../common/extensions/num_x.dart';
 import '../../../../core/presentation/widgets/text.dart';
-import 'items/quiz_card.dart';
+import '../../../../features/quiz_card/presentation/widgets/daily_quiz_carousel.dart';
 
 class HealthExperience extends StatelessWidget {
   const HealthExperience({super.key});
@@ -27,35 +27,8 @@ class HealthExperience extends StatelessWidget {
           ),
         ),
         12.gap,
-        SizedBox(
-          height: 170,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: _quizzes.length,
-            separatorBuilder: (_, __) => 10.gap,
-            itemBuilder: (context, index) => _quizzes[index],
-          ),
-        ),
+        const DailyQuizCarousel(),
       ],
     );
   }
 }
-
-final _quizzes = [
-  const QuizCard(
-    question: 'Mỗi ngày người trưởng thành nên uống bao nhiêu lít nước?',
-    options: ['0.5 lít', '2.0 lít', '3.0 lít'],
-    selectedIndex: 1,
-  ),
-  const QuizCard(
-    question: 'Bạn nên đi bộ ít nhất bao nhiêu bước mỗi ngày?',
-    options: ['3.000', '6.000', '10.000'],
-    selectedIndex: 2,
-  ),
-  const QuizCard(
-    question: 'Loại thực phẩm nào tốt cho tim mạch?',
-    options: ['Cá hồi', 'Bánh kẹo', 'Nước ngọt'],
-    selectedIndex: 0,
-  ),
-];
