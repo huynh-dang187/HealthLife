@@ -6,6 +6,18 @@ final class DailyTipState {
   final String? message;
   final DailyTip? tip;
 
+  /// Text hiển thị, fallback khi chưa có/trống.
+  String get displayTip {
+    final t = tip?.tip.trim();
+    return (t?.isNotEmpty ?? false) ? t! : 'Chăm sóc sức khỏe mỗi ngày bạn nhé';
+  }
+
+  /// Emoji hiển thị, null → dùng icon mặc định.
+  String? get displayEmoji {
+    final e = tip?.emoji?.trim();
+    return (e?.isNotEmpty ?? false) ? e : null;
+  }
+
   const DailyTipState({
     this.status = BlocStatus.initial,
     this.message,

@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
@@ -16,18 +14,15 @@ class ProfileBanner extends StatefulWidget {
 
 class _ProfileBannerState extends State<ProfileBanner>
     with SingleTickerProviderStateMixin {
-  late final List<ProfileBubble> _bubbles;
-  late final double _period;
   late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    _bubbles = context.read<ProfileScreenCubit>().bubbles;
-    _period = _bubbles.fold(0.0, (m, b) => math.max(m, b.delay + b.duration));
+    final period = context.read<ProfileScreenCubit>().bubblesPeriod;
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: (_period * 1000).round()),
+      duration: Duration(milliseconds: (period * 1000).round()),
     )..repeat();
   }
 
@@ -39,6 +34,7 @@ class _ProfileBannerState extends State<ProfileBanner>
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<ProfileScreenCubit>();
     return Container(
       width: double.infinity,
       height: widget.height,
@@ -47,19 +43,18 @@ class _ProfileBannerState extends State<ProfileBanner>
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [UIColors.pinkLight, UIColors.pink],
+          colors: [UIColors.pinkLight, Color.fromARGB(54, 232, 119, 160)],
         ),
       ),
       child: AnimatedBuilder(
         animation: _controller,
         builder: (context, _) {
-          final t = _controller.value;
           final w = MediaQuery.sizeOf(context).width;
           final h = widget.height;
           return Stack(
             children: [
-              for (final b in _bubbles)
-                _BubbleTile(bubble: b, t: t, period: _period, w: w, h: h),
+              for (final b in cubit.bubblesAt(_controller.value, w, h))
+                _BubbleTile(bubble: b),
             ],
           );
         },
@@ -69,48 +64,28 @@ class _ProfileBannerState extends State<ProfileBanner>
 }
 
 class _BubbleTile extends StatelessWidget {
-  const _BubbleTile({
-    required this.bubble,
-    required this.t,
-    required this.period,
-    required this.w,
-    required this.h,
-  });
+  const _BubbleTile({required this.bubble});
 
-  final ProfileBubble bubble;
-  final double t;
-  final double period;
-  final double w;
-  final double h;
+  final ProfileBubbleGeometry bubble;
 
   @override
   Widget build(BuildContext context) {
-    final local = ((t * period) - bubble.delay) / bubble.duration;
-    final p = local.clamp(0.0, 1.0);
-    if (local < 0 || p >= 1) return const SizedBox.shrink();
-
-    final size = bubble.size;
-    final y = h + size - p * (h + size * 2);
-    final x =
-        (bubble.x * w - size / 2) +
-        math.sin(p * math.pi * 1.5) * 12;
-    final opacity = bubble.alpha * math.sin(p * math.pi);
-
+    if (!bubble.visible) return const SizedBox.shrink();
     return Positioned(
-      left: x,
-      top: y,
+      left: bubble.x,
+      top: bubble.y,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: opacity),
+          color: Colors.white.withValues(alpha: bubble.opacity),
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Colors.white.withValues(alpha: opacity * 0.4),
-              blurRadius: size / 3,
+              color: Colors.white.withValues(alpha: bubble.opacity * 0.4),
+              blurRadius: bubble.size / 3,
             ),
           ],
         ),
-        child: SizedBox(width: size, height: size),
+        child: SizedBox(width: bubble.size, height: bubble.size),
       ),
     );
   }
