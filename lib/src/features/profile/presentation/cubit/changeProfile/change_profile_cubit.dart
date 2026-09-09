@@ -11,8 +11,39 @@ import 'change_profile_state.dart';
 
 class ChangeProfileCubit extends Cubit<ChangeProfileState> {
   ChangeProfileCubit(this._repository, {UserModel? user})
-    : super(ChangeProfileState.fromUser(user)) {
+    : _initDisplayName = user?.displayName ?? '',
+      _initGender = Gender.values.firstWhere(
+        (g) => g.value == user?.gender,
+        orElse: () => Gender.male,
+      ),
+      _initDob = user?.dateOfBirth,
+      _initHeightCm = user?.height?.round() ?? 160,
+      _initWeightKg = user?.weight ?? 50,
+      super(ChangeProfileState.fromUser(user)) {
     _syncControllers();
+  }
+
+  final String _initDisplayName;
+  final Gender _initGender;
+  final DateTime? _initDob;
+  final int _initHeightCm;
+  final double _initWeightKg;
+
+  /// Có thay đổi nào so với dữ liệu gốc trên Firestore hay không.
+  bool get hasChanges {
+    final dob = buildDate();
+    final sameName = state.displayName.trim() == _initDisplayName.trim();
+    final sameGender = state.gender == _initGender;
+    final sameDob =
+        (dob == null && _initDob == null) ||
+        (dob != null &&
+            _initDob != null &&
+            dob.year == _initDob.year &&
+            dob.month == _initDob.month &&
+            dob.day == _initDob.day);
+    final sameHeight = state.heightCm == _initHeightCm;
+    final sameWeight = (state.weightKg - _initWeightKg).abs() < 0.001;
+    return !(sameName && sameGender && sameDob && sameHeight && sameWeight);
   }
 
   static const double cmPerFt = 30.48;
