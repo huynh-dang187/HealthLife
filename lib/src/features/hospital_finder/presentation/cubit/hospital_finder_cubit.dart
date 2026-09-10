@@ -3,21 +3,21 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../shared/enums/bloc_status.dart';
-import '../../data/services/map_service.dart';
+import '../../data/services/hospital_finder_service.dart';
 import '../../domain/entities/medical_place.dart';
-import 'map_state.dart';
+import 'hospital_finder_state.dart';
 
-class MapCubit extends Cubit<MapState> {
-  final MapService _mapService = MapService();
+class HospitalFinderCubit extends Cubit<HospitalFinderState> {
+  final HospitalFinderService _hospitalFinderService = HospitalFinderService();
 
-  MapCubit() : super(const MapState()) {
+  HospitalFinderCubit() : super(const HospitalFinderState()) {
     // We will load data once we have location
   }
 
   Future<void> loadNearbyFacilities(double lat, double lng) async {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
-      final facilities = await _mapService.fetchNearbyFacilities(lat, lng);
+      final facilities = await _hospitalFinderService.fetchNearbyFacilities(lat, lng);
       
       if (facilities.isEmpty) {
         // Fallback to mock data if API returns empty
@@ -142,7 +142,7 @@ class MapCubit extends Cubit<MapState> {
     }
 
     try {
-      final route = await _mapService.fetchRoute(
+      final route = await _hospitalFinderService.fetchRoute(
         state.currentLocation!,
         LatLng(place.latitude, place.longitude),
       );

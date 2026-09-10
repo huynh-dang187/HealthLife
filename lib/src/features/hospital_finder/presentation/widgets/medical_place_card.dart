@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../common/constants/colors.dart';
 import '../../domain/entities/medical_place.dart';
-import '../cubit/map_cubit.dart';
-import '../cubit/map_state.dart';
+import '../cubit/hospital_finder_cubit.dart';
+import '../cubit/hospital_finder_state.dart';
 
 class MedicalPlaceCard extends StatelessWidget {
   final MedicalPlace? place;
@@ -16,7 +16,7 @@ class MedicalPlaceCard extends StatelessWidget {
       return _buildCard(context, place!);
     }
 
-    return BlocBuilder<MapCubit, MapState>(
+    return BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
       builder: (context, state) {
         final selectedPlace = state.selectedPlace;
         if (selectedPlace == null) return const SizedBox.shrink();

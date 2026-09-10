@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import '../../domain/entities/medical_place.dart';
 
-class MapService {
+class HospitalFinderService {
   static const String _overpassUrl = 'https://overpass-api.de/api/interpreter';
   static const String _osrmUrl = 'http://router.project-osrm.org/route/v1/driving';
 

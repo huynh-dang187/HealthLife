@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healthlife/generated/assets.gen.dart';
 import '../../../../common/constants/colors.dart';
-import '../cubit/map_cubit.dart';
+import '../cubit/hospital_finder_cubit.dart';
 
-class MapSearchHeader extends StatelessWidget {
-  const MapSearchHeader({super.key});
+class HospitalFinderSearchHeader extends StatelessWidget {
+  const HospitalFinderSearchHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class MapSearchHeader extends StatelessWidget {
             ),
             child: TextField(
               onChanged: (value) =>
-                  context.read<MapCubit>().updateSearchQuery(value),
+                  context.read<HospitalFinderCubit>().updateSearchQuery(value),
               decoration: InputDecoration(
                 hintText: 'Tìm kiếm...',
                 hintStyle: TextStyle(color: Colors.grey.shade400),

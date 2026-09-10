@@ -15,9 +15,8 @@ import 'package:healthlife/src/features/health_news/presentation/pages/health_ne
 import 'package:healthlife/src/features/health_news/presentation/pages/news_detail_screen.dart';
 import 'package:healthlife/src/features/health_news/presentation/pages/news_webview_screen.dart';
 import 'package:healthlife/src/features/home/presentation/pages/home_screen.dart';
-import 'package:healthlife/src/features/hospital_finder/presentation/pages/hospital_finder_screen.dart';
+import 'package:healthlife/src/features/hospital_finder/presentation/page/hospital_finder_page.dart';
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
-import 'package:healthlife/src/features/map/presentation/page/map_page.dart';
 import 'package:healthlife/src/features/medicine_search/presentation/cubit/medicine_search_cubit.dart';
 import 'package:healthlife/src/features/medicine_search/presentation/page/medicine_search_page.dart';
 import 'package:healthlife/src/features/profile/presentation/pages/profile_screen.dart';
@@ -46,11 +45,11 @@ class AppRouter {
     RouteNames.phone_otp,
     RouteNames.home,
     RouteNames.medicine_search,
-    RouteNames.map,
+    RouteNames.hospitalFinder,
   ];
 
   static final GoRouter router = GoRouter(
-    initialLocation: RouteNames.map, // Đặt làm màn hình mặc định khởi chạy
+    initialLocation: RouteNames.splash, // Đặt làm màn hình mặc định khởi chạy
     redirect: _guard,
     routes: [
       _route(RouteNames.splash, (_) => const SplashScreen()),
@@ -75,8 +74,8 @@ class AppRouter {
         ),
       ),
 
-      // Route chính thức của MapPage
-      _route(RouteNames.map, (_) => const MapPage()),
+      // Route chính thức của HospitalFinderPage
+      _route(RouteNames.hospitalFinder, (_) => const HospitalFinderPage()),
 
       _route(RouteNames.health_news, (_) => const HealthNewsScreen()),
       GoRoute(
@@ -92,7 +91,6 @@ class AppRouter {
 
       _route(RouteNames.sos_device, (_) => const SosDeviceScreen()),
       _route(RouteNames.drug_lookup, (_) => const DrugLookScreen()),
-      _route(RouteNames.hospital_finder, (_) => const HospitalScreen()),
       _route(RouteNames.water_reminder, (_) => const WaterReminderScreen()),
 
       StatefulShellRoute.indexedStack(
@@ -135,7 +133,7 @@ class AppRouter {
     if (currentPath == RouteNames.splash ||
         currentPath == RouteNames.home ||
         currentPath == RouteNames.medicine_search ||
-        currentPath == RouteNames.map) {
+        currentPath == RouteNames.hospitalFinder) {
       return null;
     }
 

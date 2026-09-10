@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubit/map_cubit.dart';
-import '../cubit/map_state.dart';
+import '../cubit/hospital_finder_cubit.dart';
+import '../cubit/hospital_finder_state.dart';
 
-class MapQuickActions extends StatelessWidget {
-  const MapQuickActions({super.key});
+class HospitalFinderQuickActions extends StatelessWidget {
+  const HospitalFinderQuickActions({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MapCubit, MapState>(
+    return BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
       buildWhen: (previous, current) =>
       previous.isQuickMenuOpen != current.isQuickMenuOpen,
       builder: (context, state) {
@@ -20,7 +20,7 @@ class MapQuickActions extends StatelessWidget {
             if (isOpen)
               Positioned.fill(
                 child: GestureDetector(
-                  onTap: () => context.read<MapCubit>().toggleQuickMenu(),
+                  onTap: () => context.read<HospitalFinderCubit>().toggleQuickMenu(),
                   child: Container(
                     color: Colors.black.withValues(alpha: 0.3),
                   ),
@@ -53,7 +53,7 @@ class MapQuickActions extends StatelessWidget {
         backgroundColor: Colors.white,
         shape: const CircleBorder(),
         elevation: 4,
-        onPressed: () => context.read<MapCubit>().toggleQuickMenu(),
+        onPressed: () => context.read<HospitalFinderCubit>().toggleQuickMenu(),
         child: const Icon(Icons.flash_on, color: Colors.orange, size: 28),
       ),
     );
@@ -77,7 +77,7 @@ class MapQuickActions extends StatelessWidget {
               backgroundColor: Colors.white,
               shape: const CircleBorder(),
               elevation: 4,
-              onPressed: () => context.read<MapCubit>().toggleQuickMenu(),
+              onPressed: () => context.read<HospitalFinderCubit>().toggleQuickMenu(),
               child: const Icon(Icons.flash_on, color: Colors.orange, size: 28),
             ),
           ),
@@ -131,7 +131,7 @@ class MapQuickActions extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 GestureDetector(
-                  onTap: () => context.read<MapCubit>().toggleQuickMenu(),
+                  onTap: () => context.read<HospitalFinderCubit>().toggleQuickMenu(),
                   child: Container(
                     width: 56,
                     height: 56,
