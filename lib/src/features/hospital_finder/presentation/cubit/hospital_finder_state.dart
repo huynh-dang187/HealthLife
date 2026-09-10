@@ -8,6 +8,7 @@ class HospitalFinderState {
   final String selectedCategory;
   final String searchQuery;
   final List<MedicalPlace> places;
+  final List<MedicalPlace> historyPlaces;
   final MedicalPlace? selectedPlace;
   final bool isQuickMenuOpen;
   final LatLng? currentLocation;
@@ -21,6 +22,7 @@ class HospitalFinderState {
     this.selectedCategory = 'Gần nhất',
     this.searchQuery = '',
     this.places = const [],
+    this.historyPlaces = const [],
     this.selectedPlace,
     this.isQuickMenuOpen = false,
     this.currentLocation,
@@ -48,6 +50,7 @@ class HospitalFinderState {
     String? selectedCategory,
     String? searchQuery,
     List<MedicalPlace>? places,
+    List<MedicalPlace>? historyPlaces,
     MedicalPlace? selectedPlace,
     bool? isQuickMenuOpen,
     LatLng? currentLocation,
@@ -64,8 +67,9 @@ class HospitalFinderState {
       selectedCategory: selectedCategory ?? this.selectedCategory,
       searchQuery: searchQuery ?? this.searchQuery,
       places: places ?? this.places,
+      historyPlaces: historyPlaces ?? this.historyPlaces,
       selectedPlace:
-          clearSelectedPlace ? null : (selectedPlace ?? this.selectedPlace),
+      clearSelectedPlace ? null : (selectedPlace ?? this.selectedPlace),
       isQuickMenuOpen: isQuickMenuOpen ?? this.isQuickMenuOpen,
       currentLocation: currentLocation ?? this.currentLocation,
       isLoadingLocation: isLoadingLocation ?? this.isLoadingLocation,

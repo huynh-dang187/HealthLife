@@ -16,7 +16,6 @@ class HospitalFinderQuickActions extends StatelessWidget {
 
         return Stack(
           children: [
-            // 1. Lớp phủ mờ nền khi mở menu Quick Action
             if (isOpen)
               Positioned.fill(
                 child: GestureDetector(
@@ -26,8 +25,6 @@ class HospitalFinderQuickActions extends StatelessWidget {
                   ),
                 ),
               ),
-
-            // 2. Cụm nút Quick Action (Đặt ở khoảng 35% màn hình tính từ trên xuống)
             Positioned(
               right: 16,
               top: MediaQuery.of(context).size.height * 0.35,
@@ -44,7 +41,6 @@ class HospitalFinderQuickActions extends StatelessWidget {
     );
   }
 
-  // Nút Sấm Sét tròn khi đang đóng (Thêm padding top 90 để đứng yên đúng vị trí khi mở menu)
   Widget _buildCollapsedButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 90),
@@ -59,7 +55,6 @@ class HospitalFinderQuickActions extends StatelessWidget {
     );
   }
 
-  // Giao diện khi menu mở tỏa ra
   Widget _buildExpandedMenu(BuildContext context) {
     return SizedBox(
       width: 300,
@@ -68,7 +63,6 @@ class HospitalFinderQuickActions extends StatelessWidget {
         clipBehavior: Clip.none,
         alignment: Alignment.centerRight,
         children: [
-          // Nút Sấm Sét ở trung tâm bên phải (Hình tròn)
           Positioned(
             right: 0,
             top: 90,
@@ -81,8 +75,6 @@ class HospitalFinderQuickActions extends StatelessWidget {
               child: const Icon(Icons.flash_on, color: Colors.orange, size: 28),
             ),
           ),
-
-          // 1. Nút "Địa chỉ đã thêm trước đó" (Phía TRÊN)
           Positioned(
             right: 0,
             top: 10,
@@ -94,15 +86,11 @@ class HospitalFinderQuickActions extends StatelessWidget {
                 _buildActionButton(
                   icon: Icons.location_on,
                   iconColor: Colors.pinkAccent,
-                  onTap: () {
-                    // TODO: Thao tác mở danh sách địa chỉ đã thêm
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
           ),
-
-          // 2. Nút "Đường đến bệnh viện gần nhất" (Bên TRÁI nút Sấm Sét)
           Positioned(
             right: 68,
             top: 90,
@@ -115,14 +103,13 @@ class HospitalFinderQuickActions extends StatelessWidget {
                   icon: Icons.local_hospital,
                   iconColor: Colors.blueAccent,
                   onTap: () {
-                    // TODO: Dẫn đường bệnh viện gần nhất
+                    context.read<HospitalFinderCubit>().toggleQuickMenu();
+                    context.read<HospitalFinderCubit>().navigateToNearestHospital();
                   },
                 ),
               ],
             ),
           ),
-
-          // 3. Nút "Trở lại" / Đóng (Phía DƯỚI nút Sấm Sét)
           Positioned(
             right: 0,
             top: 170,
@@ -185,7 +172,6 @@ class HospitalFinderQuickActions extends StatelessWidget {
     );
   }
 
-  // Thẻ chứa nhãn chữ có nền trắng bo góc giúp dễ đọc trên bản đồ
   Widget _buildLabel(String text) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

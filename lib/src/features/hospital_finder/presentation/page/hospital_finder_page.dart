@@ -1,17 +1,18 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../../../../common/constants/colors.dart';
+import '../../../../shared/enums/bloc_status.dart';
+import '../../domain/entities/medical_place.dart';
 import '../cubit/hospital_finder_cubit.dart';
 import '../cubit/hospital_finder_state.dart';
 import '../widgets/hospital_finder_canvas_view.dart';
+import '../widgets/hospital_finder_quick_actions.dart';
 import '../widgets/hospital_finder_search_header.dart';
 import '../widgets/medical_place_card.dart';
-import '../widgets/hospital_finder_quick_actions.dart';
-import '../../domain/entities/medical_place.dart';
-import '../../../../shared/enums/bloc_status.dart';
 
 class HospitalFinderPage extends StatelessWidget {
   const HospitalFinderPage({super.key});
@@ -35,6 +36,7 @@ class _HospitalFinderBody extends StatefulWidget {
 class _HospitalFinderBodyState extends State<_HospitalFinderBody> {
   late PageController _pageController;
   late MapController _mapController;
+  late DraggableScrollableController _sheetController;
   int _currentPage = 0;
 
   @override
@@ -42,12 +44,18 @@ class _HospitalFinderBodyState extends State<_HospitalFinderBody> {
     super.initState();
     _pageController = PageController(initialPage: 0);
     _mapController = MapController();
+    _sheetController = DraggableScrollableController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _handleMyLocation();
+    });
   }
 
   @override
   void dispose() {
     _pageController.dispose();
     _mapController.dispose();
+    _sheetController.dispose();
     super.dispose();
   }
 
@@ -57,9 +65,10 @@ class _HospitalFinderBodyState extends State<_HospitalFinderBody> {
     });
     final cubit = context.read<HospitalFinderCubit>();
     if (page == 0) {
-      cubit.selectCategory('Gần nhất');
+      cubit.selectCategory('nearest'.tr());
     } else {
-      cubit.selectCategory('Lịch sử');
+      cubit.selectCategory('history'.tr());
+      cubit.loadSearchHistory();
     }
   }
 
@@ -87,14 +96,14 @@ class _HospitalFinderBodyState extends State<_HospitalFinderBody> {
   }
 
   SnackBarAction? _buildSnackBarAction(String message) {
-    if (message.contains('GPS đang tắt')) {
+    if (message.contains('gps_disabled'.tr())) {
       return SnackBarAction(
-        label: 'Bật GPS',
+        label: 'enable_gps'.tr(),
         onPressed: () => Geolocator.openLocationSettings(),
       );
-    } else if (message.contains('Cài đặt ứng dụng')) {
+    } else if (message.contains('app_settings'.tr())) {
       return SnackBarAction(
-        label: 'Cài đặt',
+        label: 'settings'.tr(),
         onPressed: () => Geolocator.openAppSettings(),
       );
     }
@@ -147,12 +156,10 @@ class _HospitalFinderBodyState extends State<_HospitalFinderBody> {
                         child: SizedBox(
                           width: 24,
                           height: 24,
-                          child: CircularProgressIndicator(
-                              strokeWidth: 2),
+                          child: CircularProgressIndicator(strokeWidth: 2),
                         ),
                       )
-                          : const Icon(Icons.my_location,
-                          color: Colors.blueAccent),
+                          : const Icon(Icons.my_location, color: Colors.blueAccent),
                     ),
                   ),
                 );
@@ -186,7 +193,7 @@ class _HospitalFinderBodyState extends State<_HospitalFinderBody> {
                         child: Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            MedicalPlaceCard(place: state.activePopupFacility),
+                            MedicalPlaceCard(place: state.activePopupFacility!),
                             Positioned(
                               top: -10,
                               right: -10,
@@ -221,130 +228,145 @@ class _HospitalFinderBodyState extends State<_HospitalFinderBody> {
               },
             ),
 
-            BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
-              buildWhen: (previous, current) =>
-              previous.places != current.places ||
-                  previous.selectedCategory != current.selectedCategory ||
-                  previous.status != current.status,
-              builder: (context, state) {
-                return DraggableScrollableSheet(
-                  initialChildSize: 0.08,
-                  minChildSize: 0.08,
-                  maxChildSize: 0.65,
-                  snap: true,
-                  snapSizes: const [0.08, 0.65],
-                  snapAnimationDuration: const Duration(milliseconds: 200),
-                  builder: (context, scrollController) {
-                    return LayoutBuilder(
-                      builder: (context, constraints) {
-                        final sheetHeight = constraints.maxHeight;
-                        final isMinimized = sheetHeight < 150;
-
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: UIColors.white,
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(24),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
-                                blurRadius: 10,
-                                offset: const Offset(0, -2),
-                              ),
-                            ],
-                          ),
-                          child: ListView(
-                            controller: scrollController,
-                            physics: const ClampingScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            children: [
-                              Center(
-                                child: Container(
-                                  margin:
-                                  const EdgeInsets.symmetric(vertical: 8),
-                                  width: 36,
-                                  height: 4,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                ),
-                              ),
-                              if (!isMinimized) ...[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 8,
-                                      height: 8,
-                                      decoration: BoxDecoration(
-                                        color: _currentPage == 0
-                                            ? const Color(0xFFFF3B30)
-                                            : Colors.grey[300],
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Container(
-                                      width: 8,
-                                      height: 8,
-                                      decoration: BoxDecoration(
-                                        color: _currentPage == 1
-                                            ? const Color(0xFFFF3B30)
-                                            : Colors.grey[300],
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 16),
-                              ],
-                              if (sheetHeight > 60)
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 4),
-                                  child: Text(
-                                    _currentPage == 0
-                                        ? 'Gợi ý Bệnh viện & Nhà thuốc'
-                                        : 'Lịch sử tìm kiếm',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              SizedBox(
-                                height: isMinimized ? 0 : sheetHeight - 120,
-                                child: PageView(
-                                  controller: _pageController,
-                                  onPageChanged: _onPageChanged,
-                                  physics: const PageScrollPhysics(),
-                                  children: [
-                                    _buildPageContent(
-                                      title: '',
-                                      isMinimized: isMinimized,
-                                      places: state.filteredPlaces,
-                                    ),
-                                    _buildPageContent(
-                                      title: '',
-                                      isMinimized: isMinimized,
-                                      places: state.places,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                  height:
-                                  MediaQuery.of(context).padding.bottom),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                );
+            BlocListener<HospitalFinderCubit, HospitalFinderState>(
+              listenWhen: (previous, current) =>
+              previous.searchQuery != current.searchQuery,
+              listener: (context, state) {
+                if (state.searchQuery.trim().isNotEmpty &&
+                    _sheetController.isAttached) {
+                  _sheetController.animateTo(
+                    0.65,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOutCubic,
+                  );
+                }
               },
+              child: BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
+                buildWhen: (previous, current) =>
+                previous.places != current.places ||
+                    previous.historyPlaces != current.historyPlaces ||
+                    previous.selectedCategory != current.selectedCategory ||
+                    previous.searchQuery != current.searchQuery ||
+                    previous.status != current.status,
+                builder: (context, state) {
+                  return DraggableScrollableSheet(
+                    controller: _sheetController,
+                    initialChildSize: 0.08,
+                    minChildSize: 0.08,
+                    maxChildSize: 0.65,
+                    snap: true,
+                    snapSizes: const [0.08, 0.65],
+                    snapAnimationDuration: const Duration(milliseconds: 200),
+                    builder: (context, scrollController) {
+                      return LayoutBuilder(
+                        builder: (context, constraints) {
+                          final sheetHeight = constraints.maxHeight;
+                          final isMinimized = sheetHeight < 150;
+
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: UIColors.white,
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(24),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.1),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, -2),
+                                ),
+                              ],
+                            ),
+                            child: ListView(
+                              controller: scrollController,
+                              physics: const ClampingScrollPhysics(),
+                              padding: EdgeInsets.zero,
+                              children: [
+                                Center(
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(vertical: 8),
+                                    width: 36,
+                                    height: 4,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(2),
+                                    ),
+                                  ),
+                                ),
+                                if (!isMinimized) ...[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 8,
+                                        height: 8,
+                                        decoration: BoxDecoration(
+                                          color: _currentPage == 0
+                                              ? const Color(0xFFFF3B30)
+                                              : Colors.grey[300],
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Container(
+                                        width: 8,
+                                        height: 8,
+                                        decoration: BoxDecoration(
+                                          color: _currentPage == 1
+                                              ? const Color(0xFFFF3B30)
+                                              : Colors.grey[300],
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                ],
+                                if (sheetHeight > 60)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 4),
+                                    child: Text(
+                                      _currentPage == 0
+                                          ? 'suggested_title'.tr()
+                                          : 'search_history_title'.tr(),
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                SizedBox(
+                                  height: isMinimized ? 0 : sheetHeight - 120,
+                                  child: PageView(
+                                    controller: _pageController,
+                                    onPageChanged: _onPageChanged,
+                                    physics: const PageScrollPhysics(),
+                                    children: [
+                                      _buildPageContent(
+                                        title: '',
+                                        isMinimized: isMinimized,
+                                        places: state.filteredPlaces,
+                                      ),
+                                      _buildPageContent(
+                                        title: '',
+                                        isMinimized: isMinimized,
+                                        places: state.historyPlaces,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                    height: MediaQuery.of(context).padding.bottom),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
             ),
 
             const HospitalFinderQuickActions(),
@@ -360,6 +382,8 @@ class _HospitalFinderBodyState extends State<_HospitalFinderBody> {
     required List<MedicalPlace> places,
   }) {
     if (isMinimized) return const SizedBox.shrink();
+
+    final limitedPlaces = places.take(10).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -378,25 +402,25 @@ class _HospitalFinderBodyState extends State<_HospitalFinderBody> {
           const SizedBox(height: 12),
         ],
         Expanded(
-          child: places.isEmpty
+          child: limitedPlaces.isEmpty
               ? BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
             builder: (context, state) {
               if (state.status == BlocStatus.loading) {
                 return const Center(child: CircularProgressIndicator());
               }
-              return const Center(
-                child: Text('Không tìm thấy cơ sở y tế nào gần đây.'),
+              return Center(
+                child: Text('no_places_found'.tr()),
               );
             },
           )
               : ListView.separated(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 16, vertical: 8),
-            itemCount: places.length,
+            padding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            itemCount: limitedPlaces.length,
             separatorBuilder: (context, index) =>
             const SizedBox(height: 12),
             itemBuilder: (context, index) {
-              final place = places[index];
+              final place = limitedPlaces[index];
               return GestureDetector(
                 onTap: () => context
                     .read<HospitalFinderCubit>()
