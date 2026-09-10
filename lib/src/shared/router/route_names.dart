@@ -23,6 +23,7 @@ class RouteNames {
   static const activity = '/activity';
   static const chatbot = '/chatbot';
   static const nutrition = '/nutrition';
+  static const nutrition_food_search = '/nutrition/food_search';
   static const profile = '/profile';
   static const medicine_search = '/medicine-search';
 }

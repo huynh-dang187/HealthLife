@@ -19,6 +19,12 @@ import 'package:healthlife/src/features/hospital_finder/presentation/pages/hospi
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
 import 'package:healthlife/src/features/medicine_search/presentation/cubit/medicine_search_cubit.dart';
 import 'package:healthlife/src/features/medicine_search/presentation/page/medicine_search_page.dart';
+import 'package:healthlife/src/features/nutrition/data/datasources/nutrition_remote_data_source.dart';
+import 'package:healthlife/src/features/nutrition/data/repositories/nutrition_repository.dart';
+import 'package:healthlife/src/features/nutrition/presentation/cubit/food_search_cubit.dart';
+import 'package:healthlife/src/features/nutrition/presentation/cubit/nutrition_dashboard_cubit.dart';
+import 'package:healthlife/src/features/nutrition/presentation/pages/food_search_screen.dart';
+import 'package:healthlife/src/features/nutrition/presentation/pages/nutrition_dashboard_screen.dart';
 import 'package:healthlife/src/features/profile/presentation/pages/profile_screen.dart';
 import 'package:healthlife/src/features/signIn/data/models/otp_args_model.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/phone_input_screen.dart';
@@ -28,7 +34,6 @@ import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.
 import 'package:healthlife/src/features/tab_bar/presentation/page/activity_screen.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/page/chatbot_screen.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_screen.dart';
-import 'package:healthlife/src/features/tab_bar/presentation/page/nutrition_screen.dart';
 import 'package:healthlife/src/features/water_reminder/presentation/pages/water_reminder_screen.dart';
 
 import '../../features/signIn/presentation/page/otp_screen.dart';
@@ -95,6 +100,17 @@ class AppRouter {
       _route(RouteNames.hospital_finder, (_) => const HospitalScreen()),
       _route(RouteNames.water_reminder, (_) => const WaterReminderScreen()),
 
+      // Nutrition: tìm kiếm thực phẩm đẩy lên từ dashboard
+      _route(
+        RouteNames.nutrition_food_search,
+        (_) => BlocProvider(
+          create: (context) => FoodSearchCubit(
+            NutritionRepository(NutritionRemoteDataSource()),
+          ),
+          child: const FoodSearchScreen(),
+        ),
+      ),
+
       // Router bottom bar
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
@@ -110,7 +126,15 @@ class AppRouter {
           ),
           StatefulShellBranch(
             routes: [
-              _route(RouteNames.nutrition, (_) => const NutritionScreen()),
+              _route(
+                RouteNames.nutrition,
+                (_) => BlocProvider(
+                  create: (context) => NutritionDashboardCubit(
+                    NutritionRepository(NutritionRemoteDataSource()),
+                  ),
+                  child: const NutritionDashboardScreen(),
+                ),
+              ),
             ],
           ),
           StatefulShellBranch(
