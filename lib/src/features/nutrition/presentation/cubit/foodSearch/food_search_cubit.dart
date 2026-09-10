@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../shared/enums/bloc_status.dart';
-import '../../data/model/food_model.dart';
-import '../../data/repositories/nutrition_repository.dart';
-import '../../data/utils/nutrition_math.dart';
+import '../../../../../shared/enums/bloc_status.dart';
+import '../../../data/model/food_model.dart';
+import '../../../data/repositories/nutrition_repository.dart';
+import '../../../data/utils/nutrition_math.dart';
 import 'food_search_state.dart';
 
 class FoodSearchCubit extends Cubit<FoodSearchState> {

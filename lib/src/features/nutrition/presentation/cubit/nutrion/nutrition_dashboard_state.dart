@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../shared/enums/bloc_status.dart';
-import '../../data/model/daily_target_model.dart';
-import '../../data/model/food_model.dart';
-import '../../data/model/meal_log_model.dart';
+import '../../../../../shared/enums/bloc_status.dart';
+import '../../../data/model/daily_target_model.dart';
+import '../../../data/model/food_model.dart';
+import '../../../data/model/meal_log_model.dart';
 
 enum NutritionPeriod { day, week, month, year }
 

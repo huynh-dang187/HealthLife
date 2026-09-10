@@ -11,8 +11,8 @@ import 'package:healthlife/src/core/presentation/widgets/text_field.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
 
 import '../../data/model/food_model.dart';
-import '../cubit/food_search_cubit.dart';
-import '../cubit/food_search_state.dart';
+import '../cubit/foodSearch/food_search_cubit.dart';
+import '../cubit/foodSearch/food_search_state.dart';
 import '../widgets/add_food_amount_sheet.dart';
 
 class FoodSearchScreen extends StatefulWidget {
@@ -100,8 +100,10 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
                     padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
                     itemCount: state.results.length,
                     separatorBuilder: (context, index) => 10.gap,
-                    itemBuilder: (context, index) =>
-                        _FoodTile(food: state.results[index], onTap: _selectFood),
+                    itemBuilder: (context, index) => _FoodTile(
+                      food: state.results[index],
+                      onTap: _selectFood,
+                    ),
                   );
                 },
               ),

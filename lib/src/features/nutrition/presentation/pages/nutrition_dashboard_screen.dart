@@ -12,14 +12,13 @@ import 'package:healthlife/src/shared/router/route_names.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/model/meal_log_model.dart';
-import '../cubit/nutrition_dashboard_cubit.dart';
-import '../cubit/nutrition_dashboard_state.dart';
+import '../cubit/nutrion/nutrition_dashboard_cubit.dart';
+import '../cubit/nutrion/nutrition_dashboard_state.dart';
 import '../widgets/add_food_method_sheet.dart';
 import '../widgets/calories_progress_ring.dart';
 import '../widgets/macro_card.dart';
 import '../widgets/meal_log_tile.dart';
 import '../widgets/period_selector.dart';
-import '../widgets/tab_aware_sheet.dart';
 
 class NutritionDashboardScreen extends StatefulWidget {
   const NutritionDashboardScreen({super.key});
@@ -55,10 +54,11 @@ class _NutritionDashboardScreenState extends State<NutritionDashboardScreen> {
   Future<void> _showLogDetail(MealLogModel log) async {
     final delete = await showModalBottomSheet<bool>(
       context: context,
-      backgroundColor: Colors.transparent,
-      useSafeArea: false,
-      builder: (context) =>
-          buildTabSafeSheet(context: context, child: _LogDetailSheet(log: log)),
+      backgroundColor: UIColors.lightCard,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => _LogDetailSheet(log: log),
     );
     if (delete == true && mounted) {
       await context.read<NutritionDashboardCubit>().deleteLog(log);
@@ -116,7 +116,8 @@ class _NutritionDashboardScreenState extends State<NutritionDashboardScreen> {
                     12.gap,
                     AppButton.outline(
                       title: 'Thử lại',
-                      onTap: () => context.read<NutritionDashboardCubit>().load(),
+                      onTap: () =>
+                          context.read<NutritionDashboardCubit>().load(),
                     ),
                   ],
                 ),
@@ -406,8 +407,7 @@ class _AllValuesCard extends StatelessWidget {
               ),
               _ValueChip(
                 label: 'Chất béo',
-                value:
-                    '${state.consumed.fat.round()}/${targets.fat.round()}g',
+                value: '${state.consumed.fat.round()}/${targets.fat.round()}g',
               ),
               _ValueChip(
                 label: 'Chất xơ',

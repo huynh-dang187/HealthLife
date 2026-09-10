@@ -1,14 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../shared/enums/bloc_status.dart';
-import '../../data/model/food_model.dart';
-import '../../data/model/meal_log_model.dart';
-import '../../data/repositories/nutrition_repository.dart';
+import '../../../../../shared/enums/bloc_status.dart';
+import '../../../data/model/food_model.dart';
+import '../../../data/model/meal_log_model.dart';
+import '../../../data/repositories/nutrition_repository.dart';
 import 'nutrition_dashboard_state.dart';
 
 class NutritionDashboardCubit extends Cubit<NutritionDashboardState> {
-  NutritionDashboardCubit(this._repository) : super(const NutritionDashboardState());
+  NutritionDashboardCubit(this._repository)
+    : super(const NutritionDashboardState());
 
   final NutritionRepository _repository;
 
@@ -20,13 +21,15 @@ class NutritionDashboardCubit extends Cubit<NutritionDashboardState> {
       final logs = await _repository.getMealLogsInRange(range.start, range.end);
       final totals = _sumLevels(logs);
 
-      emit(state.copyWith(
-        status: BlocStatus.success,
-        targets: targets,
-        consumed: totals,
-        logs: logs,
-        error: null,
-      ));
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          targets: targets,
+          consumed: totals,
+          logs: logs,
+          error: null,
+        ),
+      );
     } catch (e, st) {
       debugPrint('NutritionDashboard load failed: $e\n$st');
       emit(state.copyWith(status: BlocStatus.failure, error: e.toString()));
@@ -46,16 +49,18 @@ class NutritionDashboardCubit extends Cubit<NutritionDashboardState> {
       await _repository.deleteMealLog(log.id);
     } catch (_) {}
 
-    final logs = List<MealLogModel>.from(state.logs)..removeWhere(
-      (l) => l.id == log.id,
-    );
+    final logs = List<MealLogModel>.from(state.logs)
+      ..removeWhere(
+        (l) => l.id == log.id,
+      );
     emit(state.copyWith(logs: logs, consumed: _sumLevels(logs)));
   }
 
   static FoodNutrients _sumLevels(List<MealLogModel> logs) {
     var total = const FoodNutrients();
     for (final log in logs) {
-      total = total +
+      total =
+          total +
           FoodNutrients(
             calo: log.calo,
             protein: log.protein,

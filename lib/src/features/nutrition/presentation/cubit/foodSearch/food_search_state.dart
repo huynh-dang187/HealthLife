@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../data/model/food_model.dart';
-import '../../../../shared/enums/bloc_status.dart';
+import '../../../../../shared/enums/bloc_status.dart';
+import '../../../data/model/food_model.dart';
 
 class FoodSearchState extends Equatable {
   const FoodSearchState({
