@@ -17,6 +17,7 @@ import 'package:healthlife/src/features/health_news/presentation/pages/news_webv
 import 'package:healthlife/src/features/home/presentation/pages/home_screen.dart';
 import 'package:healthlife/src/features/hospital_finder/presentation/pages/hospital_finder_screen.dart';
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
+import 'package:healthlife/src/features/map/presentation/page/map_page.dart';
 import 'package:healthlife/src/features/medicine_search/presentation/cubit/medicine_search_cubit.dart';
 import 'package:healthlife/src/features/medicine_search/presentation/page/medicine_search_page.dart';
 import 'package:healthlife/src/features/nutrition/data/datasources/nutrition_remote_data_source.dart';
@@ -42,7 +43,6 @@ import 'route_names.dart';
 class AppRouter {
   AppRouter._();
 
-  // Danh sách các route công khai không bắt buộc phải đăng nhập
   static const _publicRoutes = [
     RouteNames.splash,
     RouteNames.introduction,
@@ -51,14 +51,13 @@ class AppRouter {
     RouteNames.phone_otp,
     RouteNames.home,
     RouteNames.medicine_search,
+    RouteNames.map,
   ];
 
   static final GoRouter router = GoRouter(
-
-    initialLocation: '/medicine-search',
+    initialLocation: RouteNames.map, // Đặt làm màn hình mặc định khởi chạy
     redirect: _guard,
     routes: [
-      // Router flow newbie
       _route(RouteNames.splash, (_) => const SplashScreen()),
       _route(RouteNames.introduction, (_) => const IntroductionScreen()),
       _route(RouteNames.signIn, (_) => const SigninScreen()),
@@ -73,7 +72,6 @@ class AppRouter {
       _route(RouteNames.profile_height, (_) => const ProfileHeight()),
       _route(RouteNames.profile_weight, (_) => const ProfileWeightScreen()),
 
-      // Route tra cứu thuốc bọc BlocProvider
       _route(
         RouteNames.medicine_search,
         (_) => BlocProvider(
@@ -82,7 +80,9 @@ class AppRouter {
         ),
       ),
 
-      // Router homeScreen features
+      // Route chính thức của MapPage
+      _route(RouteNames.map, (_) => const MapPage()),
+
       _route(RouteNames.health_news, (_) => const HealthNewsScreen()),
       GoRoute(
         path: RouteNames.news_webview,
@@ -95,7 +95,6 @@ class AppRouter {
             NewsDetailScreen(article: state.extra as NewsArticleModel),
       ),
 
-      // Router HomeScreen QuickActions
       _route(RouteNames.sos_device, (_) => const SosDeviceScreen()),
       _route(RouteNames.drug_lookup, (_) => const DrugLookScreen()),
       _route(RouteNames.hospital_finder, (_) => const HospitalScreen()),
@@ -161,11 +160,11 @@ class AppRouter {
     // TH1: Đang ở Splash, Home hoặc Tra cứu thuốc khi ép test — bỏ qua điều hướng
     if (currentPath == RouteNames.splash ||
         currentPath == RouteNames.home ||
-        currentPath == RouteNames.medicine_search) {
+        currentPath == RouteNames.medicine_search ||
+        currentPath == RouteNames.map) {
       return null;
     }
 
-    // TH2: Chưa đăng nhập mà cố vào route cần đăng nhập → đá về SignIn
     if (user == null) {
       if (_publicRoutes.contains(currentPath)) {
         return null;
@@ -173,18 +172,15 @@ class AppRouter {
       return RouteNames.signIn;
     }
 
-    // TH3: Đã đăng nhập nhưng đang cố quay lại SignIn/Introduction → đẩy đi tiếp
     if (_publicRoutes.contains(currentPath)) {
       final completed = await _isProfileCompleted(user.uid);
       return completed ? RouteNames.home : RouteNames.profile_name;
     }
 
-    // TH4: Đã đăng nhập, đang ở trong luồng điền hồ sơ → cho phép
     if (currentPath.startsWith('/profile_')) {
       return null;
     }
 
-    // TH5: Đã đăng nhập, cố vào route khác nhưng CHƯA hoàn thiện hồ sơ
     final completed = await _isProfileCompleted(user.uid);
     if (!completed) {
       return RouteNames.profile_name;
