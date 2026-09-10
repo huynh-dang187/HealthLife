@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // daily_tips: mọi người đọc được (tip sức khỏe), ghi qua backend
+    match /daily_tips/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // foods: kho dữ liệu thực phẩm, user đã đăng nhập đọc được để tìm kiếm;
+    // ghi chỉ qua script import (REST admin)
+    match /foods/{foodId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    // users: chỉ người đó (đã xác thực) đọc/ghi profile của mình
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      // meal_logs: nhật ký ăn, chỉ chủ sở hữu đọc/ghi
+      match /meal_logs/{logId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // các collection khác: mặc định chặn
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
