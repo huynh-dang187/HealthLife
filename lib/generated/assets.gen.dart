@@ -153,6 +153,18 @@ class $AssetsSvgGen {
   SvgGenImage get icArrowLeft =>
       const SvgGenImage('assets/svg/ic_arrow_left.svg');
 
+  /// File path: assets/svg/ic_changeInfo.svg
+  SvgGenImage get icChangeInfo =>
+      const SvgGenImage('assets/svg/ic_changeInfo.svg');
+
+  /// File path: assets/svg/ic_changeLanguage.svg
+  SvgGenImage get icChangeLanguage =>
+      const SvgGenImage('assets/svg/ic_changeLanguage.svg');
+
+  /// File path: assets/svg/ic_chevron_right.svg
+  SvgGenImage get icChevronRight =>
+      const SvgGenImage('assets/svg/ic_chevron_right.svg');
+
   /// File path: assets/svg/ic_close.svg
   SvgGenImage get icClose => const SvgGenImage('assets/svg/ic_close.svg');
 
@@ -164,6 +176,9 @@ class $AssetsSvgGen {
 
   /// File path: assets/svg/ic_email.svg
   SvgGenImage get icEmail => const SvgGenImage('assets/svg/ic_email.svg');
+
+  /// File path: assets/svg/ic_exercise.svg
+  SvgGenImage get icExercise => const SvgGenImage('assets/svg/ic_exercise.svg');
 
   /// File path: assets/svg/ic_extension.svg
   SvgGenImage get icExtension =>
@@ -192,6 +207,9 @@ class $AssetsSvgGen {
   SvgGenImage get icPhoneLogin =>
       const SvgGenImage('assets/svg/ic_phone_login.svg');
 
+  /// File path: assets/svg/ic_sponsor.svg
+  SvgGenImage get icSponsor => const SvgGenImage('assets/svg/ic_sponsor.svg');
+
   /// File path: assets/svg/icon_search.svg
   SvgGenImage get iconSearch => const SvgGenImage('assets/svg/icon_search.svg');
 
@@ -199,10 +217,14 @@ class $AssetsSvgGen {
   List<dynamic> get values => [
     aGitkeep,
     icArrowLeft,
+    icChangeInfo,
+    icChangeLanguage,
+    icChevronRight,
     icClose,
     icDrawer,
     icDropdown,
     icEmail,
+    icExercise,
     icExtension,
     icEyeOff,
     icEyeOn,
@@ -211,6 +233,7 @@ class $AssetsSvgGen {
     icNotification,
     icNutrion,
     icPhoneLogin,
+    icSponsor,
     iconSearch,
   ];
 }

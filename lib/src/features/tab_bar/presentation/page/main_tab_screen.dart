@@ -23,7 +23,7 @@ class _TabInfo {
 
 final _tabs = [
   _TabInfo(Assets.svg.icHome.svg(width: 25, height: 25), 'Trang chủ'),
-  _TabInfo(Assets.svg.icNutrion.svg(width: 25, height: 25), 'Hoạt động'),
+  _TabInfo(Assets.svg.icExercise.svg(width: 25, height: 25), 'Hoạt động'),
   _TabInfo(Assets.svg.icNutrion.svg(width: 25), 'Dinh dưỡng'),
   _TabInfo(Assets.svg.icExtension.svg(width: 25), 'Tiện ích'),
 ];

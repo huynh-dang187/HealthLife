@@ -9,6 +9,7 @@ class UIColors {
   static const Color black = Color(0xFF1A1A1A);
   static const Color white = Colors.white;
   static const Color coral = Color(0xFFE8434F);
+  static const Color error = Color(0xFFC62828);
 
   // Màu dùng chung cho widget
   static const Color text = Color(0xFF1A1A1A);

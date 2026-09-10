@@ -1,0 +1,352 @@
+[
+  {
+    "question": "Người trưởng thành nên uống bao nhiêu nước mỗi ngày?",
+    "options": ["0,5 lít", "1 lít", "2 – 2,5 lít", "4 lít trở lên"],
+    "correctIndex": 2,
+    "explanation": "Trung bình người trưởng thành cần khoảng 2 lít nước/ngày, tăng thêm khi vận động nhiều hoặc trời nóng.",
+    "category": "Nước"
+  },
+  {
+    "question": "Mỗi đêm người trưởng thành nên ngủ khoảng bao lâu?",
+    "options": ["4 giờ", "6 giờ", "7 – 8 giờ", "10 giờ trở lên"],
+    "correctIndex": 2,
+    "explanation": "Giấc ngủ 7–8 tiếng giúp cơ thể phục hồi, tăng miễn dịch và cải thiện trí nhớ.",
+    "category": "Giấc ngủ"
+  },
+  {
+    "question": "Loại thực phẩm nào tốt cho tim mạch?",
+    "options": ["Cá hồi", "Bánh kẹo ngọt", "Nước ngọt có ga", "Đồ chiên rán"],
+    "correctIndex": 0,
+    "explanation": "Cá hồi giàu omega-3 giúp giảm viêm, hạ mỡ máu, tốt cho sức khỏe tim mạch.",
+    "category": "Dinh dưỡng"
+  },
+  {
+    "question": "Theo WHO, nên vận động cường độ vừa tối thiểu bao lâu mỗi tuần?",
+    "options": ["50 phút", "150 phút", "300 phút", "Không bắt buộc"],
+    "correctIndex": 1,
+    "explanation": "Tối thiểu 150 phút/tuần với cường độ vừa giúp giảm nguy cơ bệnh tim, tiểu đường.",
+    "category": "Vận động"
+  },
+  {
+    "question": "Vitamin nào cơ thể tổng hợp được nhờ ánh nắng mặt trời?",
+    "options": ["Vitamin A", "Vitamin B12", "Vitamin C", "Vitamin D"],
+    "correctIndex": 3,
+    "explanation": "Vitamin D được da tổng hợp khi tiếp xúc ánh nắng, rất quan trọng cho xương chắc khỏe.",
+    "category": "Dinh dưỡng"
+  },
+  {
+    "question": "Thiếu chất sắt kéo dài gây bệnh gì?",
+    "options": ["Loãng xương", "Thiếu máu", "Còi xương", "Bướu cổ"],
+    "correctIndex": 1,
+    "explanation": "Sắt cần thiết để tạo hồng cầu; thiếu sắt dẫn đến thiếu máu, mệt mỏi, hoa mắt.",
+    "category": "Dinh dưỡng"
+  },
+  {
+    "question": "Người trưởng thành cần khoảng bao nhiêu canxi mỗi ngày?",
+    "options": ["200 mg", "500 mg", "1000 mg", "3000 mg"],
+    "correctIndex": 3,
+    "explanation": "Người lớn cần khoảng 1000 mg canxi/ngày; phụ nữ mãn kinh có thể cần nhiều hơn.",
+    "category": "Xương khớp"
+  },
+  {
+    "question": "Rửa tay đúng cách phòng bệnh là như thế nào?",
+    "options": ["Chỉ xả qua nước", "Xà phòng ít nhất 20 giây", "Lau bằng khăn khô", "Rửa thật nhanh"],
+    "correctIndex": 1,
+    "explanation": "Rửa tay với xà phòng ít nhất 20 giây giúp loại bỏ vi khuẩn, virus gây bệnh.",
+    "category": "Thói quen"
+  },
+  {
+    "question": "Chỉ số BMI bình thường của người trưởng thành là khoảng?",
+    "options": ["Dưới 18,5", "18,5 – 24,9", "25 – 30", "Trên 30"],
+    "correctIndex": 0,
+    "explanation": "BMI 18,5–24,9 được xem là bình thường; ngoài khoảng này cần theo dõi sức khỏe.",
+    "category": "Tổng quát"
+  },
+  {
+    "question": "Khi bị bỏng nhẹ (nhiệt, không vỡ da), nên làm gì trước tiên?",
+    "options": ["Bôi kem bôi đau ngay", "Ngâm vùng bỏng vào nước mát", "Đắp đá trực tiếp lên da", "Chọc vòm nước bỏng"],
+    "correctIndex": 2,
+    "explanation": "Ngâm nước mát 10–15 phút giúp giảm nhiệt, đau và hạn chế tổn thương sâu hơn.",
+    "category": "An toàn"
+  },
+  {
+    "question": "Loại chất béo nào nên hạn chế trong khẩu phần?",
+    "options": ["Chất béo không bão hòa", "Chất béo bão hòa", "Omega-3", "Chất béo thực vật"],
+    "correctIndex": 1,
+    "explanation": "Chất béo bão hòa (mỡ động vật, đồ chiên) làm tăng cholesterol xấu, nguy cơ tim mạch.",
+    "category": "Dinh dưỡng"
+  },
+  {
+    "question": "Cơ quan nào được ví như 'máy bơm' của cơ thể?",
+    "options": ["Gan", "Phổi", "Tim", "Thận"],
+    "correctIndex": 2,
+    "explanation": "Tim bơm máu đi khắp cơ thể để cung cấp oxy và dưỡng chất cho mọi tế bào.",
+    "category": "Tim mạch"
+  },
+  {
+    "question": "Dấu hiệu điển hình của cơn đau tim?",
+    "options": ["Đau ngực lan lên tay trái", "Đau bụng âm ỉ", "Nhức đầu dữ dội", "Tê bì chân"],
+    "correctIndex": 0,
+    "explanation": "Đau ngực dữ dội lan lên tay trái, hàm, kèm khó thở là triệu chứng đau tim điển hình, cần cấp cứu.",
+    "category": "Tim mạch"
+  },
+  {
+    "question": "Trước khi tập luyện, nên khởi động khoảng bao lâu?",
+    "options": ["30 giây", "Không cần khởi động", "5 – 10 phút", "Trên 30 phút"],
+    "correctIndex": 3,
+    "explanation": "Khởi động 5–10 phút làm nóng cơ, tăng nhịp tim từ từ, giảm nguy cơ chấn thương.",
+    "category": "Vận động"
+  },
+  {
+    "question": "Loại rau nào giàu vitamin K, tốt cho xương?",
+    "options": ["Cải bó xôi, rau xanh", "Khoai tây", "Dưa chuột", "Bầu bí"],
+    "correctIndex": 0,
+    "explanation": "Rau lá xanh giàu vitamin K, hỗ trợ tạo protein giúp xương chắc khỏe.",
+    "category": "Dinh dưỡng"
+  },
+  {
+    "question": "Caffeine trong cà phê có tác dụng gì ngắn hạn?",
+    "options": ["Tăng sự tỉnh táo", "Gây buồn ngủ", "Làm chậm nhịp tim", "Không có tác dụng"],
+    "correctIndex": 1,
+    "explanation": "Caffeine kích thích hệ thần kinh trung ương, tạm thời tăng tỉnh táo và tập trung.",
+    "category": "Thói quen"
+  },
+  {
+    "question": "Về rượu bia, nhận định nào sau đây đúng?",
+    "options": ["Không có mức uống nào an toàn tuyệt đối", "Uống vài ly mỗi ngày có lợi", "Chỉ uống vào cuối tuần là hoàn toàn an toàn", "Rượu đỏ luôn tốt cho tim"],
+    "correctIndex": 3,
+    "explanation": "Rượu bia làm tăng nguy cơ ung thư, bệnh gan, tim mạch — không có ngưỡng nào thực sự an toàn.",
+    "category": "Tổng quát"
+  },
+  {
+    "question": "Hút thuốc lá làm tăng nguy cơ cao nhất của bệnh nào?",
+    "options": ["Ung thư dạ dày", "Ung thư phổi", "Ung thư xương", "Ung thư da"],
+    "correctIndex": 2,
+    "explanation": "Khói thuốc chứa nhiều chất độc; ung thư phổi là bệnh liên quan rõ rệt nhất đến hút thuốc.",
+    "category": "Tổng quát"
+  },
+  {
+    "question": "Để phòng loãng xương cần chú ý bổ sung gì?",
+    "options": ["Sắt và kẽm", "Canxi và vitamin D", "I-ốt", "Không cần bổ sung đặc biệt"],
+    "correctIndex": 0,
+    "explanation": "Canxi là nguyên liệu xây xương, vitamin D giúp hấp thu canxi hiệu quả.",
+    "category": "Xương khớp"
+  },
+  {
+    "question": "Khi ngồi làm việc lâu, nên đứng dậy vận động mỗi bao lâu?",
+    "options": ["Mỗi 2 – 3 tiếng", "Mỗi 30 – 60 phút", "Cả ngày chỉ cần 1 lần", "Không cần đứng dậy"],
+    "correctIndex": 1,
+    "explanation": "Đứng dậy vài phút mỗi 30–60 phút giúp máu lưu thông, giảm đau lưng và cổ.",
+    "category": "Thói quen"
+  },
+  {
+    "question": "Khi tập luyện ở cường độ nhẹ, loại nước nào phù hợp nhất?",
+    "options": ["Nước ngọt có ga", "Nước lọc", "Nước tăng lực", "Sữa"],
+    "correctIndex": 1,
+    "explanation": "Với luyện tập nhẹ ngắn, nước lọc là đủ để bù nước, không thêm đường hoặc chất kích thích.",
+    "category": "Nước"
+  },
+  {
+    "question": "Nên chia bữa ăn chính mỗi ngày như thế nào?",
+    "options": ["1 bữa", "2 bữa", "3 bữa chính, có thể thêm bữa phụ", "Ăn tự do cả ngày"],
+    "correctIndex": 3,
+    "explanation": "3 bữa chính (sáng, trưa, tối) thêm bữa phụ nếu cần giúp duy trì năng lượng ổn định.",
+    "category": "Dinh dưỡng"
+  },
+  {
+    "question": "Bộ ba dấu hiệu điển hình nhận biết đột quỵ (FAST)?",
+    "options": ["Mặt lệch, yếu một tay, nói khó", "Đau bụng, sốt, nổi mẩn", "Nhức đầu, ù tai", "Tê chân, buồn nôn"],
+    "correctIndex": 0,
+    "explanation": "Nhìn mặt lệch, giơ tay yếu, nói ngọng — nghi đột quỵ cần gọi cấp cứu ngay.",
+    "category": "An toàn"
+  },
+  {
+    "question": "Khi người khác bị nghẹn (hóc) đường thở, nên làm gì?",
+    "options": ["Cho uống nhiều nước", "Vỗ mạnh sau lưng, rồi ép bụng (Heimlich)", "Bấm huyệt cổ tay", "Cho nằm nghỉ chờ đỡ"],
+    "correctIndex": 2,
+    "explanation": "Vỗ lưng 5 lần rồi ép bụng 5 lần giúp đẩy dị vật ra khỏi đường thở.",
+    "category": "An toàn"
+  },
+  {
+    "question": "Huyết áp bình thường của người trưởng thành xấp xỉ?",
+    "options": ["140/90 mmHg", "120/80 mmHg", "160/100 mmHg", "190/110 mmHg"],
+    "correctIndex": 1,
+    "explanation": "Huyết áp lý tưởng khoảng 120/80 mmHg; cao hơn kéo dài tăng nguy cơ tim mạch.",
+    "category": "Tim mạch"
+  },
+  {
+    "question": "Chất xơ chủ yếu mang lợi ích gì?",
+    "options": ["Giúp cơ phát triển", "Hỗ trợ tiêu hóa, ngừa táo bón", "Làm tăng đường huyết", "Không có tác dụng"],
+    "correctIndex": 2,
+    "explanation": "Chất xơ làm phân mềm, hỗ trợ nhu động ruột, ngăn táo bón và tốt cho hệ vi sinh.",
+    "category": "Dinh dưỡng"
+  },
+  {
+    "question": "Mỗi ngày người khỏe mạnh có thể ăn bao nhiêu quả trứng?",
+    "options": ["Không giới hạn số lượng", "1 – 2 quả là hợp lý", "Cấm tuyệt đối", "Chỉ ăn lòng đỏ"],
+    "correctIndex": 1,
+    "explanation": "Ăn 1–2 quả/ngày với người khỏe mạnh thường an toàn, trứng giàu đạm và vitamin.",
+    "category": "Dinh dưỡng"
+  },
+  {
+    "question": "Trước khi đi ngủ, nên tránh điều gì để ngủ ngon hơn?",
+    "options": ["Caffeine và nhìn màn hình lâu", "Đọc sách nhẹ nhàng", "Tắm nước ấm", "Thư giãn hít thở"],
+    "correctIndex": 0,
+    "explanation": "Caffeine và ánh sáng xanh ức chế melatonin, khiến khó đi vào giấc ngủ.",
+    "category": "Giấc ngủ"
+  },
+  {
+    "question": "Khi dùng điện thoại, nên giữ khoảng cách đến mắt khoảng bao nhiêu?",
+    "options": ["Dưới 10 cm", "30 – 40 cm", "Trên 1 mét", "Không quan trọng"],
+    "correctIndex": 1,
+    "explanation": "Giữ màn hình cách mắt 30–40 cm, ngang tầm mắt giúp giảm mỏi mắt và nguy cơ cận thị.",
+    "category": "Thói quen"
+  },
+  {
+    "question": "Ngay sau bữa ăn no, có nên chạy bộ cường độ cao không?",
+    "options": ["Có, giúp tiêu hóa nhanh", "Không, chờ ít nhất 1 tiếng", "Tùy sở thích", "Chỉ nên khi ăn ít"],
+    "correctIndex": 1,
+    "explanation": "Vận động mạnh ngay sau ăn dễ gây đau bụng, khó tiêu; nên chờ 1–2 giờ.",
+    "category": "Vận động"
+  },
+  {
+    "question": "Tư thế ngồi làm việc đúng là?",
+    "options": ["Ngả người gù lưng", "Lưng thẳng, màn hình ngang tầm mắt", "Nằm xem máy tính", "Vặn người một bên"],
+    "correctIndex": 1,
+    "explanation": "Lưng thẳng, cẳng chân song song mặt đất, màn hình ngang tầm mắt giảm đau cổ lưng.",
+    "category": "Xương khớp"
+  },
+  {
+    "question": "Khi nhấc vật nặng, tư thế đúng là gì?",
+    "options": ["Cúi gập lưng nhấc nhanh", "Khuỵu gối, giữ lưng thẳng", "Nhấc bằng một tay", "Ngả người ra sau nhấc"],
+    "correctIndex": 1,
+    "explanation": "Khuỵu gối và giữ lưng thẳng để lực dồn vào chân, bảo vệ cột sống khỏi chấn thương.",
+    "category": "An toàn"
+  },
+  {
+    "question": "Cảm giác khát xuất hiện cho biết điều gì?",
+    "options": ["Cơ thể đủ nước", "Cơ thể đã thiếu nước", "Cơ thể thừa nước", "Không liên quan đến nước"],
+    "correctIndex": 1,
+    "explanation": "Khát là dấu hiệu sớm của thiếu nước, nên uống ngay để tránh mất tập trung, mệt mỏi.",
+    "category": "Nước"
+  },
+  {
+    "question": "Cách nào giúp phòng sâu răng hiệu quả?",
+    "options": ["Đánh răng 1 lần/ngày", "Đánh răng 2 lần/ngày kèm chỉ nha khoa", "Chỉ súc miệng nước ngọt", "Không cần vệ sinh nếu không đau"],
+    "correctIndex": 1,
+    "explanation": "Đánh răng 2 lần/ngày và dùng chỉ nha khoa loại bỏ mảng bám, ngăn sâu răng.",
+    "category": "Thói quen"
+  },
+  {
+    "question": "Giờ đi ngủ và thức dậy lý tưởng nên như thế nào?",
+    "options": ["Thay đổi mỗi tối tự do", "Cố định đều đặn", "Ngủ bù nhiều vào cuối tuần", "Ngủ khi nào mệt là được"],
+    "correctIndex": 1,
+    "explanation": "Giờ ngủ cố định giúp đồng hồ sinh học ổn định, ngủ sâu và dậy khỏe khoắn hơn.",
+    "category": "Giấc ngủ"
+  },
+  {
+    "question": "Đọc sách nơi ánh sáng yếu gây ảnh hưởng gì?",
+    "options": ["Mù vĩnh viễn ngay", "Mỏi mắt, khô mắt", "Không ảnh hưởng gì", "Tốt cho mắt"],
+    "correctIndex": 1,
+    "explanation": "Thiếu sáng khiến mắt điều tiết nhiều → mỏi, khô mắt; cần đèn đủ sáng, không gây hại vĩnh viễn.",
+    "category": "Thói quen"
+  },
+  {
+    "question": "Thực phẩm nào giàu kẽm nhất?",
+    "options": ["Cam, chanh", "Hàu và thịt đỏ", "Bơ và dầu ô liu", "Gạo trắng"],
+    "correctIndex": 1,
+    "explanation": "Hàu, thịt đỏ rất giàu kẽm — khoáng chất quan trọng cho miễn dịch và lành vết thương.",
+    "category": "Dinh dưỡng"
+  },
+  {
+    "question": "\"Uống nước ép hoàn toàn thay nước lọc\" — nhận định này đúng không?",
+    "options": ["Đúng, càng tốt", "Sai, vẫn cần nước lọc", "Chỉ đúng buổi sáng", "Chỉ đúng với trẻ em"],
+    "correctIndex": 1,
+    "explanation": "Nước ép chứa đường và calo; nước lọc vẫn là nguồn cung nước chính của cơ thể.",
+    "category": "Nước"
+  },
+  {
+    "question": "Căng thẳng (stress) kéo dài ảnh hưởng đến gì?",
+    "options": ["Chỉ ảnh hưởng tâm lý", "Sức khỏe tim mạch và tinh thần", "Chỉ ảnh hưởng da", "Không ảnh hưởng gì"],
+    "correctIndex": 1,
+    "explanation": "Stress kéo dài làm tăng huyết áp, lo âu, rối loạn giấc ngủ — ảnh hưởng cả thể chất và tinh thần.",
+    "category": "Tâm lý"
+  },
+  {
+    "question": "Dấu hiệu sớm của mất nước là gì?",
+    "options": ["Tiểu nhiều, nước tiểu loãng", "Khát và nước tiểu sậm màu", "Ớn lạnh, nổi da gà", "Không có biểu hiện nào"],
+    "correctIndex": 1,
+    "explanation": "Khát kèm nước tiểu sậm màu là dấu hiệu sớm cơ thể đang thiếu nước.",
+    "category": "Nước"
+  },
+  {
+    "question": "Người khỏe mạnh nên khám sức khỏe định kỳ bao lâu một lần?",
+    "options": ["Không cần thiết", "Khoảng 1 năm/lần", "5 năm/lần", "Chỉ khi có bệnh"],
+    "correctIndex": 1,
+    "explanation": "Khám định kỳ 1 năm/lần giúp phát hiện sớm bệnh mạn tính, tăng hiệu quả điều trị.",
+    "category": "Tổng quát"
+  },
+  {
+    "question": "Thuốc kháng sinh dùng để điều trị bệnh nào?",
+    "options": ["Cảm cúm do virus", "Nhiễm khuẩn do vi khuẩn", "Sốt xuất huyết", "Chỉ dùng giảm đau"],
+    "correctIndex": 1,
+    "explanation": "Kháng sinh chỉ có tác dụng với vi khuẩn, vô dụng với virus như cảm lạnh, cúm.",
+    "category": "Tổng quát"
+  },
+  {
+    "question": "Vì sao phải dùng kháng sinh đúng và đủ liệu trình?",
+    "options": ["Để nhanh tăng cân", "Để tránh kháng kháng sinh", "Để da đẹp hơn", "Để không bị cảm nữa"],
+    "correctIndex": 2,
+    "explanation": "Dùng thiếu liệu trình khiến vi khuẩn sống sót và kháng thuốc, khó trị về sau.",
+    "category": "Tổng quát"
+  },
+  {
+    "question": "Số bước đi bộ mỗi ngày được khuyến nghị cho người trưởng thành?",
+    "options": ["Khoảng 1.000 bước", "7000 – 10.000 bước", "Trên 30.000 bước", "Chỉ cần đi lại trong nhà"],
+    "correctIndex": 1,
+    "explanation": "7000–10000 bước/ngày giúp duy trì cân nặng và sức khỏe tim mạch, dễ đạt được.",
+    "category": "Vận động"
+  },
+  {
+    "question": "Khi làm việc với màn hình máy tính liên tục, nên nghỉ mắt thế nào?",
+    "options": ["Không cần nghỉ", "Mỗi 20 phút nhìn xa 20 giây", "Mỗi 2 giờ nghỉ 5 giây", "Chỉ nghỉ khi mỏi quá"],
+    "correctIndex": 1,
+    "explanation": "Quy tắc 20-20-20: mỗi 20 phút nhìn xa 20 giây giúp giảm mỏi mắt khi dùng máy tính.",
+    "category": "Thói quen"
+  },
+  {
+    "question": "Yếu tố nguy cơ dễ dẫn đến tiểu đường type 2?",
+    "options": ["Ăn quá mặn", "Ít vận động và thừa cân", "Uống ít nước", "Thức khuya đôi khi"],
+    "correctIndex": 1,
+    "explanation": "Ít vận động, thừa cân làm giảm nhạy insulin — yếu tố nguy cơ hàng đầu của tiểu đường type 2.",
+    "category": "Tổng quát"
+  },
+  {
+    "question": "Khi bị chuột rút (vọp bẻ), nên xử lý thế nào?",
+    "options": ["Tiếp tục vận động mạnh", "Nhẹ nhàng duỗi thẳng cơ đang co", "Đập mạnh vào chỗ đau", "Uống nước ngọt nhiều"],
+    "correctIndex": 1,
+    "explanation": "Duỗi nhẹ cơ đang co và xoa bóp giúp cơn chuột rút nhanh dứt, tránh căng cơ thêm.",
+    "category": "An toàn"
+  },
+  {
+    "question": "Giảm cân lành mạnh nên giảm khoảng bao nhiêu mỗi tuần?",
+    "options": ["3 – 5 kg", "0,5 – 1 kg", "Trên 10 kg", "Không cần ăn để giảm nhanh"],
+    "correctIndex": 1,
+    "explanation": "Giảm 0,5–1 kg/tuần bền vững và an toàn; giảm quá nhanh dễ mất cơ và mệt mỏi.",
+    "category": "Tổng quát"
+  },
+  {
+    "question": "Cách bổ sung nước đúng khi tập luyện dài là gì?",
+    "options": ["Uống thật nhiều một lúc", "Uống từng ngụm nhỏ đều đặn", "Không uống để nhẹ người", "Chỉ uống sữa"],
+    "correctIndex": 1,
+    "explanation": "Uống từng ngụm nhỏ đều đặn giúp giữ cân bằng nước, tránh đầy bụng khi vận động.",
+    "category": "Nước"
+  },
+  {
+    "question": "Tắm nước ấm có giúp ngủ ngon không?",
+    "options": ["Không, chỉ tắm nước lạnh", "Có, tắm nước ấm 1 – 2 tiếng trước khi ngủ", "Tắm đúng lúc vừa đi ngủ", "Tắm nước nóng sát giờ ngủ là tốt nhất"],
+    "correctIndex": 1,
+    "explanation": "Nước ấm làm giãn mạch, hạ thân nhiệt nhẹ sau đó — tín hiệu giúp cơ thể dễ vào giấc ngủ.",
+    "category": "Giấc ngủ"
+  }
+]
