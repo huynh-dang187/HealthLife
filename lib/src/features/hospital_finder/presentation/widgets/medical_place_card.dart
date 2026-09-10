@@ -41,22 +41,29 @@ class MedicalPlaceCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Hospital Thumbnail
+                // Hospital Thumbnail from Supabase
                 Container(
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
                     color: Colors.grey.shade200,
                     borderRadius: BorderRadius.circular(12),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        place.category == 'Nhà thuốc'
-                            ? 'https://images.unsplash.com/photo-1586015555751-63bb77f4322a?q=80&w=2070&auto=format&fit=crop'
-                            : 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2053&auto=format&fit=crop',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
+                    image: place.imageUrl != null
+                        ? DecorationImage(
+                            image: NetworkImage(place.imageUrl!),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
                   ),
+                  child: place.imageUrl == null
+                      ? Icon(
+                          place.category == 'Nhà thuốc'
+                              ? Icons.local_pharmacy
+                              : Icons.local_hospital,
+                          color: Colors.redAccent,
+                          size: 32,
+                        )
+                      : null,
                 ),
                 const SizedBox(width: 12),
                 // Hospital Info
@@ -80,7 +87,7 @@ class MedicalPlaceCard extends StatelessWidget {
                           fontSize: 13,
                           color: Colors.grey.shade600,
                         ),
-                        maxLines: 1,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 2),
@@ -90,20 +97,6 @@ class MedicalPlaceCard extends StatelessWidget {
                           fontSize: 13,
                           color: Colors.grey.shade600,
                         ),
-                      ),
-                      const SizedBox(height: 2),
-                      Row(
-                        children: [
-                          Text(
-                            'Đánh giá: ${place.rating}',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          const Icon(Icons.star, size: 14, color: Colors.amber),
-                        ],
                       ),
                     ],
                   ),
@@ -138,8 +131,14 @@ class MedicalPlaceCard extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: () {
-                      // Call phone logic
+                    onPressed: () async {
+                      final Uri phoneUri = Uri(
+                        scheme: 'tel',
+                        path: place.phoneNumber,
+                      );
+                      if (await canLaunchUrl(phoneUri)) {
+                        await launchUrl(phoneUri);
+                      }
                     },
                     icon: const Icon(Icons.phone, color: UIColors.white),
                     label: const Text('Gọi điện'),

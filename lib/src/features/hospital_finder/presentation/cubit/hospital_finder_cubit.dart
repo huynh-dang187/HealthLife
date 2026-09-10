@@ -3,28 +3,34 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../shared/enums/bloc_status.dart';
+import '../../data/datasources/hospital_finder_local_data_source.dart';
 import '../../data/services/hospital_finder_service.dart';
 import '../../domain/entities/medical_place.dart';
 import 'hospital_finder_state.dart';
 
 class HospitalFinderCubit extends Cubit<HospitalFinderState> {
   final HospitalFinderService _hospitalFinderService = HospitalFinderService();
+  final HospitalFinderLocalDataSource _localDataSource = HospitalFinderLocalDataSource();
 
   HospitalFinderCubit() : super(const HospitalFinderState()) {
-    // We will load data once we have location
+    loadSearchHistory();
+  }
+
+  Future<void> loadSearchHistory() async {
+    final history = await _localDataSource.getHistoryPlaces();
+    emit(state.copyWith(historyPlaces: history));
   }
 
   Future<void> loadNearbyFacilities(double lat, double lng) async {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
       final facilities = await _hospitalFinderService.fetchNearbyFacilities(lat, lng);
-      
+
       if (facilities.isEmpty) {
-        // Fallback to mock data if API returns empty
-        final mocks = getMockFacilities(lat, lng);
         emit(state.copyWith(
           status: BlocStatus.success,
-          places: mocks,
+          places: [],
+          errorMessage: 'Không tìm thấy cơ sở y tế nào trong bán kính 5km.',
         ));
       } else {
         emit(state.copyWith(
@@ -33,71 +39,12 @@ class HospitalFinderCubit extends Cubit<HospitalFinderState> {
         ));
       }
     } catch (e) {
-      // Fallback to mock data on error
-      final mocks = getMockFacilities(lat, lng);
       emit(state.copyWith(
-        status: BlocStatus.success,
-        places: mocks,
-        errorMessage: 'Không thể kết nối máy chủ. Đang hiển thị dữ liệu mẫu.',
+        status: BlocStatus.failure,
+        places: [],
+        errorMessage: 'Không thể kết nối với máy chủ. Vui lòng kiểm tra lại mạng.',
       ));
     }
-  }
-
-  List<MedicalPlace> getMockFacilities(double lat, double lng) {
-    return [
-      MedicalPlace(
-        id: 'mock_1',
-        name: 'Bệnh viện Đa khoa Tâm Anh',
-        address: '2B Phổ Quang, Phường 2, Tân Bình',
-        category: 'Bệnh viện',
-        latitude: lat + 0.003,
-        longitude: lng + 0.002,
-        type: 'hospital',
-        distanceKm: 0.35,
-        rating: 4.8,
-        phoneNumber: '1800 6858',
-        isOpen24h: true,
-      ),
-      MedicalPlace(
-        id: 'mock_2',
-        name: 'Bệnh viện Chợ Rẫy',
-        address: '201B Nguyễn Chí Thanh, Phường 12, Quận 5',
-        category: 'Bệnh viện',
-        latitude: lat - 0.004,
-        longitude: lng + 0.003,
-        type: 'hospital',
-        distanceKm: 0.82,
-        rating: 4.5,
-        phoneNumber: '028 3855 4137',
-        isOpen24h: true,
-      ),
-      MedicalPlace(
-        id: 'mock_3',
-        name: 'Nhà thuốc Pharmacity',
-        address: 'Gần vị trí của bạn',
-        category: 'Nhà thuốc',
-        latitude: lat + 0.002,
-        longitude: lng - 0.003,
-        type: 'pharmacy',
-        distanceKm: 0.18,
-        rating: 4.6,
-        phoneNumber: '1800 6821',
-        isOpen24h: false,
-      ),
-      MedicalPlace(
-        id: 'mock_4',
-        name: 'Bệnh viện Nhi Đồng 1',
-        address: '341 Sư Vạn Hạnh, Phường 10, Quận 10',
-        category: 'Bệnh viện',
-        latitude: lat - 0.002,
-        longitude: lng - 0.004,
-        type: 'hospital',
-        distanceKm: 0.55,
-        rating: 4.7,
-        phoneNumber: '028 3927 1119',
-        isOpen24h: true,
-      ),
-    ];
   }
 
   void selectCategory(String category) {
@@ -116,9 +63,10 @@ class HospitalFinderCubit extends Cubit<HospitalFinderState> {
     }
   }
 
+  // Xem thông tin chi tiết: CHƯA lưu lịch sử
   Future<void> showFacilityPopup(MedicalPlace facility) async {
     emit(state.copyWith(activePopupFacility: facility));
-    await selectPlaceAndDrawRoute(facility);
+    await selectPlaceAndDrawRoute(facility, saveToHistory: false);
   }
 
   void closeFacilityPopup() {
@@ -130,12 +78,18 @@ class HospitalFinderCubit extends Cubit<HospitalFinderState> {
   }
 
   Future<void> selectFacility(MedicalPlace facility) async {
-    await selectPlaceAndDrawRoute(facility);
+    await selectPlaceAndDrawRoute(facility, saveToHistory: false);
   }
 
-  Future<void> selectPlaceAndDrawRoute(MedicalPlace place) async {
+  // Hành động 1: Chỉ đường vẽ trên App (Lưu lịch sử khi saveToHistory = true)
+  Future<void> selectPlaceAndDrawRoute(MedicalPlace place, {bool saveToHistory = true}) async {
     emit(state.copyWith(selectedPlace: place, status: BlocStatus.loading));
-    
+
+    if (saveToHistory) {
+      await _localDataSource.savePlaceToHistory(place);
+      await loadSearchHistory();
+    }
+
     if (state.currentLocation == null) {
       emit(state.copyWith(status: BlocStatus.success));
       return;
@@ -151,7 +105,6 @@ class HospitalFinderCubit extends Cubit<HospitalFinderState> {
         routePoints: route,
       ));
     } catch (e) {
-      // Fallback: Nối đường thẳng nếu OSRM lỗi
       final fallbackRoute = [
         state.currentLocation!,
         LatLng(place.latitude, place.longitude),
@@ -164,13 +117,48 @@ class HospitalFinderCubit extends Cubit<HospitalFinderState> {
     }
   }
 
+  // Hành động 2: Mở ứng dụng Bản đồ ngoài (Lưu lịch sử)
   Future<void> openExternalMaps(MedicalPlace place) async {
+    await _localDataSource.savePlaceToHistory(place);
+    await loadSearchHistory();
+
     final url = 'https://www.google.com/maps/dir/?api=1&destination=${place.latitude},${place.longitude}&travelmode=driving';
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     } else {
       emit(state.copyWith(errorMessage: 'Không thể mở Google Maps.'));
     }
+  }
+
+  // Hành động 3: Gọi điện (Lưu lịch sử)
+  Future<void> makePhoneCall(MedicalPlace place) async {
+    await _localDataSource.savePlaceToHistory(place);
+    await loadSearchHistory();
+
+    final cleanNumber = place.phoneNumber.replaceAll(RegExp(r'[^\d+]'), '');
+    final url = 'tel:$cleanNumber';
+
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      emit(state.copyWith(errorMessage: 'Không thể kết nối cuộc gọi.'));
+    }
+  }
+
+  Future<void> navigateToNearestHospital() async {
+    if (state.places.isEmpty) {
+      emit(state.copyWith(
+        errorMessage: 'Chưa có danh sách cơ sở y tế gần bạn.',
+      ));
+      return;
+    }
+
+    final nearest = state.places.firstWhere(
+          (p) => p.type.toLowerCase() == 'hospital' || p.category.toLowerCase() == 'bệnh viện',
+      orElse: () => state.places.first,
+    );
+
+    await openExternalMaps(nearest);
   }
 
   void toggleQuickMenu() {
