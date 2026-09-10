@@ -3,16 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../../../../common/constants/colors.dart';
-import '../cubit/map_cubit.dart';
-import '../cubit/map_state.dart';
+import '../cubit/hospital_finder_cubit.dart';
+import '../cubit/hospital_finder_state.dart';
 
-class MapCanvasView extends StatelessWidget {
+class HospitalFinderCanvasView extends StatelessWidget {
   final MapController? mapController;
-  const MapCanvasView({super.key, this.mapController});
+  const HospitalFinderCanvasView({super.key, this.mapController});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MapCubit, MapState>(
+    return BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
       builder: (context, state) {
         final filteredPlaces = state.filteredPlaces;
 
@@ -21,7 +21,7 @@ class MapCanvasView extends StatelessWidget {
           options: MapOptions(
             initialCenter: state.currentLocation ?? const LatLng(10.7769, 106.7009), // TP.HCM
             initialZoom: 14.0,
-            onTap: (_, __) => context.read<MapCubit>().closeFacilityPopup(),
+            onTap: (_, __) => context.read<HospitalFinderCubit>().closeFacilityPopup(),
           ),
           children: [
             TileLayer(
@@ -84,7 +84,7 @@ class MapCanvasView extends StatelessWidget {
                       onTap: () {
                         try {
                           if (!context.mounted) return;
-                          context.read<MapCubit>().showFacilityPopup(place);
+                          context.read<HospitalFinderCubit>().showFacilityPopup(place);
                           if (mapController != null) {
                             mapController!.move(
                                 LatLng(place.latitude, place.longitude), 15.0);

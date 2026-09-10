@@ -4,35 +4,35 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../../../../common/constants/colors.dart';
-import '../cubit/map_cubit.dart';
-import '../cubit/map_state.dart';
-import '../widgets/map_canvas_view.dart';
-import '../widgets/map_search_header.dart';
+import '../cubit/hospital_finder_cubit.dart';
+import '../cubit/hospital_finder_state.dart';
+import '../widgets/hospital_finder_canvas_view.dart';
+import '../widgets/hospital_finder_search_header.dart';
 import '../widgets/medical_place_card.dart';
-import '../widgets/map_quick_actions.dart';
+import '../widgets/hospital_finder_quick_actions.dart';
 import '../../domain/entities/medical_place.dart';
 import '../../../../shared/enums/bloc_status.dart';
 
-class MapPage extends StatelessWidget {
-  const MapPage({super.key});
+class HospitalFinderPage extends StatelessWidget {
+  const HospitalFinderPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => MapCubit(),
-      child: const _MapBody(),
+      create: (_) => HospitalFinderCubit(),
+      child: const _HospitalFinderBody(),
     );
   }
 }
 
-class _MapBody extends StatefulWidget {
-  const _MapBody();
+class _HospitalFinderBody extends StatefulWidget {
+  const _HospitalFinderBody();
 
   @override
-  State<_MapBody> createState() => _MapBodyState();
+  State<_HospitalFinderBody> createState() => _HospitalFinderBodyState();
 }
 
-class _MapBodyState extends State<_MapBody> {
+class _HospitalFinderBodyState extends State<_HospitalFinderBody> {
   late PageController _pageController;
   late MapController _mapController;
   int _currentPage = 0;
@@ -55,7 +55,7 @@ class _MapBodyState extends State<_MapBody> {
     setState(() {
       _currentPage = page;
     });
-    final cubit = context.read<MapCubit>();
+    final cubit = context.read<HospitalFinderCubit>();
     if (page == 0) {
       cubit.selectCategory('Gần nhất');
     } else {
@@ -64,7 +64,7 @@ class _MapBodyState extends State<_MapBody> {
   }
 
   Future<void> _handleMyLocation() async {
-    final cubit = context.read<MapCubit>();
+    final cubit = context.read<HospitalFinderCubit>();
     final location = await cubit.getCurrentLocation();
 
     if (location != null) {
@@ -110,14 +110,14 @@ class _MapBodyState extends State<_MapBody> {
           children: [
             Column(
               children: [
-                const MapSearchHeader(),
+                const HospitalFinderSearchHeader(),
                 Expanded(
-                  child: MapCanvasView(mapController: _mapController),
+                  child: HospitalFinderCanvasView(mapController: _mapController),
                 ),
               ],
             ),
 
-            BlocBuilder<MapCubit, MapState>(
+            BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
               buildWhen: (p, c) =>
               p.isQuickMenuOpen != c.isQuickMenuOpen ||
                   p.isLoadingLocation != c.isLoadingLocation,
@@ -159,7 +159,7 @@ class _MapBodyState extends State<_MapBody> {
               },
             ),
 
-            BlocBuilder<MapCubit, MapState>(
+            BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
               buildWhen: (p, c) =>
               p.activePopupFacility != c.activePopupFacility ||
                   p.isQuickMenuOpen != c.isQuickMenuOpen,
@@ -173,7 +173,7 @@ class _MapBodyState extends State<_MapBody> {
                     Positioned.fill(
                       child: GestureDetector(
                         onTap: () =>
-                            context.read<MapCubit>().closeFacilityPopup(),
+                            context.read<HospitalFinderCubit>().closeFacilityPopup(),
                         child: Container(
                           color: Colors.black.withValues(alpha: 0.2),
                         ),
@@ -192,7 +192,7 @@ class _MapBodyState extends State<_MapBody> {
                               right: -10,
                               child: GestureDetector(
                                 onTap: () => context
-                                    .read<MapCubit>()
+                                    .read<HospitalFinderCubit>()
                                     .closeFacilityPopup(),
                                 child: Container(
                                   padding: const EdgeInsets.all(6),
@@ -221,7 +221,7 @@ class _MapBodyState extends State<_MapBody> {
               },
             ),
 
-            BlocBuilder<MapCubit, MapState>(
+            BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
               buildWhen: (previous, current) =>
               previous.places != current.places ||
                   previous.selectedCategory != current.selectedCategory ||
@@ -347,7 +347,7 @@ class _MapBodyState extends State<_MapBody> {
               },
             ),
 
-            const MapQuickActions(),
+            const HospitalFinderQuickActions(),
           ],
         ),
       ),
@@ -379,7 +379,7 @@ class _MapBodyState extends State<_MapBody> {
         ],
         Expanded(
           child: places.isEmpty
-              ? BlocBuilder<MapCubit, MapState>(
+              ? BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
             builder: (context, state) {
               if (state.status == BlocStatus.loading) {
                 return const Center(child: CircularProgressIndicator());
@@ -399,7 +399,7 @@ class _MapBodyState extends State<_MapBody> {
               final place = places[index];
               return GestureDetector(
                 onTap: () => context
-                    .read<MapCubit>()
+                    .read<HospitalFinderCubit>()
                     .selectPlaceAndDrawRoute(place),
                 child: MedicalPlaceCard(place: place),
               );

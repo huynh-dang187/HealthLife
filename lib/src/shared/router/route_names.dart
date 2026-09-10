@@ -14,7 +14,7 @@ class RouteNames {
   static const profile_weight = '/profile_weight';
   static const sos_device = '/sos_device';
   static const drug_lookup = '/drug_lookup';
-  static const hospital_finder = '/hospital_finder';
+  static const hospitalFinder = '/hospital_finder';
   static const water_reminder = '/water_reminder';
   static const health_news = '/health_news';
   static const news_webview = '/news_webview';

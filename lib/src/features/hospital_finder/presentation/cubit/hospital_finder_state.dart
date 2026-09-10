@@ -2,7 +2,7 @@ import 'package:latlong2/latlong.dart';
 import '../../../../shared/enums/bloc_status.dart';
 import '../../domain/entities/medical_place.dart';
 
-class MapState {
+class HospitalFinderState {
   final BlocStatus status;
   final String? errorMessage;
   final String selectedCategory;
@@ -15,7 +15,7 @@ class MapState {
   final List<LatLng> routePoints;
   final MedicalPlace? activePopupFacility;
 
-  const MapState({
+  const HospitalFinderState({
     this.status = BlocStatus.initial,
     this.errorMessage,
     this.selectedCategory = 'Gần nhất',
@@ -42,7 +42,7 @@ class MapState {
     }).toList();
   }
 
-  MapState copyWith({
+  HospitalFinderState copyWith({
     BlocStatus? status,
     String? errorMessage,
     String? selectedCategory,
@@ -58,7 +58,7 @@ class MapState {
     bool clearRoutePoints = false,
     bool clearActivePopupFacility = false,
   }) {
-    return MapState(
+    return HospitalFinderState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       selectedCategory: selectedCategory ?? this.selectedCategory,
