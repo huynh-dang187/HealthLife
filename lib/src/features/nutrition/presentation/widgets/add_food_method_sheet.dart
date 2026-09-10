@@ -23,7 +23,7 @@ Future<AddFoodMethod?> showAddFoodMethodSheet(BuildContext context) {
   return showModalBottomSheet<AddFoodMethod>(
     context: context,
     isScrollControlled: true,
-    backgroundColor: Colors.transparent,
+    backgroundColor: Colors.white,
     useSafeArea: false,
     builder: (context) => buildTabSafeSheet(
       context: context,

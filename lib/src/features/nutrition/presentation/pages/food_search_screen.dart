@@ -74,10 +74,7 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
                 builder: (context, state) {
                   if (state.query.trim().isEmpty) {
                     return Center(
-                      child: NoData(
-                        title: 'Nhập từ khoá để tìm kiếm món ăn',
-                        fontSize: 13,
-                      ),
+                      child: AppText.italic('Nhập từ khóa để tìm kiếm món ăn'),
                     );
                   }
                   if (state.status == BlocStatus.loading) {
