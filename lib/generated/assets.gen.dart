@@ -14,6 +14,16 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart' as _svg;
 import 'package:vector_graphics/vector_graphics.dart' as _vg;
 
+class $AssetsDataGen {
+  const $AssetsDataGen();
+
+  /// File path: assets/data/daily_tips.json
+  String get dailyTips => 'assets/data/daily_tips.json';
+
+  /// List of all assets
+  List<String> get values => [dailyTips];
+}
+
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
@@ -27,6 +37,40 @@ class $AssetsPngGen {
   /// File path: assets/png/.gitkeep
   String get aGitkeep => 'assets/png/.gitkeep';
 
+  /// File path: assets/png/ic_camcumhohap (2).png
+  AssetGenImage get icCamcumhohap2 =>
+      const AssetGenImage('assets/png/ic_camcumhohap (2).png');
+
+  /// File path: assets/png/ic_camcumhohap.png
+  AssetGenImage get icCamcumhohap =>
+      const AssetGenImage('assets/png/ic_camcumhohap.png');
+
+  /// File path: assets/png/ic_chatbotAI.png
+  AssetGenImage get icChatbotAI =>
+      const AssetGenImage('assets/png/ic_chatbotAI.png');
+
+  /// File path: assets/png/ic_dalieu (2).png
+  AssetGenImage get icDalieu2 =>
+      const AssetGenImage('assets/png/ic_dalieu (2).png');
+
+  /// File path: assets/png/ic_dalieu.png
+  AssetGenImage get icDalieu => const AssetGenImage('assets/png/ic_dalieu.png');
+
+  /// File path: assets/png/ic_drug_lookup.png
+  AssetGenImage get icDrugLookup =>
+      const AssetGenImage('assets/png/ic_drug_lookup.png');
+
+  /// File path: assets/png/ic_female.png
+  AssetGenImage get icFemale => const AssetGenImage('assets/png/ic_female.png');
+
+  /// File path: assets/png/ic_foot_counter.png
+  AssetGenImage get icFootCounter =>
+      const AssetGenImage('assets/png/ic_foot_counter.png');
+
+  /// File path: assets/png/ic_hospital_finder.png
+  AssetGenImage get icHospitalFinder =>
+      const AssetGenImage('assets/png/ic_hospital_finder.png');
+
   /// File path: assets/png/ic_introduction1.png
   AssetGenImage get icIntroduction1 =>
       const AssetGenImage('assets/png/ic_introduction1.png');
@@ -39,17 +83,63 @@ class $AssetsPngGen {
   AssetGenImage get icIntroduction3 =>
       const AssetGenImage('assets/png/ic_introduction3.png');
 
+  /// File path: assets/png/ic_male.png
+  AssetGenImage get icMale => const AssetGenImage('assets/png/ic_male.png');
+
   /// File path: assets/png/ic_security.png
   AssetGenImage get icSecurity =>
       const AssetGenImage('assets/png/ic_security.png');
 
+  /// File path: assets/png/ic_sos_device.png
+  AssetGenImage get icSosDevice =>
+      const AssetGenImage('assets/png/ic_sos_device.png');
+
+  /// File path: assets/png/ic_sot.png
+  AssetGenImage get icSot => const AssetGenImage('assets/png/ic_sot.png');
+
+  /// File path: assets/png/ic_tien.png
+  AssetGenImage get icTien => const AssetGenImage('assets/png/ic_tien.png');
+
+  /// File path: assets/png/ic_tieuhoa (2).png
+  AssetGenImage get icTieuhoa2 =>
+      const AssetGenImage('assets/png/ic_tieuhoa (2).png');
+
+  /// File path: assets/png/ic_tieuhoa.png
+  AssetGenImage get icTieuhoa =>
+      const AssetGenImage('assets/png/ic_tieuhoa.png');
+
+  /// File path: assets/png/ic_timkiem.png
+  AssetGenImage get icTimkiem =>
+      const AssetGenImage('assets/png/ic_timkiem.png');
+
+  /// File path: assets/png/ic_water_reminder.png
+  AssetGenImage get icWaterReminder =>
+      const AssetGenImage('assets/png/ic_water_reminder.png');
+
   /// List of all assets
   List<dynamic> get values => [
     aGitkeep,
+    icCamcumhohap2,
+    icCamcumhohap,
+    icChatbotAI,
+    icDalieu2,
+    icDalieu,
+    icDrugLookup,
+    icFemale,
+    icFootCounter,
+    icHospitalFinder,
     icIntroduction1,
     icIntroduction2,
     icIntroduction3,
+    icMale,
     icSecurity,
+    icSosDevice,
+    icSot,
+    icTien,
+    icTieuhoa2,
+    icTieuhoa,
+    icTimkiem,
+    icWaterReminder,
   ];
 }
 
@@ -63,11 +153,36 @@ class $AssetsSvgGen {
   SvgGenImage get icArrowLeft =>
       const SvgGenImage('assets/svg/ic_arrow_left.svg');
 
+  /// File path: assets/svg/ic_changeInfo.svg
+  SvgGenImage get icChangeInfo =>
+      const SvgGenImage('assets/svg/ic_changeInfo.svg');
+
+  /// File path: assets/svg/ic_changeLanguage.svg
+  SvgGenImage get icChangeLanguage =>
+      const SvgGenImage('assets/svg/ic_changeLanguage.svg');
+
+  /// File path: assets/svg/ic_chevron_right.svg
+  SvgGenImage get icChevronRight =>
+      const SvgGenImage('assets/svg/ic_chevron_right.svg');
+
+  /// File path: assets/svg/ic_close.svg
+  SvgGenImage get icClose => const SvgGenImage('assets/svg/ic_close.svg');
+
+  /// File path: assets/svg/ic_drawer.svg
+  SvgGenImage get icDrawer => const SvgGenImage('assets/svg/ic_drawer.svg');
+
   /// File path: assets/svg/ic_dropdown.svg
   SvgGenImage get icDropdown => const SvgGenImage('assets/svg/ic_dropdown.svg');
 
   /// File path: assets/svg/ic_email.svg
   SvgGenImage get icEmail => const SvgGenImage('assets/svg/ic_email.svg');
+
+  /// File path: assets/svg/ic_exercise.svg
+  SvgGenImage get icExercise => const SvgGenImage('assets/svg/ic_exercise.svg');
+
+  /// File path: assets/svg/ic_extension.svg
+  SvgGenImage get icExtension =>
+      const SvgGenImage('assets/svg/ic_extension.svg');
 
   /// File path: assets/svg/ic_eyeOff.svg
   SvgGenImage get icEyeOff => const SvgGenImage('assets/svg/ic_eyeOff.svg');
@@ -78,20 +193,48 @@ class $AssetsSvgGen {
   /// File path: assets/svg/ic_gmail.svg
   SvgGenImage get icGmail => const SvgGenImage('assets/svg/ic_gmail.svg');
 
+  /// File path: assets/svg/ic_home.svg
+  SvgGenImage get icHome => const SvgGenImage('assets/svg/ic_home.svg');
+
+  /// File path: assets/svg/ic_notification.svg
+  SvgGenImage get icNotification =>
+      const SvgGenImage('assets/svg/ic_notification.svg');
+
+  /// File path: assets/svg/ic_nutrion.svg
+  SvgGenImage get icNutrion => const SvgGenImage('assets/svg/ic_nutrion.svg');
+
   /// File path: assets/svg/ic_phone_login.svg
   SvgGenImage get icPhoneLogin =>
       const SvgGenImage('assets/svg/ic_phone_login.svg');
+
+  /// File path: assets/svg/ic_sponsor.svg
+  SvgGenImage get icSponsor => const SvgGenImage('assets/svg/ic_sponsor.svg');
+
+  /// File path: assets/svg/icon_search.svg
+  SvgGenImage get iconSearch => const SvgGenImage('assets/svg/icon_search.svg');
 
   /// List of all assets
   List<dynamic> get values => [
     aGitkeep,
     icArrowLeft,
+    icChangeInfo,
+    icChangeLanguage,
+    icChevronRight,
+    icClose,
+    icDrawer,
     icDropdown,
     icEmail,
+    icExercise,
+    icExtension,
     icEyeOff,
     icEyeOn,
     icGmail,
+    icHome,
+    icNotification,
+    icNutrion,
     icPhoneLogin,
+    icSponsor,
+    iconSearch,
   ];
 }
 
@@ -119,6 +262,7 @@ class $AssetsLottieIntroGen {
 }
 
 abstract final class Assets {
+  static const $AssetsDataGen data = $AssetsDataGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsPngGen png = $AssetsPngGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();

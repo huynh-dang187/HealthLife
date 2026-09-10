@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../generated/assets.gen.dart';
+import '../../../../common/extensions/num_x.dart';
+import '../../../../core/presentation/widgets/text.dart';
+
 class MedicineProductCard extends StatelessWidget {
   final String name;
   final String imageUrl;
@@ -35,14 +39,18 @@ class MedicineProductCard extends StatelessWidget {
                   color: const Color(0xFFFDF0F0),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
                   child: imageUrl.isNotEmpty
                       ? Image.network(
                     imageUrl,
-                    fit: BoxFit.contain,
-                    errorBuilder: (_, __, ___) => const Icon(Icons.medication, size: 50, color: Colors.grey),
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) =>
+                        Assets.png.icSot.image(height: 50, fit: BoxFit.contain),
                   )
-                      : const Icon(Icons.medication, size: 50, color: Colors.grey),
+                      : Assets.png.icSot.image(height: 50, fit: BoxFit.contain),
                 ),
               ),
             ),
@@ -51,13 +59,8 @@ class MedicineProductCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    name,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
+                  AppText.bold(name, maxLines: 1),
+                  4.gap,
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(

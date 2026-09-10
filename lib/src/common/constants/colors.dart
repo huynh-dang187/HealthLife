@@ -16,6 +16,8 @@ class UIColors {
   static const Color separate = Color(0xFFE0E0E0);
   static const Color lightGray = Color(0xFFF5F5F5);
   static const Color green = Color(0xFF34C759);
+  static const Color dustyRose = Color(0xFFAA9595);
+  static const Color vibrantBlue = Color(0xFF3700FF);
 
   // Light mode
   static const Color lightBackground = Color(0xFFFFFFFF);

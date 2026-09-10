@@ -35,16 +35,19 @@ class AppButton extends ElevatedButton {
     Widget? titleWidget,
     bool hideKeyboardWhenClick = false,
     Color? color,
+    BorderRadius? borderRadius,
     double? fontSize,
     double height = 46,
     FontWeight? fontWeight,
   }) : super(
-         onPressed: () {
-           if (hideKeyboardWhenClick) {
-             FocusManager.instance.primaryFocus?.unfocus();
-           }
-           onTap();
-         },
+         onPressed: enable
+             ? () {
+                 if (hideKeyboardWhenClick) {
+                   FocusManager.instance.primaryFocus?.unfocus();
+                 }
+                 onTap();
+               }
+             : null,
          style: ButtonStyle(
            padding: WidgetStateProperty.all(EdgeInsets.zero),
            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -77,7 +80,7 @@ class AppButton extends ElevatedButton {
                  titleWidget ??
                  AppText.semiBold(
                    title ?? '',
-                   color: enable ? Colors.white : Colors.white.withAlpha(150),
+                   color: enable ? UIColors.lightCard : UIColors.darkBackground,
                    fontSize: fontSize ?? 15,
                    fontWeight: fontWeight,
                  ),

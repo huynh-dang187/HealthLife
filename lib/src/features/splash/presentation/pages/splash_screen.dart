@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/generated/assets.gen.dart';
@@ -19,13 +21,36 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateAfterDelay();
+    _navigate();
   }
 
-  Future<void> _navigateAfterDelay() async {
+  Future<void> _navigate() async {
+    // Bắt đầu lắng nghe auth NGAY (Firebase đang khôi phục trạng thái đăng nhập)
+    final authFuture = FirebaseAuth.instance.authStateChanges().first;
+
+    // Chờ animation splash
     await Future.delayed(const Duration(seconds: 3));
+    final user = await authFuture;
     if (!mounted) return;
-    context.go(RouteNames.introduction);
+
+    // Chưa đăng nhập → vào màn giới thiệu
+    if (user == null) {
+      context.go(RouteNames.introduction);
+      return;
+    }
+
+    // Đã đăng nhập → kiểm tra hồ sơ đã hoàn thiện chưa
+    final completed = await _isProfileCompleted(user.uid);
+    if (!mounted) return;
+    context.go(completed ? RouteNames.home : RouteNames.profile_name);
+  }
+
+  Future<bool> _isProfileCompleted(String uid) async {
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get();
+    return doc.data()?['profileCompleted'] ?? false;
   }
 
   @override
