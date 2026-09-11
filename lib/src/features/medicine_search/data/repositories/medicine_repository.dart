@@ -10,4 +10,3 @@ class MedicineRepository {
     return _remoteDataSource.searchMedicines(query);
   }
 }
-

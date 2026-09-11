@@ -45,7 +45,12 @@ class MedicineSearchCubit extends Cubit<MedicineSearchState> {
 
     _currentQuery = cleanQuery;
     _page = 0;
-    emit(state.copyWith(status: BlocStatus.loading, isSearching: true, hasMore: true, medicines: []));
+    emit(state.copyWith(
+      status: BlocStatus.loading,
+      isSearching: true,
+      hasMore: true,
+      medicines: [],
+    ));
 
     try {
       final response = await Supabase.instance.client

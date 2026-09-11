@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/presentation/widgets/text.dart';
 import '../../../../../generated/assets.gen.dart';
 import '../../../../common/extensions/num_x.dart';
+import '../../../../core/presentation/widgets/text.dart';
 
 class MedicineProductCard extends StatelessWidget {
   final String name;
@@ -47,7 +47,8 @@ class MedicineProductCard extends StatelessWidget {
                     width: double.infinity,
                     height: double.infinity,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Assets.png.icSot.image(height: 50, fit: BoxFit.contain),
+                    errorBuilder: (_, __, ___) =>
+                        Assets.png.icSot.image(height: 50, fit: BoxFit.contain),
                   )
                       : Assets.png.icSot.image(height: 50, fit: BoxFit.contain),
                 ),

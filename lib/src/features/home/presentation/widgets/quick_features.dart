@@ -74,7 +74,7 @@ final _features = [
     Assets.png.icHospitalFinder.image(),
     'Tìm bệnh viện',
     Colors.teal,
-    RouteNames.hospital_finder,
+    RouteNames.hospitalFinder,
   ),
   _FeatureData(
     Assets.png.icWaterReminder.image(),

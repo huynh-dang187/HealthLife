@@ -26,6 +26,7 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
     _fetchRelatedMedicines();
   }
 
+  // Tải danh sách thuốc cùng danh mục từ Supabase
   Future<void> _fetchRelatedMedicines() async {
     final category = widget.medicine['category'];
     final currentId = widget.medicine['id'];
@@ -114,7 +115,8 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
                             ? Image.network(
                           imageUrl,
                           fit: BoxFit.contain,
-                          errorBuilder: (_, __, ___) => Assets.png.icSot.image(height: 90, fit: BoxFit.contain),
+                          errorBuilder: (_, __, ___) =>
+                              Assets.png.icSot.image(height: 90, fit: BoxFit.contain),
                         )
                             : Assets.png.icSot.image(height: 90, fit: BoxFit.contain),
                       ),
@@ -226,7 +228,8 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
                                     ? Image.network(
                                   relImageUrl,
                                   fit: BoxFit.contain,
-                                  errorBuilder: (_, __, ___) => Assets.png.icSot.image(height: 36, fit: BoxFit.contain),
+                                  errorBuilder: (_, __, ___) =>
+                                      Assets.png.icSot.image(height: 36, fit: BoxFit.contain),
                                 )
                                     : Assets.png.icSot.image(height: 36, fit: BoxFit.contain),
                               ),

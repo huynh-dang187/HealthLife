@@ -32,6 +32,16 @@
   "no_name": "Chưa có tên",
   "see_package_details": "Xem chi tiết trên bao bì...",
   "price": "Giá",
-  "updating": "Đang cập nhật"
+  "updating": "Đang cập nhật",
+
+  "nearest": "Gần nhất",
+  "history": "Lịch sử",
+  "suggested_title": "Gợi ý Bệnh viện & Nhà thuốc",
+  "search_history_title": "Lịch sử tìm kiếm",
+  "no_places_found": "Không tìm thấy cơ sở y tế nào gần đây.",
+  "gps_disabled": "GPS đang tắt",
+  "enable_gps": "Bật GPS",
+  "app_settings": "Cài đặt ứng dụng",
+  "settings": "Cài đặt"
 
 }
