@@ -90,7 +90,9 @@ class _MedicineSearchBodyState extends State<_MedicineSearchBody> {
                     Row(
                       children: [
                         IconButton(
-                          icon: Assets.svg.icArrowLeft.svg(color: UIColors.black),
+                          icon: Assets.svg.icArrowLeft.svg(
+                            colorFilter: const ColorFilter.mode(UIColors.black, BlendMode.srcIn),
+                          ),
                           onPressed: () {
                             if (isSearching) {
                               _searchController.clear();
@@ -104,7 +106,11 @@ class _MedicineSearchBodyState extends State<_MedicineSearchBody> {
                           child: Text(
                             'search_title'.tr(),
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 48),
@@ -137,7 +143,11 @@ class _MedicineSearchBodyState extends State<_MedicineSearchBody> {
                           )
                               : Padding(
                             padding: const EdgeInsets.all(12.0),
-                            child: Assets.png.icTimkiem.image(width: 20, height: 20, fit: BoxFit.contain),
+                            child: Assets.png.icTimkiem.image(
+                              width: 20,
+                              height: 20,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
@@ -179,7 +189,14 @@ class _MedicineSearchBodyState extends State<_MedicineSearchBody> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('popular_otc'.tr(), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black)),
+                          Text(
+                            'popular_otc'.tr(),
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 16),
@@ -270,13 +287,19 @@ class _MedicineSearchBodyState extends State<_MedicineSearchBody> {
                                   child: Row(
                                     children: [
                                       Container(
-                                        width: 70, height: 70,
+                                        width: 70,
+                                        height: 70,
                                         decoration: BoxDecoration(
                                           color: const Color(0xFFFDF0F0),
                                           borderRadius: BorderRadius.circular(10),
                                         ),
                                         child: imageUrl.isNotEmpty
-                                            ? Image.network(imageUrl, fit: BoxFit.contain, errorBuilder: (_, __, ___) => const Icon(Icons.medication, color: Colors.grey))
+                                            ? Image.network(
+                                          imageUrl,
+                                          fit: BoxFit.contain,
+                                          errorBuilder: (_, __, ___) =>
+                                          const Icon(Icons.medication, color: Colors.grey),
+                                        )
                                             : const Icon(Icons.medication, color: Colors.grey),
                                       ),
                                       const SizedBox(width: 16),
@@ -284,17 +307,29 @@ class _MedicineSearchBodyState extends State<_MedicineSearchBody> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(item['name'] ?? 'no_name'.tr(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black)),
+                                            Text(
+                                              item['name'] ?? 'no_name'.tr(),
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                                color: Colors.black,
+                                              ),
+                                            ),
                                             const SizedBox(height: 4),
                                             Text(
                                               item['usage_dosage'] ?? 'see_package_details'.tr(),
                                               style: const TextStyle(fontSize: 12, color: Colors.grey),
-                                              maxLines: 1, overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                             const SizedBox(height: 4),
                                             Text(
                                               '${'price'.tr()}: ${item['price_text'] ?? 'updating'.tr()}',
-                                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black87),
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black87,
+                                              ),
                                             ),
                                           ],
                                         ),

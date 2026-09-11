@@ -73,7 +73,7 @@ class AppRouter {
 
       _route(
         RouteNames.medicine_search,
-        (_) => BlocProvider(
+            (_) => BlocProvider(
           create: (context) => MedicineSearchCubit(),
           child: const MedicineSearchPage(),
         ),
@@ -149,13 +149,12 @@ class AppRouter {
   );
 
   static Future<String?> _guard(
-    BuildContext context,
-    GoRouterState state,
-  ) async {
+      BuildContext context,
+      GoRouterState state,
+      ) async {
     final currentPath = state.matchedLocation;
     final user = FirebaseAuth.instance.currentUser;
 
-    // TH1: Đang ở Splash, Home hoặc Tra cứu thuốc khi ép test — bỏ qua điều hướng
     if (currentPath == RouteNames.splash ||
         currentPath == RouteNames.home ||
         currentPath == RouteNames.medicine_search ||
@@ -184,7 +183,6 @@ class AppRouter {
       return RouteNames.profile_name;
     }
 
-    // Mọi điều kiện đều ổn, cho đi tiếp
     return null;
   }
 

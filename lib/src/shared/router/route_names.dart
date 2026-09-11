@@ -4,7 +4,7 @@ class RouteNames {
   static const splash = '/splash';
   static const introduction = '/introduction';
   static const signIn = '/signIn';
-  static const phone_input = '/phone_input'; // +2 dòng
+  static const phone_input = '/phone_input';
   static const phone_otp = '/phone_otp';
   static const complete_information = '/comple_information';
   static const profile_name = '/profile_name';
