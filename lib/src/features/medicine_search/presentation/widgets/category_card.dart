@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+
 import '../../../../../generated/assets.gen.dart';
 import '../../../../core/presentation/widgets/text.dart';
 
 class CategoryCard extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
-
   final AssetGenImage? iconAsset;
   final List<AssetGenImage>? iconAssets;
 
@@ -22,7 +22,12 @@ class CategoryCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.only(left: 12.0, top: 10.0, right: 8.0, bottom: 8.0),
+        padding: const EdgeInsets.only(
+          left: 12.0,
+          top: 10.0,
+          right: 8.0,
+          bottom: 8.0,
+        ),
         decoration: BoxDecoration(
           color: const Color(0xFFFDF0F0),
           borderRadius: BorderRadius.circular(16.0),
@@ -64,15 +69,17 @@ class CategoryCard extends StatelessWidget {
                         ),
                       ),
                     if (iconAssets != null)
-                      ...iconAssets!.map((asset) => Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 1.0),
-                          child: asset.image(
-                            height: 52.0,
-                            fit: BoxFit.contain,
+                      ...iconAssets!.map(
+                        (asset) => Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 1.0),
+                            child: asset.image(
+                              height: 52.0,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
-                      )),
+                      ),
                   ],
                 ),
               ),

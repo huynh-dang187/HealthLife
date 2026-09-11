@@ -23,6 +23,18 @@
   "no_name": "Unnamed",
   "see_package_details": "See package details...",
   "price": "Price",
-  "updating": "Updating"
+  "updating": "Updating",
+
+
+  "nearest": "Nearest",
+  "history": "History",
+  "suggested_title": "Suggested Hospitals & Pharmacies",
+  "search_history_title": "Search History",
+  "no_places_found": "No nearby medical facilities found.",
+  "gps_disabled": "GPS is disabled",
+  "enable_gps": "Enable GPS",
+  "app_settings": "App Settings",
+  "settings": "Settings"
+
 
 }
