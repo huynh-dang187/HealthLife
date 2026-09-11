@@ -22,7 +22,6 @@ import 'package:healthlife/src/features/medicine_search/presentation/page/medici
 import 'package:healthlife/src/features/nutrition/data/datasources/nutrition_remote_data_source.dart';
 import 'package:healthlife/src/features/nutrition/data/repositories/nutrition_repository.dart';
 import 'package:healthlife/src/features/nutrition/presentation/cubit/foodSearch/food_search_cubit.dart';
-import 'package:healthlife/src/features/nutrition/presentation/cubit/nutrion/nutrition_dashboard_cubit.dart';
 import 'package:healthlife/src/features/nutrition/presentation/pages/food_search_screen.dart';
 import 'package:healthlife/src/features/nutrition/presentation/pages/nutrition_dashboard_screen.dart';
 import 'package:healthlife/src/features/profile/presentation/pages/profile_screen.dart';
@@ -126,12 +125,7 @@ class AppRouter {
             routes: [
               _route(
                 RouteNames.nutrition,
-                (_) => BlocProvider(
-                  create: (context) => NutritionDashboardCubit(
-                    NutritionRepository(NutritionRemoteDataSource()),
-                  ),
-                  child: const NutritionDashboardScreen(),
-                ),
+                (_) => const NutritionDashboardScreen(),
               ),
             ],
           ),

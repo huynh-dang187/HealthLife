@@ -11,7 +11,9 @@ import 'package:healthlife/src/shared/enums/bloc_status.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
 import 'package:intl/intl.dart';
 
+import '../../data/datasources/nutrition_remote_data_source.dart';
 import '../../data/model/meal_log_model.dart';
+import '../../data/repositories/nutrition_repository.dart';
 import '../cubit/nutrion/nutrition_dashboard_cubit.dart';
 import '../cubit/nutrion/nutrition_dashboard_state.dart';
 import '../widgets/add_food_method_sheet.dart';
@@ -20,15 +22,28 @@ import '../widgets/macro_card.dart';
 import '../widgets/meal_log_tile.dart';
 import '../widgets/period_selector.dart';
 
-class NutritionDashboardScreen extends StatefulWidget {
+class NutritionDashboardScreen extends StatelessWidget {
   const NutritionDashboardScreen({super.key});
 
   @override
-  State<NutritionDashboardScreen> createState() =>
-      _NutritionDashboardScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider<NutritionDashboardCubit>(
+      create: (context) => NutritionDashboardCubit(
+        NutritionRepository(NutritionRemoteDataSource()),
+      ),
+      child: const _DashboardScreenView(),
+    );
+  }
 }
 
-class _NutritionDashboardScreenState extends State<NutritionDashboardScreen> {
+class _DashboardScreenView extends StatefulWidget {
+  const _DashboardScreenView();
+
+  @override
+  State<_DashboardScreenView> createState() => _DashboardScreenViewState();
+}
+
+class _DashboardScreenViewState extends State<_DashboardScreenView> {
   @override
   void initState() {
     super.initState();
