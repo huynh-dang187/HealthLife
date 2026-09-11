@@ -52,8 +52,8 @@ class MealLogModel extends Equatable {
       carb: n(map['carb']),
       fiber: n(map['fiber']),
       grams: n(map['grams']),
-      mealTime: (map['mealTime'] as Timestamp?)?.toDate().toLocal() ??
-          DateTime.now(),
+      mealTime:
+          (map['mealTime'] as Timestamp?)?.toDate().toLocal() ?? DateTime.now(),
     );
   }
 
