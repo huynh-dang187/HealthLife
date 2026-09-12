@@ -11,6 +11,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'firebase_options.dart';
 
+// 1. Hàm nhận tin nhắn nền
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  debugPrint('FCM background message: ${message.messageId}');
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -18,9 +25,11 @@ void main() async {
   await Hive.openBox('health_news');
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await GoogleSignIn.instance.initialize(); // giảm độ trễ khi mở Login google
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  await GoogleSignIn.instance.initialize();
   await EasyLocalization.ensureInitialized();
-  // Thay thế đoạn fcm cũ bằng đoạn này:
+
   try {
     final fcm = FirebaseMessaging.instance;
     await fcm.requestPermission(
@@ -29,13 +38,10 @@ void main() async {
       sound: true,
     );
 
-    // Đặt timeout 5 giây để không làm treo app nếu máy ảo thiếu CH Play
     final token = await fcm.getToken().timeout(
       const Duration(seconds: 5),
       onTimeout: () {
-        debugPrint(
-          'FCM_ERROR: Lấy token bị timeout (kiểm tra Google Play Services)',
-        );
+        debugPrint('FCM_ERROR: Lấy token bị timeout');
         return null;
       },
     );
@@ -46,30 +52,46 @@ void main() async {
   } catch (e) {
     debugPrint('FCM_ERROR_CATCH: $e');
   }
+
+  // 2. KHỞI TẠO PLUGIN TRƯỚC KHI TẠO CHANNEL (Bắt buộc)
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  const InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
+  await flutterLocalNotificationsPlugin.initialize(
+    settings: initializationSettings,
+  );
+
   const AndroidNotificationChannel sosChannel = AndroidNotificationChannel(
-    'sos_high_importance_channel', // Đúng ID này phải khớp với Cloud Function
-    'Cảnh báo SOS Khẩn cấp', // Tên hiển thị trong Cài đặt thông báo
-    description:
-        'Kênh phát chuông báo động khi có cảnh báo khẩn cấp từ nút bấm IoT',
-    importance: Importance
-        .max, // Mức cao nhất: Hiện popup đè lên màn hình + Phát chuông
+    'sos_emergency_v3',
+    'Báo động SOS Khẩn cấp',
+    description: 'Kênh phát còi hú khẩn cấp',
+    importance: Importance.max,
     playSound: true,
+    sound: RawResourceAndroidNotificationSound('sos_sound'),
     enableVibration: true,
   );
 
-  // Đăng ký channel này với hệ điều hành Android
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin
       >()
       ?.createNotificationChannel(sosChannel);
-  // Khởi tạo kết nối Supabase
+
+  // 4. Cho phép thông báo hiển thị cả khi app đang mở trực tiếp
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
   await Supabase.initialize(
     url: 'https://ttdvkuuwxynvtenquueb.supabase.co',
-    anonKey: 'sb_publishable_a5Vhhso3Uz-wZwjYRnwGuQ_cxjo2sKi',
+    publishableKey: 'sb_publishable_a5Vhhso3Uz-wZwjYRnwGuQ_cxjo2sKi',
   );
 
   runApp(const MyApp());

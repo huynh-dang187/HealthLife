@@ -97,8 +97,8 @@ export const triggerSosAlert = onRequest(
         android: {
           priority: 'high',
           notification: {
-            channelId: 'sos_high_importance_channel',
-            sound: 'default',
+            channelId: 'sos_emergency_v3', 
+            sound: 'sos_sound',
             priority: 'max',
           },
         },
