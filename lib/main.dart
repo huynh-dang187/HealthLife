@@ -29,7 +29,7 @@ void main() async {
 
   await GoogleSignIn.instance.initialize();
   await EasyLocalization.ensureInitialized();
-  // Thay thế đoạn fcm cũ bằng đoạn này:
+
   try {
     final fcm = FirebaseMessaging.instance;
     await fcm.requestPermission(
