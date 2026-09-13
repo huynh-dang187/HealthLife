@@ -42,6 +42,23 @@
   "gps_disabled": "GPS đang tắt",
   "enable_gps": "Bật GPS",
   "app_settings": "Cài đặt ứng dụng",
-  "settings": "Cài đặt"
+  "settings": "Cài đặt",
+
+  "food_scan_title": "Phân tích dinh dưỡng",
+  "scan_guide_main": "HƯỚNG CAMERA VÀO THỰC PHẨM\nĐỂ BẮT ĐẦU QUÉT",
+  "scan_guide_sub": "Vui lòng giữ thiết bị ổn định để\nnhận diện",
+  "manual_input_title": "Hoặc nhập thủ công",
+  "manual_input_hint": "Nhập tên món",
+  "analyze_button": "Phân tích",
+  "nutrition_result_title": "Kết quả dinh dưỡng",
+  "disclaimer_note": "( ! ) Lưu ý: Việc phân tích có thể sai sót",
+  "camera": "Máy ảnh",
+  "gallery": "Thư viện",
+  "default_food_name": "Món ăn",
+  "calories": "Calo",
+  "protein": "Protein",
+  "fat": "Chất béo",
+  "carbs": "Carbs",
+  "nutrition_assessment": "Đánh giá dinh dưỡng"
 
 }

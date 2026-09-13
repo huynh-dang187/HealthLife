@@ -20,8 +20,11 @@ class $AssetsDataGen {
   /// File path: assets/data/daily_tips.json
   String get dailyTips => 'assets/data/daily_tips.json';
 
+  /// File path: assets/data/health_quiz.json
+  String get healthQuiz => 'assets/data/health_quiz.json';
+
   /// List of all assets
-  List<String> get values => [dailyTips];
+  List<String> get values => [dailyTips, healthQuiz];
 }
 
 class $AssetsLottieGen {
@@ -36,6 +39,13 @@ class $AssetsPngGen {
 
   /// File path: assets/png/.gitkeep
   String get aGitkeep => 'assets/png/.gitkeep';
+
+  /// File path: assets/png/ic_buttoncam.png
+  AssetGenImage get icButtoncam =>
+      const AssetGenImage('assets/png/ic_buttoncam.png');
+
+  /// File path: assets/png/ic_cam.png
+  AssetGenImage get icCam => const AssetGenImage('assets/png/ic_cam.png');
 
   /// File path: assets/png/ic_camcumhohap (2).png
   AssetGenImage get icCamcumhohap2 =>
@@ -63,9 +73,15 @@ class $AssetsPngGen {
   /// File path: assets/png/ic_female.png
   AssetGenImage get icFemale => const AssetGenImage('assets/png/ic_female.png');
 
+  /// File path: assets/png/ic_find.png
+  AssetGenImage get icFind => const AssetGenImage('assets/png/ic_find.png');
+
   /// File path: assets/png/ic_foot_counter.png
   AssetGenImage get icFootCounter =>
       const AssetGenImage('assets/png/ic_foot_counter.png');
+
+  /// File path: assets/png/ic_frame.png
+  AssetGenImage get icFrame => const AssetGenImage('assets/png/ic_frame.png');
 
   /// File path: assets/png/ic_hospital_finder.png
   AssetGenImage get icHospitalFinder =>
@@ -119,6 +135,8 @@ class $AssetsPngGen {
   /// List of all assets
   List<dynamic> get values => [
     aGitkeep,
+    icButtoncam,
+    icCam,
     icCamcumhohap2,
     icCamcumhohap,
     icChatbotAI,
@@ -126,7 +144,9 @@ class $AssetsPngGen {
     icDalieu,
     icDrugLookup,
     icFemale,
+    icFind,
     icFootCounter,
+    icFrame,
     icHospitalFinder,
     icIntroduction1,
     icIntroduction2,

@@ -12,6 +12,10 @@ dependencies:
 
   cupertino_icons: ^1.0.8
 
+  # AI Gemini & Camera
+  google_generative_ai: ^0.4.0
+  image_picker: ^1.1.2
+
   # Firebase
   firebase_core: ^4.6.0
   firebase_auth: ^6.3.0
@@ -85,7 +89,6 @@ flutter:
     - assets/png/
     - assets/translations/
     - assets/data/
-
 
   fonts:
     - family: Inter

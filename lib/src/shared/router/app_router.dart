@@ -34,7 +34,7 @@ import 'package:healthlife/src/features/tab_bar/presentation/page/activity_scree
 import 'package:healthlife/src/features/tab_bar/presentation/page/chatbot_screen.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_screen.dart';
 import 'package:healthlife/src/features/water_reminder/presentation/pages/water_reminder_screen.dart';
-
+import '../../features/food_scan/presentation/pages/food_scan_page.dart';
 import '../../features/signIn/presentation/page/otp_screen.dart';
 import 'route_names.dart';
 
@@ -50,10 +50,11 @@ class AppRouter {
     RouteNames.home,
     RouteNames.medicine_search,
     RouteNames.hospitalFinder,
+
   ];
 
   static final GoRouter router = GoRouter(
-    initialLocation: RouteNames.splash, // Đặt làm màn hình mặc định khởi chạy
+    initialLocation: RouteNames.food_scan, // Đặt làm màn hình mặc định khởi chạy
     redirect: _guard,
     routes: [
       _route(RouteNames.splash, (_) => const SplashScreen()),
@@ -78,7 +79,12 @@ class AppRouter {
         ),
       ),
 
-      // Route chính thức của HospitalFinderPage
+      GoRoute(
+        path: RouteNames.food_scan,
+        name: RouteNames.food_scan,
+        builder: (context, state) => const FoodScanPage(),
+      ),
+
       _route(RouteNames.hospitalFinder, (_) => const HospitalFinderPage()),
 
       _route(RouteNames.health_news, (_) => const HealthNewsScreen()),
