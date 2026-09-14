@@ -54,15 +54,19 @@ class _DashboardScreenViewState extends State<_DashboardScreenView> {
 
   Future<void> _onAddFood() async {
     final method = await showAddFoodMethodSheet(context);
-    if (method != AddFoodMethod.search || !mounted) return;
+    if (method == null || !mounted) return;
 
-    final added = await context.push<bool>(RouteNames.nutrition_food_search);
-    if (added == true && mounted) {
-      await context.read<NutritionDashboardCubit>().reload();
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Đã thêm vào nhật ký')),
-      );
+    if (method == AddFoodMethod.search) {
+      final added = await context.push<bool>(RouteNames.nutrition_food_search);
+      if (added == true && mounted) {
+        await context.read<NutritionDashboardCubit>().reload();
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Đã thêm vào nhật ký')),
+        );
+      }
+    } else if (method == AddFoodMethod.scan) {
+      await context.push(RouteNames.food_scan);
     }
   }
 
