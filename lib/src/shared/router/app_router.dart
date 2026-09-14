@@ -62,19 +62,19 @@ class AppRouter {
     routes: [
       _route(
         RouteNames.splash,
-        (_) => const SplashScreen(),
+            (_) => const SplashScreen(),
       ),
       _route(
         RouteNames.introduction,
-        (_) => const IntroductionScreen(),
+            (_) => const IntroductionScreen(),
       ),
       _route(
         RouteNames.signIn,
-        (_) => const SigninScreen(),
+            (_) => const SigninScreen(),
       ),
       _route(
         RouteNames.phone_input,
-        (_) => const PhoneInputScreen(),
+            (_) => const PhoneInputScreen(),
       ),
       GoRoute(
         path: RouteNames.phone_otp,
@@ -82,28 +82,28 @@ class AppRouter {
       ),
       _route(
         RouteNames.profile_name,
-        (_) => ProfileName(),
+            (_) => ProfileName(),
       ),
       _route(
         RouteNames.profile_gender,
-        (_) => ProfileGender(),
+            (_) => ProfileGender(),
       ),
       _route(
         RouteNames.profile_date,
-        (_) => ProfileDate(),
+            (_) => ProfileDate(),
       ),
       _route(
         RouteNames.profile_height,
-        (_) => const ProfileHeight(),
+            (_) => const ProfileHeight(),
       ),
       _route(
         RouteNames.profile_weight,
-        (_) => const ProfileWeightScreen(),
+            (_) => const ProfileWeightScreen(),
       ),
 
       _route(
         RouteNames.medicine_search,
-        (_) => BlocProvider(
+            (_) => BlocProvider(
           create: (context) => MedicineSearchCubit(),
           child: const MedicineSearchPage(),
         ),
@@ -117,12 +117,12 @@ class AppRouter {
 
       _route(
         RouteNames.hospitalFinder,
-        (_) => const HospitalFinderPage(),
+            (_) => const HospitalFinderPage(),
       ),
 
       _route(
         RouteNames.health_news,
-        (_) => const HealthNewsScreen(),
+            (_) => const HealthNewsScreen(),
       ),
       GoRoute(
         path: RouteNames.news_webview,
@@ -141,26 +141,26 @@ class AppRouter {
         builder: (context, state) {
           final args =
               state.extra as SosAlertArgs? ??
-              SosNotificationService.instance.takePendingAlert() ??
-              const SosAlertArgs();
+                  SosNotificationService.instance.takePendingAlert() ??
+                  const SosAlertArgs();
           return SosAlertPage(args: args);
         },
       ),
       _route(
         RouteNames.activity_dashboard,
-        (_) => const ActivityDashboardPage(),
+            (_) => const ActivityDashboardPage(),
       ),
       _route(
         RouteNames.activity_history,
-        (_) => const ActivityHistoryPage(),
+            (_) => const ActivityHistoryPage(),
       ),
       _route(
         RouteNames.chatbot_conversation,
-        (_) => const ChatConversationPage(),
+            (_) => const ChatConversationPage(),
       ),
       _route(
         RouteNames.nutrition_food_search,
-        (_) => BlocProvider(
+            (_) => BlocProvider(
           create: (context) => FoodSearchCubit(
             NutritionRepository(
               NutritionRemoteDataSource(),
@@ -177,7 +177,7 @@ class AppRouter {
             routes: [
               _route(
                 RouteNames.home,
-                (_) => const HomeScreen(),
+                    (_) => const HomeScreen(),
               ),
             ],
           ),
@@ -185,7 +185,7 @@ class AppRouter {
             routes: [
               _route(
                 RouteNames.activity,
-                (_) => const ActivityDashboardPage(),
+                    (_) => const ActivityDashboardPage(),
               ),
             ],
           ),
@@ -193,7 +193,7 @@ class AppRouter {
             routes: [
               _route(
                 RouteNames.nutrition,
-                (_) => const NutritionDashboardScreen(),
+                    (_) => const NutritionDashboardScreen(),
               ),
             ],
           ),
@@ -201,7 +201,7 @@ class AppRouter {
             routes: [
               _route(
                 RouteNames.profile,
-                (_) => const ProfileScreen(),
+                    (_) => const ProfileScreen(),
               ),
             ],
           ),
@@ -209,7 +209,7 @@ class AppRouter {
             routes: [
               _route(
                 RouteNames.chatbot,
-                (context) => ChatbotIntroPage(
+                    (context) => ChatbotIntroPage(
                   onStartChat: () =>
                       context.push(RouteNames.chatbot_conversation),
                 ),
@@ -222,14 +222,12 @@ class AppRouter {
   );
 
   static Future<String?> _guard(
-    BuildContext context,
-    GoRouterState state,
-  ) async {
+      BuildContext context,
+      GoRouterState state,
+      ) async {
     final currentPath = state.matchedLocation;
     final user = FirebaseAuth.instance.currentUser;
 
-    // Có báo động SOS đang chờ → nhảy thẳng tới màn hình báo động,
-    // bỏ qua splash/auth hoàn toàn (không bị `go(home)` của splash ghi đè).
     if (currentPath != RouteNames.sos_alert &&
         SosNotificationService.instance.hasPendingAlert) {
       return RouteNames.sos_alert;
