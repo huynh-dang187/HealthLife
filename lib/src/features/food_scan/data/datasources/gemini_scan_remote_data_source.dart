@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:google_generative_ai/google_generative_ai.dart';
+
 import '../models/food_nutrition_model.dart';
 
 class GeminiScanRemoteDataSource {
@@ -39,7 +41,7 @@ Phân tích dữ liệu và trả về duy nhất chuỗi JSON (không chứa m�
     final imagePart = DataPart('image/jpeg', imageBytes);
 
     final response = await _model.generateContent([
-      Content.multi([promptPart, imagePart])
+      Content.multi([promptPart, imagePart]),
     ]);
 
     return _parseResponse(response.text);
@@ -47,7 +49,8 @@ Phân tích dữ liệu và trả về duy nhất chuỗi JSON (không chứa m�
 
   /// Phân tích dinh dưỡng qua tên món ăn nhập tay
   Future<FoodNutritionModel> analyzeFoodText(String foodName) async {
-    final prompt = '$_systemInstruction\n\nPhân tích dinh dưỡng món ăn: "$foodName"';
+    final prompt =
+        '$_systemInstruction\n\nPhân tích dinh dưỡng món ăn: "$foodName"';
     final response = await _model.generateContent([Content.text(prompt)]);
     return _parseResponse(response.text);
   }

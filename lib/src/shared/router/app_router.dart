@@ -54,7 +54,7 @@ class AppRouter {
   ];
 
   static final GoRouter router = GoRouter(
-    initialLocation: RouteNames.food_scan, // Đặt làm màn hình mặc định khởi chạy
+    initialLocation: RouteNames.splash, // Đặt làm màn hình mặc định khởi chạy
     redirect: _guard,
     routes: [
       _route(RouteNames.splash, (_) => const SplashScreen()),
