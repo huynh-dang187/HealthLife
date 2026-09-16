@@ -112,265 +112,259 @@ class _HospitalFinderBodyState extends State<_HospitalFinderBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: UIColors.white,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                const HospitalFinderSearchHeader(),
-                Expanded(
-                  child: HospitalFinderCanvasView(mapController: _mapController),
-                ),
-              ],
-            ),
-
-            BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
-              buildWhen: (p, c) =>
-              p.isQuickMenuOpen != c.isQuickMenuOpen ||
-                  p.isLoadingLocation != c.isLoadingLocation,
-              builder: (context, state) {
-                if (state.isQuickMenuOpen) return const SizedBox.shrink();
-                return Positioned(
-                  right: 16,
-                  top: MediaQuery.of(context).size.height * 0.38,
-                  child: GestureDetector(
-                    onTap: _handleMyLocation,
-                    child: Container(
-                      width: 56,
-                      height: 56,
-                      decoration: const BoxDecoration(
-                        color: UIColors.white,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 8,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: state.isLoadingLocation
-                          ? const Center(
-                        child: SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                      )
-                          : const Icon(Icons.my_location, color: Colors.blueAccent),
-                    ),
+    return Theme(
+      data: ThemeData.light().copyWith(
+        scaffoldBackgroundColor: UIColors.white,
+      ),
+      child: Scaffold(
+        backgroundColor: UIColors.white,
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  const HospitalFinderSearchHeader(),
+                  Expanded(
+                    child: HospitalFinderCanvasView(mapController: _mapController),
                   ),
-                );
-              },
-            ),
-
-            BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
-              buildWhen: (p, c) =>
-              p.activePopupFacility != c.activePopupFacility ||
-                  p.isQuickMenuOpen != c.isQuickMenuOpen,
-              builder: (context, state) {
-                if (state.activePopupFacility == null || state.isQuickMenuOpen) {
-                  return const SizedBox.shrink();
-                }
-
-                return Stack(
-                  children: [
-                    Positioned.fill(
-                      child: GestureDetector(
-                        onTap: () =>
-                            context.read<HospitalFinderCubit>().closeFacilityPopup(),
-                        child: Container(
-                          color: Colors.black.withValues(alpha: 0.2),
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            MedicalPlaceCard(place: state.activePopupFacility!),
-                            Positioned(
-                              top: -10,
-                              right: -10,
-                              child: GestureDetector(
-                                onTap: () => context
-                                    .read<HospitalFinderCubit>()
-                                    .closeFacilityPopup(),
-                                child: Container(
-                                  padding: const EdgeInsets.all(6),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 6,
-                                        offset: Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: const Icon(Icons.close,
-                                      size: 20, color: Colors.redAccent),
-                                ),
-                              ),
+                ],
+              ),
+              BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
+                buildWhen: (p, c) =>
+                p.isQuickMenuOpen != c.isQuickMenuOpen ||
+                    p.isLoadingLocation != c.isLoadingLocation,
+                builder: (context, state) {
+                  if (state.isQuickMenuOpen) return const SizedBox.shrink();
+                  return Positioned(
+                    right: 16,
+                    top: MediaQuery.of(context).size.height * 0.38,
+                    child: GestureDetector(
+                      onTap: _handleMyLocation,
+                      child: Container(
+                        width: 56,
+                        height: 56,
+                        decoration: const BoxDecoration(
+                          color: UIColors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 8,
+                              offset: Offset(0, 4),
                             ),
                           ],
                         ),
+                        child: state.isLoadingLocation
+                            ? const Center(
+                          child: SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        )
+                            : const Icon(Icons.my_location, color: Colors.blueAccent),
                       ),
                     ),
-                  ],
-                );
-              },
-            ),
-
-            BlocListener<HospitalFinderCubit, HospitalFinderState>(
-              listenWhen: (previous, current) =>
-              previous.searchQuery != current.searchQuery,
-              listener: (context, state) {
-                if (state.searchQuery.trim().isNotEmpty &&
-                    _sheetController.isAttached) {
-                  _sheetController.animateTo(
-                    0.65,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeOutCubic,
-                  );
-                }
-              },
-              child: BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
-                buildWhen: (previous, current) =>
-                previous.places != current.places ||
-                    previous.historyPlaces != current.historyPlaces ||
-                    previous.selectedCategory != current.selectedCategory ||
-                    previous.searchQuery != current.searchQuery ||
-                    previous.status != current.status,
-                builder: (context, state) {
-                  return DraggableScrollableSheet(
-                    controller: _sheetController,
-                    initialChildSize: 0.08,
-                    minChildSize: 0.08,
-                    maxChildSize: 0.65,
-                    snap: true,
-                    snapSizes: const [0.08, 0.65],
-                    snapAnimationDuration: const Duration(milliseconds: 200),
-                    builder: (context, scrollController) {
-                      return LayoutBuilder(
-                        builder: (context, constraints) {
-                          final sheetHeight = constraints.maxHeight;
-                          final isMinimized = sheetHeight < 150;
-
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: UIColors.white,
-                              borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(24),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, -2),
-                                ),
-                              ],
-                            ),
-                            child: ListView(
-                              controller: scrollController,
-                              physics: const ClampingScrollPhysics(),
-                              padding: EdgeInsets.zero,
-                              children: [
-                                Center(
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(vertical: 8),
-                                    width: 36,
-                                    height: 4,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.circular(2),
-                                    ),
-                                  ),
-                                ),
-                                if (!isMinimized) ...[
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 8,
-                                        height: 8,
-                                        decoration: BoxDecoration(
-                                          color: _currentPage == 0
-                                              ? const Color(0xFFFF3B30)
-                                              : Colors.grey[300],
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Container(
-                                        width: 8,
-                                        height: 8,
-                                        decoration: BoxDecoration(
-                                          color: _currentPage == 1
-                                              ? const Color(0xFFFF3B30)
-                                              : Colors.grey[300],
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 16),
-                                ],
-                                if (sheetHeight > 60)
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 4),
-                                    child: Text(
-                                      _currentPage == 0
-                                          ? 'suggested_title'.tr()
-                                          : 'search_history_title'.tr(),
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                SizedBox(
-                                  height: isMinimized ? 0 : sheetHeight - 120,
-                                  child: PageView(
-                                    controller: _pageController,
-                                    onPageChanged: _onPageChanged,
-                                    physics: const PageScrollPhysics(),
-                                    children: [
-                                      _buildPageContent(
-                                        title: '',
-                                        isMinimized: isMinimized,
-                                        places: state.filteredPlaces,
-                                      ),
-                                      _buildPageContent(
-                                        title: '',
-                                        isMinimized: isMinimized,
-                                        places: state.historyPlaces,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                    height: MediaQuery.of(context).padding.bottom),
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    },
                   );
                 },
               ),
-            ),
+              BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
+                buildWhen: (p, c) =>
+                p.activePopupFacility != c.activePopupFacility ||
+                    p.isQuickMenuOpen != c.isQuickMenuOpen,
+                builder: (context, state) {
+                  if (state.activePopupFacility == null || state.isQuickMenuOpen) {
+                    return const SizedBox.shrink();
+                  }
 
-            const HospitalFinderQuickActions(),
-          ],
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                        child: GestureDetector(
+                          onTap: () => context.read<HospitalFinderCubit>().closeFacilityPopup(),
+                          child: Container(
+                            color: UIColors.black.withOpacity(0.2),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              MedicalPlaceCard(place: state.activePopupFacility!),
+                              Positioned(
+                                top: -10,
+                                right: -10,
+                                child: GestureDetector(
+                                  onTap: () => context.read<HospitalFinderCubit>().closeFacilityPopup(),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(6),
+                                    decoration: const BoxDecoration(
+                                      color: UIColors.white,
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 6,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: const Icon(Icons.close, size: 20, color: Colors.redAccent),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+              BlocListener<HospitalFinderCubit, HospitalFinderState>(
+                listenWhen: (previous, current) => previous.searchQuery != current.searchQuery,
+                listener: (context, state) {
+                  if (state.searchQuery.trim().isNotEmpty && _sheetController.isAttached) {
+                    _sheetController.animateTo(
+                      0.65,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOutCubic,
+                    );
+                  }
+                },
+                child: BlocBuilder<HospitalFinderCubit, HospitalFinderState>(
+                  buildWhen: (previous, current) =>
+                  previous.places != current.places ||
+                      previous.historyPlaces != current.historyPlaces ||
+                      previous.selectedCategory != current.selectedCategory ||
+                      previous.searchQuery != current.searchQuery ||
+                      previous.status != current.status,
+                  builder: (context, state) {
+                    return DraggableScrollableSheet(
+                      controller: _sheetController,
+                      initialChildSize: 0.08,
+                      minChildSize: 0.08,
+                      maxChildSize: 0.65,
+                      snap: true,
+                      snapSizes: const [0.08, 0.65],
+                      snapAnimationDuration: const Duration(milliseconds: 200),
+                      builder: (context, scrollController) {
+                        return LayoutBuilder(
+                          builder: (context, constraints) {
+                            final sheetHeight = constraints.maxHeight;
+                            final isMinimized = sheetHeight < 150;
+
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: UIColors.white,
+                                borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(24),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: UIColors.black.withOpacity(0.1),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, -2),
+                                  ),
+                                ],
+                              ),
+                              child: ListView(
+                                controller: scrollController,
+                                physics: const ClampingScrollPhysics(),
+                                padding: EdgeInsets.zero,
+                                children: [
+                                  Center(
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(vertical: 8),
+                                      width: 36,
+                                      height: 4,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
+                                    ),
+                                  ),
+                                  if (!isMinimized) ...[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 8,
+                                          height: 8,
+                                          decoration: BoxDecoration(
+                                            color: _currentPage == 0
+                                                ? const Color(0xFFFF3B30)
+                                                : Colors.grey[300],
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Container(
+                                          width: 8,
+                                          height: 8,
+                                          decoration: BoxDecoration(
+                                            color: _currentPage == 1
+                                                ? const Color(0xFFFF3B30)
+                                                : Colors.grey[300],
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 16),
+                                  ],
+                                  if (sheetHeight > 60)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                                      child: Text(
+                                        _currentPage == 0
+                                            ? 'suggested_title'.tr()
+                                            : 'search_history_title'.tr(),
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: UIColors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  SizedBox(
+                                    height: isMinimized ? 0 : sheetHeight - 120,
+                                    child: PageView(
+                                      controller: _pageController,
+                                      onPageChanged: _onPageChanged,
+                                      physics: const PageScrollPhysics(),
+                                      children: [
+                                        _buildPageContent(
+                                          title: '',
+                                          isMinimized: isMinimized,
+                                          places: state.filteredPlaces,
+                                        ),
+                                        _buildPageContent(
+                                          title: '',
+                                          isMinimized: isMinimized,
+                                          places: state.historyPlaces,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: MediaQuery.of(context).padding.bottom),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+              const HospitalFinderQuickActions(),
+            ],
+          ),
         ),
       ),
     );
@@ -396,6 +390,7 @@ class _HospitalFinderBodyState extends State<_HospitalFinderBody> {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
+                color: UIColors.black,
               ),
             ),
           ),
@@ -409,16 +404,17 @@ class _HospitalFinderBodyState extends State<_HospitalFinderBody> {
                 return const Center(child: CircularProgressIndicator());
               }
               return Center(
-                child: Text('no_places_found'.tr()),
+                child: Text(
+                  'no_places_found'.tr(),
+                  style: const TextStyle(color: Colors.grey, fontSize: 15),
+                ),
               );
             },
           )
               : ListView.separated(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             itemCount: limitedPlaces.length,
-            separatorBuilder: (context, index) =>
-            const SizedBox(height: 12),
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
               final place = limitedPlaces[index];
               return GestureDetector(

@@ -26,4 +26,6 @@ class RouteNames {
   static const nutrition_food_search = '/nutrition/food_search';
   static const profile = '/profile';
   static const medicine_search = '/medicine-search';
+  static const food_scan = '/food_scan';
+
 }
