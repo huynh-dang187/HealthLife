@@ -31,7 +31,8 @@ import 'package:healthlife/src/features/profile/presentation/pages/profile_scree
 import 'package:healthlife/src/features/signIn/data/models/otp_args_model.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/phone_input_screen.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/signIn_screen.dart';
-import 'package:healthlife/src/features/sos_iot/presentation/pages/sos_device_screen.dart';
+import 'package:healthlife/src/features/sos_iot/data/models/sos_alert_args.dart';
+import 'package:healthlife/src/features/sos_iot/presentation/pages/sos_alert_page.dart';
 import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/page/chatbot_screen.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_screen.dart';
