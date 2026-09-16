@@ -53,3 +53,5 @@ app.*.map.json
 
 # 
 .vscode/launch.json
+# API keys / secrets
+env.json
