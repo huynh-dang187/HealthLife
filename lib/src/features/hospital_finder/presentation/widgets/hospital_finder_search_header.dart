@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:healthlife/generated/assets.gen.dart';
+
+import '../../../../../generated/assets.gen.dart';
 import '../../../../common/constants/colors.dart';
 import '../cubit/hospital_finder_cubit.dart';
 
@@ -14,11 +16,19 @@ class HospitalFinderSearchHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 1. Back Button and Title Row
           Row(
             children: [
               IconButton(
-                onPressed: () => Navigator.maybePop(context),
+                onPressed: () {
+                  final cubit = context.read<HospitalFinderCubit>();
+                  if (cubit.state.isQuickMenuOpen) {
+                    cubit.toggleQuickMenu();
+                  } else if (cubit.state.activePopupFacility != null) {
+                    cubit.closeFacilityPopup();
+                  } else {
+                    Navigator.maybePop(context);
+                  }
+                },
                 icon: Assets.svg.icArrowLeft.svg(
                   colorFilter: const ColorFilter.mode(
                     UIColors.black,
@@ -26,29 +36,26 @@ class HospitalFinderSearchHeader extends StatelessWidget {
                   ),
                 ),
               ),
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Tìm bệnh viện',
+                  'search_title'.tr(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: UIColors.black,
                   ),
                 ),
               ),
-              const SizedBox(width: 48), // Balancing back button
+              const SizedBox(width: 48),
             ],
           ),
-
           const SizedBox(height: 8),
-
-          // 2. Search Bar - Full Width
           Container(
             width: double.infinity,
             height: 50,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: UIColors.white,
               borderRadius: BorderRadius.circular(30),
               border: Border.all(
                 color: const Color(0xFFE5B8B7),
@@ -59,7 +66,7 @@ class HospitalFinderSearchHeader extends StatelessWidget {
               onChanged: (value) =>
                   context.read<HospitalFinderCubit>().updateSearchQuery(value),
               decoration: InputDecoration(
-                hintText: 'Tìm kiếm...',
+                hintText: 'search_hint'.tr(),
                 hintStyle: TextStyle(color: Colors.grey.shade400),
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(

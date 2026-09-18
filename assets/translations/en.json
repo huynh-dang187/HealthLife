@@ -34,7 +34,23 @@
   "gps_disabled": "GPS is disabled",
   "enable_gps": "Enable GPS",
   "app_settings": "App Settings",
-  "settings": "Settings"
+  "settings": "Settings",
 
 
+  "food_scan_title": "Nutrition Analysis",
+  "scan_guide_main": "POINT CAMERA AT FOOD\nTO START SCANNING",
+  "scan_guide_sub": "Please hold your device steady for\nrecognition",
+  "manual_input_title": "Or enter manually",
+  "manual_input_hint": "Enter food name",
+  "analyze_button": "Analyze",
+  "nutrition_result_title": "Nutrition Results",
+  "disclaimer_note": "( ! ) Note: Analysis may contain errors",
+  "camera": "Camera",
+  "gallery": "Gallery",
+  "default_food_name": "Food item",
+  "calories": "Calories",
+  "protein": "Protein",
+  "fat": "Fat",
+  "carbs": "Carbs",
+  "nutrition_assessment": "Nutritional Assessment"
 }

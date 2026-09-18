@@ -5,13 +5,14 @@ import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
-import 'package:healthlife/src/core/presentation/widgets/no_data.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
 import 'package:intl/intl.dart';
 
+import '../../data/datasources/nutrition_remote_data_source.dart';
 import '../../data/model/meal_log_model.dart';
+import '../../data/repositories/nutrition_repository.dart';
 import '../cubit/nutrion/nutrition_dashboard_cubit.dart';
 import '../cubit/nutrion/nutrition_dashboard_state.dart';
 import '../widgets/add_food_method_sheet.dart';
@@ -20,15 +21,28 @@ import '../widgets/macro_card.dart';
 import '../widgets/meal_log_tile.dart';
 import '../widgets/period_selector.dart';
 
-class NutritionDashboardScreen extends StatefulWidget {
+class NutritionDashboardScreen extends StatelessWidget {
   const NutritionDashboardScreen({super.key});
 
   @override
-  State<NutritionDashboardScreen> createState() =>
-      _NutritionDashboardScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider<NutritionDashboardCubit>(
+      create: (context) => NutritionDashboardCubit(
+        NutritionRepository(NutritionRemoteDataSource()),
+      ),
+      child: const _DashboardScreenView(),
+    );
+  }
 }
 
-class _NutritionDashboardScreenState extends State<NutritionDashboardScreen> {
+class _DashboardScreenView extends StatefulWidget {
+  const _DashboardScreenView();
+
+  @override
+  State<_DashboardScreenView> createState() => _DashboardScreenViewState();
+}
+
+class _DashboardScreenViewState extends State<_DashboardScreenView> {
   @override
   void initState() {
     super.initState();
@@ -39,15 +53,19 @@ class _NutritionDashboardScreenState extends State<NutritionDashboardScreen> {
 
   Future<void> _onAddFood() async {
     final method = await showAddFoodMethodSheet(context);
-    if (method != AddFoodMethod.search || !mounted) return;
+    if (method == null || !mounted) return;
 
-    final added = await context.push<bool>(RouteNames.nutrition_food_search);
-    if (added == true && mounted) {
-      await context.read<NutritionDashboardCubit>().reload();
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Đã thêm vào nhật ký')),
-      );
+    if (method == AddFoodMethod.search) {
+      final added = await context.push<bool>(RouteNames.nutrition_food_search);
+      if (added == true && mounted) {
+        await context.read<NutritionDashboardCubit>().reload();
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Đã thêm vào nhật ký')),
+        );
+      }
+    } else if (method == AddFoodMethod.scan) {
+      await context.push(RouteNames.food_scan);
     }
   }
 
@@ -223,10 +241,12 @@ class _NutritionDashboardScreenState extends State<NutritionDashboardScreen> {
                     ),
                   ],
                 ),
-                12.gap,
+                30.gap,
                 if (state.logs.isEmpty)
-                  NoData(
-                    title: 'Chưa có bữa ăn nào trong khoảng thời gian này',
+                  Center(
+                    child: AppText.italic(
+                      'Chưa có bữa ăn nào trong khoảng thời gian này',
+                    ),
                   )
                 else
                   ...state.logs.map(

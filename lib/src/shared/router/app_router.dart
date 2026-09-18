@@ -22,7 +22,6 @@ import 'package:healthlife/src/features/medicine_search/presentation/page/medici
 import 'package:healthlife/src/features/nutrition/data/datasources/nutrition_remote_data_source.dart';
 import 'package:healthlife/src/features/nutrition/data/repositories/nutrition_repository.dart';
 import 'package:healthlife/src/features/nutrition/presentation/cubit/foodSearch/food_search_cubit.dart';
-import 'package:healthlife/src/features/nutrition/presentation/cubit/nutrion/nutrition_dashboard_cubit.dart';
 import 'package:healthlife/src/features/nutrition/presentation/pages/food_search_screen.dart';
 import 'package:healthlife/src/features/nutrition/presentation/pages/nutrition_dashboard_screen.dart';
 import 'package:healthlife/src/features/profile/presentation/pages/profile_screen.dart';
@@ -36,6 +35,7 @@ import 'package:healthlife/src/features/tab_bar/presentation/page/chatbot_screen
 import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_screen.dart';
 import 'package:healthlife/src/features/water_reminder/presentation/pages/water_reminder_screen.dart';
 
+import '../../features/food_scan/presentation/pages/food_scan_page.dart';
 import '../../features/signIn/presentation/page/otp_screen.dart';
 import 'route_names.dart';
 
@@ -54,7 +54,7 @@ class AppRouter {
   ];
 
   static final GoRouter router = GoRouter(
-    initialLocation: RouteNames.splash, // Đặt làm màn hình mặc định khởi chạy
+    initialLocation: RouteNames.splash,
     redirect: _guard,
     routes: [
       _route(RouteNames.splash, (_) => const SplashScreen()),
@@ -73,13 +73,18 @@ class AppRouter {
 
       _route(
         RouteNames.medicine_search,
-            (_) => BlocProvider(
+        (_) => BlocProvider(
           create: (context) => MedicineSearchCubit(),
           child: const MedicineSearchPage(),
         ),
       ),
 
-      // Route chính thức của HospitalFinderPage
+      GoRoute(
+        path: RouteNames.food_scan,
+        name: RouteNames.food_scan,
+        builder: (context, state) => const FoodScanPage(),
+      ),
+
       _route(RouteNames.hospitalFinder, (_) => const HospitalFinderPage()),
 
       _route(RouteNames.health_news, (_) => const HealthNewsScreen()),
@@ -97,8 +102,6 @@ class AppRouter {
       _route(RouteNames.sos_device, (_) => const SosDeviceScreen()),
       _route(RouteNames.drug_lookup, (_) => const DrugLookScreen()),
       _route(RouteNames.water_reminder, (_) => const WaterReminderScreen()),
-
-      // Nutrition: tìm kiếm thực phẩm đẩy lên từ dashboard
       _route(
         RouteNames.nutrition_food_search,
         (_) => BlocProvider(
@@ -108,8 +111,6 @@ class AppRouter {
           child: const FoodSearchScreen(),
         ),
       ),
-
-      // Router bottom bar
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             MainTabScreen(navigationShell: navigationShell),
@@ -126,12 +127,7 @@ class AppRouter {
             routes: [
               _route(
                 RouteNames.nutrition,
-                (_) => BlocProvider(
-                  create: (context) => NutritionDashboardCubit(
-                    NutritionRepository(NutritionRemoteDataSource()),
-                  ),
-                  child: const NutritionDashboardScreen(),
-                ),
+                (_) => const NutritionDashboardScreen(),
               ),
             ],
           ),
@@ -149,9 +145,9 @@ class AppRouter {
   );
 
   static Future<String?> _guard(
-      BuildContext context,
-      GoRouterState state,
-      ) async {
+    BuildContext context,
+    GoRouterState state,
+  ) async {
     final currentPath = state.matchedLocation;
     final user = FirebaseAuth.instance.currentUser;
 
