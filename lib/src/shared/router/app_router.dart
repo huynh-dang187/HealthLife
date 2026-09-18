@@ -34,6 +34,7 @@ import 'package:healthlife/src/features/tab_bar/presentation/page/activity_scree
 import 'package:healthlife/src/features/tab_bar/presentation/page/chatbot_screen.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_screen.dart';
 import 'package:healthlife/src/features/water_reminder/presentation/pages/water_reminder_screen.dart';
+
 import '../../features/food_scan/presentation/pages/food_scan_page.dart';
 import '../../features/signIn/presentation/page/otp_screen.dart';
 import 'route_names.dart';
@@ -50,11 +51,10 @@ class AppRouter {
     RouteNames.home,
     RouteNames.medicine_search,
     RouteNames.hospitalFinder,
-
   ];
 
   static final GoRouter router = GoRouter(
-    initialLocation: RouteNames.splash, // Đặt làm màn hình mặc định khởi chạy
+    initialLocation: RouteNames.splash,
     redirect: _guard,
     routes: [
       _route(RouteNames.splash, (_) => const SplashScreen()),
@@ -73,7 +73,7 @@ class AppRouter {
 
       _route(
         RouteNames.medicine_search,
-            (_) => BlocProvider(
+        (_) => BlocProvider(
           create: (context) => MedicineSearchCubit(),
           child: const MedicineSearchPage(),
         ),
@@ -102,8 +102,6 @@ class AppRouter {
       _route(RouteNames.sos_device, (_) => const SosDeviceScreen()),
       _route(RouteNames.drug_lookup, (_) => const DrugLookScreen()),
       _route(RouteNames.water_reminder, (_) => const WaterReminderScreen()),
-
-      // Nutrition: tìm kiếm thực phẩm đẩy lên từ dashboard
       _route(
         RouteNames.nutrition_food_search,
         (_) => BlocProvider(
@@ -113,8 +111,6 @@ class AppRouter {
           child: const FoodSearchScreen(),
         ),
       ),
-
-      // Router bottom bar
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             MainTabScreen(navigationShell: navigationShell),
@@ -149,9 +145,9 @@ class AppRouter {
   );
 
   static Future<String?> _guard(
-      BuildContext context,
-      GoRouterState state,
-      ) async {
+    BuildContext context,
+    GoRouterState state,
+  ) async {
     final currentPath = state.matchedLocation;
     final user = FirebaseAuth.instance.currentUser;
 
