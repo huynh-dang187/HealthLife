@@ -15,4 +15,7 @@
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
+    <!-- Theme for the full-screen intent notification activity (SOS alarm).
+         Translucent: nothing flashes during wake before Flutter volume appears. -->
+    <style name="Theme.Translucent" parent="android:Theme.Translucent.NoTitleBar" />
 </resources>

@@ -163,6 +163,16 @@ class $AssetsPngGen {
   ];
 }
 
+class $AssetsSoundsGen {
+  const $AssetsSoundsGen();
+
+  /// File path: assets/sounds/sos_sound.mp3
+  String get sosSound => 'assets/sounds/sos_sound.mp3';
+
+  /// List of all assets
+  List<String> get values => [sosSound];
+}
+
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
@@ -285,6 +295,7 @@ abstract final class Assets {
   static const $AssetsDataGen data = $AssetsDataGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsPngGen png = $AssetsPngGen();
+  static const $AssetsSoundsGen sounds = $AssetsSoundsGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
   static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
 }

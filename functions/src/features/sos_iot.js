@@ -82,29 +82,29 @@ export const triggerSosAlert = onRequest(
         return;
       }
 
+      const data = {
+        type: 'sos_alert',
+        alertId: alertRef.id,
+        deviceId: deviceId,
+        deviceName: deviceData.deviceName || 'Nút SOS Khẩn Cấp',
+        batteryLevel: String(effectiveBattery),
+        triggeredAt: new Date().toISOString(),
+      };
+
+      if (deviceData.emergencyPhone != null) {
+        data.emergencyPhone = String(deviceData.emergencyPhone);
+      }
+      if (typeof deviceData.latitude === 'number' && !Number.isNaN(deviceData.latitude)) {
+        data.latitude = String(deviceData.latitude);
+      }
+      if (typeof deviceData.longitude === 'number' && !Number.isNaN(deviceData.longitude)) {
+        data.longitude = String(deviceData.longitude);
+      }
+
       const pushResponse = await messaging.sendEachForMulticast({
         tokens,
-        notification: {
-          title: '🚨 BÁO ĐỘNG KHẨN CẤP SOS!',
-          body: `${deviceData.deviceName || 'Thiết bị'} vừa được kích hoạt! Nhấn để xem ngay.`,
-        },
-        data: {
-          type: 'SOS_ALERT',
-          alertId: alertRef.id,
-          deviceId: deviceId,
-          click_action: 'FLUTTER_NOTIFICATION_CLICK',
-        },
-        android: {
-          priority: 'high',
-          notification: {
-            channelId: 'sos_emergency_v3', 
-            sound: 'sos_sound',
-            priority: 'max',
-          },
-        },
-        apns: {
-          payload: { aps: { sound: 'sos_sound.aiff', critical: true } },
-        },
+        data,
+        android: { priority: 'high' },
       });
 
       res.status(200).json({
