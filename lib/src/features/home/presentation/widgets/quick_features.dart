@@ -86,6 +86,6 @@ final _features = [
     Assets.png.icFootCounter.image(),
     'Đếm bước chân',
     Colors.yellow,
-    RouteNames.water_reminder,
+    RouteNames.activity_dashboard,
   ),
 ];
