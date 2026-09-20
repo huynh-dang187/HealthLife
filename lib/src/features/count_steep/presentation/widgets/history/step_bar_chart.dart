@@ -18,7 +18,7 @@ class StepBarChart extends StatelessWidget {
     required this.data,
     required this.goalLine,
     this.maxYInK = 10,
-    this.height = 170,
+    this.height = 240,
   });
 
   final List<StepChartData> data;
@@ -64,6 +64,10 @@ class StepBarChart extends StatelessWidget {
         ),
         10.gap,
         _Legend(),
+        8.gap,
+        _MarqueeHint(
+          text: 'Chạm vào một cột để xem chi tiết số bước của ngày đó',
+        ),
       ],
     );
   }
@@ -203,6 +207,94 @@ class _Legend extends StatelessWidget {
         border: borderColor != null
             ? Border.all(color: borderColor, width: 1.2)
             : null,
+      ),
+    );
+  }
+}
+
+/// Dòng gợi ý chạy từ phải sang trái (marquee), nhắc người dùng chạm vào cột.
+class _MarqueeHint extends StatefulWidget {
+  const _MarqueeHint({required this.text});
+
+  final String text;
+
+  @override
+  State<_MarqueeHint> createState() => _MarqueeHintState();
+}
+
+class _MarqueeHintState extends State<_MarqueeHint>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 9),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: widget.text,
+        style: const TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 11.5,
+          fontWeight: FontWeight.w400,
+          color: UIColors.textBody,
+        ),
+      ),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout();
+
+    const gap = 48.0;
+    final totalX = textPainter.width + gap;
+
+    return ClipRect(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final copies = (constraints.maxWidth / totalX).ceil() + 2;
+
+          return SizedBox(
+            width: constraints.maxWidth,
+            height: 24,
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                // Lặp mượt mỗi totalX px: khi bản thứ 2 thay chỗ bản thứ 1,
+                // không bao giờ có khoảng trống trên màn hình.
+                final dx = -_controller.value * totalX;
+                return Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    for (var i = 0; i < copies; i++)
+                      Positioned(
+                        left: i * totalX + dx,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: AppText.regular(
+                            widget.text,
+                            fontSize: 11.5,
+                            color: UIColors.textBody,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }
