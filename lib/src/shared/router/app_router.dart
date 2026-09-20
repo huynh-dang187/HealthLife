@@ -9,6 +9,8 @@ import 'package:healthlife/src/features/complete_profile/presentation/pages/prof
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_height_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_name_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_weight_screen.dart';
+import 'package:healthlife/src/features/count_steep/presentation/pages/activity_dashboard_page.dart';
+import 'package:healthlife/src/features/count_steep/presentation/pages/goal_dialog_preview_page.dart';
 import 'package:healthlife/src/features/drug_lookup/presentation/pages/drug_lookup_screen.dart';
 import 'package:healthlife/src/features/health_news/data/models/news_article_model.dart';
 import 'package:healthlife/src/features/health_news/presentation/pages/health_news_screen.dart';
@@ -100,6 +102,14 @@ class AppRouter {
       ),
 
       _route(RouteNames.sos_device, (_) => const SosDeviceScreen()),
+      _route(
+        RouteNames.activity_dashboard,
+        (_) => const ActivityDashboardPage(),
+      ),
+      _route(
+        RouteNames.goal_dialog_preview,
+        (_) => const GoalDialogPreviewPage(),
+      ),
       _route(RouteNames.drug_lookup, (_) => const DrugLookScreen()),
       _route(RouteNames.water_reminder, (_) => const WaterReminderScreen()),
       _route(

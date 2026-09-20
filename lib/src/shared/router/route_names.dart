@@ -21,6 +21,8 @@ class RouteNames {
   static const news_detail = '/news_detail';
   static const home = '/home';
   static const activity = '/activity';
+  static const activity_dashboard = '/activity_dashboard';
+  static const goal_dialog_preview = '/goal_dialog_preview';
   static const chatbot = '/chatbot';
   static const nutrition = '/nutrition';
   static const nutrition_food_search = '/nutrition/food_search';
