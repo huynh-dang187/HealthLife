@@ -4,7 +4,7 @@ import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 
-import '../set_goal_dialog.dart';
+import '../../set_goal_dialog.dart';
 
 /// Card "Ghi lại lượng nước uống" — nền tối, nút Đặt mục tiêu mở dialog.
 class WaterGoalCard extends StatelessWidget {

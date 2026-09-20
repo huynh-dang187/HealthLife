@@ -74,7 +74,9 @@ class HeartRateCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: UIColors.black.withValues(alpha: 0.55),
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: UIColors.white.withValues(alpha: 0.15)),
+                border: Border.all(
+                  color: UIColors.white.withValues(alpha: 0.15),
+                ),
               ),
               child: AppText.medium(
                 'Sắp ra mắt',

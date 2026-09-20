@@ -10,6 +10,7 @@ import 'package:healthlife/src/features/complete_profile/presentation/pages/prof
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_name_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_weight_screen.dart';
 import 'package:healthlife/src/features/count_steep/presentation/pages/activity_dashboard_page.dart';
+import 'package:healthlife/src/features/count_steep/presentation/pages/activity_history_page.dart';
 import 'package:healthlife/src/features/count_steep/presentation/pages/goal_dialog_preview_page.dart';
 import 'package:healthlife/src/features/drug_lookup/presentation/pages/drug_lookup_screen.dart';
 import 'package:healthlife/src/features/health_news/data/models/news_article_model.dart';
@@ -32,7 +33,6 @@ import 'package:healthlife/src/features/signIn/presentation/page/phone_input_scr
 import 'package:healthlife/src/features/signIn/presentation/page/signIn_screen.dart';
 import 'package:healthlife/src/features/sos_iot/presentation/pages/sos_device_screen.dart';
 import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.dart';
-import 'package:healthlife/src/features/tab_bar/presentation/page/activity_screen.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/page/chatbot_screen.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_screen.dart';
 import 'package:healthlife/src/features/water_reminder/presentation/pages/water_reminder_screen.dart';
@@ -59,19 +59,46 @@ class AppRouter {
     initialLocation: RouteNames.splash,
     redirect: _guard,
     routes: [
-      _route(RouteNames.splash, (_) => const SplashScreen()),
-      _route(RouteNames.introduction, (_) => const IntroductionScreen()),
-      _route(RouteNames.signIn, (_) => const SigninScreen()),
-      _route(RouteNames.phone_input, (_) => const PhoneInputScreen()),
+      _route(
+        RouteNames.splash,
+        (_) => const SplashScreen(),
+      ),
+      _route(
+        RouteNames.introduction,
+        (_) => const IntroductionScreen(),
+      ),
+      _route(
+        RouteNames.signIn,
+        (_) => const SigninScreen(),
+      ),
+      _route(
+        RouteNames.phone_input,
+        (_) => const PhoneInputScreen(),
+      ),
       GoRoute(
         path: RouteNames.phone_otp,
         builder: (context, state) => OtpScreen(otpArgs: state.extra as OtpArgs),
       ),
-      _route(RouteNames.profile_name, (_) => ProfileName()),
-      _route(RouteNames.profile_gender, (_) => ProfileGender()),
-      _route(RouteNames.profile_date, (_) => ProfileDate()),
-      _route(RouteNames.profile_height, (_) => const ProfileHeight()),
-      _route(RouteNames.profile_weight, (_) => const ProfileWeightScreen()),
+      _route(
+        RouteNames.profile_name,
+        (_) => ProfileName(),
+      ),
+      _route(
+        RouteNames.profile_gender,
+        (_) => ProfileGender(),
+      ),
+      _route(
+        RouteNames.profile_date,
+        (_) => ProfileDate(),
+      ),
+      _route(
+        RouteNames.profile_height,
+        (_) => const ProfileHeight(),
+      ),
+      _route(
+        RouteNames.profile_weight,
+        (_) => const ProfileWeightScreen(),
+      ),
 
       _route(
         RouteNames.medicine_search,
@@ -87,9 +114,15 @@ class AppRouter {
         builder: (context, state) => const FoodScanPage(),
       ),
 
-      _route(RouteNames.hospitalFinder, (_) => const HospitalFinderPage()),
+      _route(
+        RouteNames.hospitalFinder,
+        (_) => const HospitalFinderPage(),
+      ),
 
-      _route(RouteNames.health_news, (_) => const HealthNewsScreen()),
+      _route(
+        RouteNames.health_news,
+        (_) => const HealthNewsScreen(),
+      ),
       GoRoute(
         path: RouteNames.news_webview,
         builder: (context, state) =>
@@ -101,22 +134,37 @@ class AppRouter {
             NewsDetailScreen(article: state.extra as NewsArticleModel),
       ),
 
-      _route(RouteNames.sos_device, (_) => const SosDeviceScreen()),
+      _route(
+        RouteNames.sos_device,
+        (_) => const SosDeviceScreen(),
+      ),
       _route(
         RouteNames.activity_dashboard,
         (_) => const ActivityDashboardPage(),
       ),
       _route(
+        RouteNames.activity_history,
+        (_) => const ActivityHistoryPage(),
+      ),
+      _route(
         RouteNames.goal_dialog_preview,
         (_) => const GoalDialogPreviewPage(),
       ),
-      _route(RouteNames.drug_lookup, (_) => const DrugLookScreen()),
-      _route(RouteNames.water_reminder, (_) => const WaterReminderScreen()),
+      _route(
+        RouteNames.drug_lookup,
+        (_) => const DrugLookScreen(),
+      ),
+      _route(
+        RouteNames.water_reminder,
+        (_) => const WaterReminderScreen(),
+      ),
       _route(
         RouteNames.nutrition_food_search,
         (_) => BlocProvider(
           create: (context) => FoodSearchCubit(
-            NutritionRepository(NutritionRemoteDataSource()),
+            NutritionRepository(
+              NutritionRemoteDataSource(),
+            ),
           ),
           child: const FoodSearchScreen(),
         ),
@@ -126,11 +174,19 @@ class AppRouter {
             MainTabScreen(navigationShell: navigationShell),
         branches: [
           StatefulShellBranch(
-            routes: [_route(RouteNames.home, (_) => const HomeScreen())],
+            routes: [
+              _route(
+                RouteNames.home,
+                (_) => const HomeScreen(),
+              ),
+            ],
           ),
           StatefulShellBranch(
             routes: [
-              _route(RouteNames.activity, (_) => const ActivityScreen()),
+              _route(
+                RouteNames.activity,
+                (_) => const ActivityDashboardPage(),
+              ),
             ],
           ),
           StatefulShellBranch(
@@ -143,11 +199,19 @@ class AppRouter {
           ),
           StatefulShellBranch(
             routes: [
-              _route(RouteNames.profile, (_) => const ProfileScreen()),
+              _route(
+                RouteNames.profile,
+                (_) => const ProfileScreen(),
+              ),
             ],
           ),
           StatefulShellBranch(
-            routes: [_route(RouteNames.chatbot, (_) => const ChatbotScreen())],
+            routes: [
+              _route(
+                RouteNames.chatbot,
+                (_) => const ChatbotScreen(),
+              ),
+            ],
           ),
         ],
       ),

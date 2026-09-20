@@ -6,9 +6,9 @@ import 'package:healthlife/src/core/presentation/widgets/text.dart';
 
 import '../step_progress_ring.dart';
 import '../streaks/streak_badge.dart';
-import 'heart_rate_card.dart';
+import 'card/heart_rate_card.dart';
 import 'stat_card.dart';
-import 'water_goal_card.dart';
+import 'card/water_goal_card.dart';
 
 /// Nội dung tab "Tổng quan": ring, streak, thống kê và các card nhanh.
 class OverviewTab extends StatelessWidget {

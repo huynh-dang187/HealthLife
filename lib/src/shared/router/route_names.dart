@@ -22,6 +22,7 @@ class RouteNames {
   static const home = '/home';
   static const activity = '/activity';
   static const activity_dashboard = '/activity_dashboard';
+  static const activity_history = '/activity_history';
   static const goal_dialog_preview = '/goal_dialog_preview';
   static const chatbot = '/chatbot';
   static const nutrition = '/nutrition';
