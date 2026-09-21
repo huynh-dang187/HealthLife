@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:healthlife/src/features/count_steep/data/models/step_chart_data.dart';
 import 'package:healthlife/src/features/count_steep/data/models/step_streak_model.dart';
 import 'package:healthlife/src/shared/models/user_model.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
@@ -51,15 +52,20 @@ class ActivityRepository {
 
   tz.TZDateTime _vnNow() => tz.TZDateTime.now(_vnTz);
 
+  /// Giờ hiện tại theo múi giờ Việt Nam (cho cubit tính mốc tuần/tháng/năm).
+  DateTime vnNow() => _vnNow();
+
   Future<Box> _cache() async {
     if (Hive.isBoxOpen(cacheBoxName)) return Hive.box(cacheBoxName);
     return Hive.openBox(cacheBoxName);
   }
 
-  String _dateKey(tz.TZDateTime now) {
-    final y = now.year;
-    final m = now.month.toString().padLeft(2, '0');
-    final d = now.day.toString().padLeft(2, '0');
+  String _dateKey(tz.TZDateTime now) => _dateKeyOf(now);
+
+  String _dateKeyOf(DateTime day) {
+    final y = day.year;
+    final m = day.month.toString().padLeft(2, '0');
+    final d = day.day.toString().padLeft(2, '0');
     return '$y-$m-$d';
   }
 
@@ -234,6 +240,137 @@ class ActivityRepository {
     debugPrint('[ActivityRepo] đã lưu stepGoal=$goal cho ${user.uid}');
   }
 
+  /// Lịch sử 7 ngày của tuần bắt đầu từ [weekStart] (thường là thứ 2).
+  /// Trả về đủ 7 điểm (ngày không có bản ghi → steps=0, goalReached=false),
+  /// label là thứ trong tuần (T2..CN).
+  Future<List<StepChartData>> getWeeklyData(DateTime weekStart) async {
+    final start = DateTime(weekStart.year, weekStart.month, weekStart.day);
+    final records = await _fetchDailyRecords(
+      _dateKeyOf(start),
+      _dateKeyOf(start.add(const Duration(days: 6))),
+    );
+    return [
+      for (var i = 0; i < 7; i++)
+        _chartPoint(
+          records,
+          start.add(Duration(days: i)),
+          _weekdayLabel(start.add(Duration(days: i))),
+        ),
+    ];
+  }
+
+  /// Lịch sử cả tháng của [monthStart] (thường là mùng 1).
+  /// Trả về đủ số ngày trong tháng, label là số ngày.
+  Future<List<StepChartData>> getMonthlyData(DateTime monthStart) async {
+    final start = DateTime(monthStart.year, monthStart.month, 1);
+    final days = DateTime(monthStart.year, monthStart.month + 1, 0).day;
+    final records = await _fetchDailyRecords(
+      _dateKeyOf(start),
+      _dateKeyOf(DateTime(monthStart.year, monthStart.month, days)),
+    );
+    return [
+      for (var d = 1; d <= days; d++)
+        _chartPoint(
+          records,
+          DateTime(monthStart.year, monthStart.month, d),
+          '$d',
+        ),
+    ];
+  }
+
+  /// 12 điểm theo tháng của [year], mỗi điểm = trung bình bước/ngày có data.
+  /// goalReached = trung bình trong tháng >= mục tiêu hiện tại.
+  Future<List<StepChartData>> getYearlyData(int year) async {
+    final records = await _fetchDailyRecords(
+      _dateKeyOf(DateTime(year, 1, 1)),
+      _dateKeyOf(DateTime(year, 12, 31)),
+    );
+    final goal = await fetchStepGoal();
+    return [
+      for (var m = 1; m <= 12; m++)
+        _aggregateMonth(records, year, m, goal),
+    ];
+  }
+
+  StepChartData _aggregateMonth(
+    Map<String, _DailyStepRecord> records,
+    int year,
+    int month,
+    int goal,
+  ) {
+    final days = DateTime(year, month + 1, 0).day;
+    var total = 0;
+    var recorded = 0;
+    for (var d = 1; d <= days; d++) {
+      final record = records[_dateKeyOf(DateTime(year, month, d))];
+      if (record == null) continue;
+      total += record.steps;
+      recorded++;
+    }
+    final avg = recorded == 0 ? 0 : (total / recorded).round();
+    return StepChartData(
+      label: 'thg $month',
+      steps: avg,
+      goalReached: avg >= goal,
+    );
+  }
+
+  /// Đọc các bản ghi `daily_steps` trong khoảng doc-id [startKey..endKey].
+  /// Doc id là `yyyy-MM-dd` (zero-padded) nên so sánh chuỗi = so sánh ngày.
+  Future<Map<String, _DailyStepRecord>> _fetchDailyRecords(
+    String startKey,
+    String endKey,
+  ) async {
+    final user = _auth.currentUser;
+    if (user == null) return const {};
+    try {
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('daily_steps')
+          .where(FieldPath.documentId, isGreaterThanOrEqualTo: startKey)
+          .where(FieldPath.documentId, isLessThanOrEqualTo: endKey)
+          .get();
+
+      final records = <String, _DailyStepRecord>{};
+      for (final doc in snapshot.docs) {
+        final data = doc.data();
+        final steps = data['steps'];
+        records[doc.id] = _DailyStepRecord(
+          steps: steps is num ? steps.toInt() : 0,
+          goalReached: data['goalReached'] == true,
+        );
+      }
+      return records;
+    } catch (e) {
+      debugPrint('[ActivityRepo] đọc daily_steps $startKey..$endKey lỗi: $e');
+      return const {};
+    }
+  }
+
+  StepChartData _chartPoint(
+    Map<String, _DailyStepRecord> records,
+    DateTime day,
+    String label,
+  ) {
+    final record = records[_dateKeyOf(day)];
+    return StepChartData(
+      label: label,
+      steps: record?.steps ?? 0,
+      goalReached: record?.goalReached ?? false,
+    );
+  }
+
+  String _weekdayLabel(DateTime day) => switch (day.weekday) {
+    1 => 'T2',
+    2 => 'T3',
+    3 => 'T4',
+    4 => 'T5',
+    5 => 'T6',
+    6 => 'T7',
+    _ => 'CN',
+  };
+
   /// Streak từ lịch sử daily_steps:
   /// current = ngày liên tiếp gần nhất đạt goal (tính từ hôm nay/hôm qua),
   /// best = chuỗi dài nhất từng đạt được.
@@ -289,4 +426,12 @@ class ActivityRepository {
       return const StepStreakModel();
     }
   }
+}
+
+/// Một bản ghi bước chân một ngày đọc từ Firestore.
+class _DailyStepRecord {
+  const _DailyStepRecord({required this.steps, required this.goalReached});
+
+  final int steps;
+  final bool goalReached;
 }
