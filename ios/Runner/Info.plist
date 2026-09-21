@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSMotionUsageDescription</key>
+	<string>HLife cần quyền truy cập cảm biến vận động để đếm bước chân của bạn</string>
 </dict>
 </plist>

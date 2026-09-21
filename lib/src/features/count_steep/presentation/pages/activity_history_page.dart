@@ -1,45 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
+import 'package:healthlife/src/features/count_steep/data/repositories/activity_repository.dart';
+import 'package:healthlife/src/features/count_steep/presentation/cubit/activity_history_cubit.dart';
+import 'package:healthlife/src/features/count_steep/presentation/cubit/activity_history_state.dart';
+import 'package:healthlife/src/shared/enums/bloc_status.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
 
 import '../../domains/enums/activity_period.dart';
 import '../../domains/enums/activity_tab.dart';
-import '../../data/models/activity_stat_item.dart';
-import '../../data/models/step_chart_data.dart';
 import '../widgets/dashboard/activity_tab_switch.dart';
 import '../widgets/history/activity_stat_card.dart';
 import '../widgets/history/step_bar_chart.dart';
 
-/// Màn hình lịch sử bước chân: biểu đồ cột + 4 card thống kê (mock data).
-class ActivityHistoryPage extends StatefulWidget {
+/// Màn hình lịch sử bước chân: biểu đồ cột + 4 card thống kê (data thật).
+class ActivityHistoryPage extends StatelessWidget {
   const ActivityHistoryPage({super.key});
 
   @override
-  State<ActivityHistoryPage> createState() => _ActivityHistoryPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => ActivityHistoryCubit(ActivityRepository())..start(),
+      child: const _ActivityHistoryView(),
+    );
+  }
 }
 
-class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
-  static const _goal = 6000;
+class _ActivityHistoryView extends StatelessWidget {
+  const _ActivityHistoryView();
 
-  ActivityPeriod _period = ActivityPeriod.week;
-
-  List<StepChartData> get _chartData => switch (_period) {
-    ActivityPeriod.week => _weekData,
-    ActivityPeriod.month => _monthData,
-    ActivityPeriod.year => _yearData,
-  };
-
-  List<ActivityStatItem> get _stats => switch (_period) {
-    ActivityPeriod.week => _weekStats,
-    ActivityPeriod.month => _monthStats,
-    ActivityPeriod.year => _yearStats,
-  };
-
-  void _goOverview() {
+  void _goOverview(BuildContext context) {
     if (context.canPop()) {
       context.pop();
     } else {
@@ -54,31 +48,46 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
         children: [
           AppAppBar(
             title: 'Thiết bị đo bước chân',
-            onBack: _goOverview,
+            onBack: () => _goOverview(context),
           ),
           ActivityTabSwitch(
             selected: ActivityTab.history,
             onChanged: (tab) {
-              if (tab == ActivityTab.overview) _goOverview();
+              if (tab == ActivityTab.overview) _goOverview(context);
             },
           ),
           Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _periodNavRow(),
-                  _PeriodTabs(
-                    selected: _period,
-                    onChanged: (p) => setState(() => _period = p),
+            child: BlocBuilder<ActivityHistoryCubit, ActivityHistoryState>(
+              builder: (context, state) {
+                final cubit = context.read<ActivityHistoryCubit>();
+                final rangeLabel = state.rangeTitle.isNotEmpty
+                    ? state.rangeTitle
+                    : state.period.rangeLabel;
+
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _PeriodNavRow(
+                        rangeLabel: rangeLabel,
+                        onPrev: cubit.previous,
+                        onNext: cubit.next,
+                      ),
+                      _PeriodTabs(
+                        selected: state.period,
+                        onChanged: cubit.selectPeriod,
+                      ),
+                      16.gap,
+                      _chartCard(state),
+                      16.gap,
+                      if (state.status == BlocStatus.success &&
+                          state.stats.isNotEmpty)
+                        ActivityStatsGrid(items: state.stats),
+                    ],
                   ),
-                  16.gap,
-                  _chartCard(),
-                  16.gap,
-                  ActivityStatsGrid(items: _stats),
-                ],
-              ),
+                );
+              },
             ),
           ),
         ],
@@ -86,11 +95,40 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
     );
   }
 
-  Widget _periodNavRow() {
+  Widget _chartCard(ActivityHistoryState state) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 14, 12, 12),
+      decoration: BoxDecoration(
+        color: UIColors.lightGray,
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: state.isLoading
+          ? const SizedBox(
+              height: 240,
+              child: Center(child: CircularProgressIndicator()),
+            )
+          : StepBarChart(data: state.chartData, goalLine: state.goal),
+    );
+  }
+}
+
+class _PeriodNavRow extends StatelessWidget {
+  const _PeriodNavRow({
+    required this.rangeLabel,
+    required this.onPrev,
+    required this.onNext,
+  });
+
+  final String rangeLabel;
+  final VoidCallback onPrev;
+  final VoidCallback onNext;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         IconButton(
-          onPressed: () {},
+          onPressed: onPrev,
           icon: const Icon(Icons.chevron_left),
           color: UIColors.text,
           visualDensity: VisualDensity.compact,
@@ -98,13 +136,14 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
         Expanded(
           child: Center(
             child: AppText.semiBold(
-              _period.rangeLabel,
+              rangeLabel,
               fontSize: 15,
+              textAlign: TextAlign.center,
             ),
           ),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: onNext,
           icon: const Icon(Icons.chevron_right),
           color: UIColors.text,
           visualDensity: VisualDensity.compact,
@@ -112,126 +151,6 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
       ],
     );
   }
-
-  Widget _chartCard() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(12, 14, 12, 12),
-      decoration: BoxDecoration(
-        color: UIColors.lightGray,
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: StepBarChart(data: _chartData, goalLine: _goal),
-    );
-  }
-
-  static const _weekData = [
-    StepChartData(label: 'T2', steps: 3200, goalReached: false),
-    StepChartData(label: 'T3', steps: 6400, goalReached: true),
-    StepChartData(label: 'T4', steps: 7500, goalReached: true),
-    StepChartData(label: 'T5', steps: 5100, goalReached: false),
-    StepChartData(label: 'T6', steps: 9200, goalReached: true),
-    StepChartData(label: 'T7', steps: 8800, goalReached: true),
-    StepChartData(label: 'CN', steps: 4600, goalReached: false),
-  ];
-
-  static final _monthData = [
-    for (var d = 1; d <= 30; d++)
-      StepChartData(
-        label: '$d',
-        steps: _monthSteps(d),
-        goalReached: _monthSteps(d) >= _goal,
-      ),
-  ];
-
-  static int _monthSteps(int day) {
-    final base = 4200 + (day * 320) % 2600;
-    final weekend = day % 7 == 0 ? 2200 : 0;
-    return base + weekend;
-  }
-
-  static const _yearData = [
-    StepChartData(label: 'thg 1', steps: 5400, goalReached: false),
-    StepChartData(label: 'thg 2', steps: 7200, goalReached: true),
-    StepChartData(label: 'thg 3', steps: 6800, goalReached: true),
-    StepChartData(label: 'thg 4', steps: 8100, goalReached: true),
-    StepChartData(label: 'thg 5', steps: 5900, goalReached: false),
-    StepChartData(label: 'thg 6', steps: 7600, goalReached: true),
-    StepChartData(label: 'thg 7', steps: 8700, goalReached: true),
-    StepChartData(label: 'thg 8', steps: 9400, goalReached: true),
-    StepChartData(label: 'thg 9', steps: 5200, goalReached: false),
-    StepChartData(label: 'thg 10', steps: 6400, goalReached: true),
-    StepChartData(label: 'thg 11', steps: 7100, goalReached: true),
-    StepChartData(label: 'thg 12', steps: 4950, goalReached: false),
-  ];
-
-  static const _weekStats = [
-    ActivityStatItem(
-      label: 'Ngày hoạt động nhất',
-      value: '10.000 bước',
-      subtitle: '13 thg 8',
-    ),
-    ActivityStatItem(
-      label: 'Ngày thư giãn nhất',
-      value: '1.200 bước',
-      subtitle: '15 thg 8',
-    ),
-    ActivityStatItem(
-      label: 'Chuỗi dài nhất',
-      value: '5 ngày',
-      subtitle: '11 - 15 thg 8',
-    ),
-    ActivityStatItem(
-      label: 'Đạt được mục tiêu',
-      value: '4/7 ngày',
-      subtitle: 'trong tuần',
-    ),
-  ];
-
-  static const _monthStats = [
-    ActivityStatItem(
-      label: 'Ngày hoạt động nhất',
-      value: '10.000 bước',
-      subtitle: '21 thg 8',
-    ),
-    ActivityStatItem(
-      label: 'Ngày thư giãn nhất',
-      value: '800 bước',
-      subtitle: '2 thg 8',
-    ),
-    ActivityStatItem(
-      label: 'Chuỗi dài nhất',
-      value: '7 ngày',
-      subtitle: '13 - 19 thg 8',
-    ),
-    ActivityStatItem(
-      label: 'Đạt được mục tiêu',
-      value: '18/30 ngày',
-      subtitle: 'trong tháng',
-    ),
-  ];
-
-  static const _yearStats = [
-    ActivityStatItem(
-      label: 'Ngày hoạt động nhất',
-      value: '10.000 bước',
-      subtitle: '8 thg 6',
-    ),
-    ActivityStatItem(
-      label: 'Ngày thư giãn nhất',
-      value: '1.000 bước',
-      subtitle: '1 thg 1',
-    ),
-    ActivityStatItem(
-      label: 'Chuỗi dài nhất',
-      value: '12 ngày',
-      subtitle: 'thg 9',
-    ),
-    ActivityStatItem(
-      label: 'Đạt được mục tiêu',
-      value: '215/365 ngày',
-      subtitle: 'trong năm',
-    ),
-  ];
 }
 
 class _PeriodTabs extends StatelessWidget {
