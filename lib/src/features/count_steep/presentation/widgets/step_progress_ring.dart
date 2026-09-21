@@ -11,11 +11,15 @@ class StepProgressRing extends StatelessWidget {
     required this.currentSteps,
     required this.goalSteps,
     this.strokeWidth = 14,
+    this.onEditGoal,
   });
 
   final int currentSteps;
   final int goalSteps;
   final double strokeWidth;
+
+  /// Bấm icon chỉnh sửa cạnh số mục tiêu (mở dialog đặt mục tiêu).
+  final VoidCallback? onEditGoal;
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +67,31 @@ class StepProgressRing extends StatelessWidget {
                     color: UIColors.text,
                   ),
                   2.gap,
-                  AppText.regular(
-                    '/${_format(goalSteps)} bước',
-                    fontSize: 13,
-                    color: UIColors.textBody,
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      AppText.regular(
+                        '/${_format(goalSteps)} bước',
+                        fontSize: 13,
+                        color: UIColors.textBody,
+                      ),
+                      4.gap,
+                      if (onEditGoal != null)
+                        Tooltip(
+                          message: 'Đặt mục tiêu bước',
+                          child: GestureDetector(
+                            onTap: onEditGoal,
+                            child: const Padding(
+                              padding: EdgeInsets.all(2),
+                              child: Icon(
+                                Icons.mode_edit_outline,
+                                size: 14,
+                                color: UIColors.pink,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ],
               ),

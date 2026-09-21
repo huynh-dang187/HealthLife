@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
+import 'package:healthlife/src/features/count_steep/presentation/cubit/activity_dashboard_cubit.dart';
 
+import '../set_goal_dialog.dart';
 import '../step_progress_ring.dart';
 import '../streaks/streak_badge.dart';
 import 'card/heart_rate_card.dart';
@@ -30,6 +33,7 @@ class OverviewTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ringSize = (context.screenWidth - 48) * 0.7;
+    final cubit = context.read<ActivityDashboardCubit>();
 
     final distanceKm = (currentSteps * _avgStrideMeters / 1000);
     final energyKcal = (currentSteps * _kcalPerStep);
@@ -51,6 +55,11 @@ class OverviewTab extends StatelessWidget {
               child: StepProgressRing(
                 currentSteps: currentSteps,
                 goalSteps: goalSteps,
+                onEditGoal: () => showSetGoalDialog(
+                  context,
+                  cubit: cubit,
+                  initialGoal: goalSteps,
+                ),
               ),
             ),
           ),

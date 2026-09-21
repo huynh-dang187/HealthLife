@@ -69,6 +69,18 @@ class _SetGoalSheetState extends State<_SetGoalSheet> {
     return nearest;
   }
 
+  /// Tăng/giảm mục tiêu 1 nấc, cuộn bánh xe về đúng vị trí.
+  void _stepBy(int delta) {
+    final index = _values.indexOf(_selected) + delta;
+    if (index < 0 || index >= _values.length) return;
+    _scrollController.animateToItem(
+      index,
+      duration: const Duration(milliseconds: 240),
+      curve: Curves.easeOut,
+    );
+    setState(() => _selected = _values[index]);
+  }
+
   @override
   void dispose() {
     _scrollController.dispose();
@@ -127,36 +139,57 @@ class _SetGoalSheetState extends State<_SetGoalSheet> {
   }
 
   Widget _buildPicker() {
-    return Container(
-      height: 220,
-      decoration: BoxDecoration(
-        color: UIColors.lightGray,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: CupertinoPicker(
-        scrollController: _scrollController,
-        itemExtent: 44,
-        onSelectedItemChanged: (index) {
-          setState(() => _selected = _values[index]);
-        },
-        children: [
-          for (final value in _values)
-            Center(
-              child: value == _selected
-                  ? AppText.semiBold(
-                      '${_format(value)} bước',
-                      fontSize: 20,
-                      color: UIColors.black,
-                    )
-                  : AppText.regular(
-                      '${_format(value)} bước',
-                      fontSize: 15,
-                      color: UIColors.textBody.withValues(alpha: 0.9),
-                    ),
+    final index = _values.indexOf(_selected);
+    final canPrev = index > 0;
+    final canNext = index < _values.length - 1;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _StepperButton(
+          icon: Icons.remove,
+          onTap: canPrev ? () => _stepBy(-1) : null,
+        ),
+        12.gap,
+        Expanded(
+          child: Container(
+            height: 220,
+            decoration: BoxDecoration(
+              color: UIColors.lightGray,
+              borderRadius: BorderRadius.circular(16),
             ),
-        ],
-      ),
+            clipBehavior: Clip.antiAlias,
+            child: CupertinoPicker(
+              scrollController: _scrollController,
+              itemExtent: 44,
+              onSelectedItemChanged: (index) {
+                setState(() => _selected = _values[index]);
+              },
+              children: [
+                for (final value in _values)
+                  Center(
+                    child: value == _selected
+                        ? AppText.semiBold(
+                            '${_format(value)} bước',
+                            fontSize: 20,
+                            color: UIColors.black,
+                          )
+                        : AppText.regular(
+                            '${_format(value)} bước',
+                            fontSize: 15,
+                            color: UIColors.textBody.withValues(alpha: 0.9),
+                          ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+        12.gap,
+        _StepperButton(
+          icon: Icons.add,
+          onTap: canNext ? () => _stepBy(1) : null,
+        ),
+      ],
     );
   }
 
@@ -172,5 +205,28 @@ class _SetGoalSheetState extends State<_SetGoalSheet> {
       }
     }
     return buffer.toString();
+  }
+}
+
+/// Nút tròn +/- bên cạnh bánh xe để tăng/giảm mục tiêu.
+class _StepperButton extends StatelessWidget {
+  const _StepperButton({required this.icon, this.onTap});
+
+  final IconData icon;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onTap != null;
+    return IconButton(
+      onPressed: onTap,
+      icon: Icon(icon, size: 22),
+      color: enabled ? UIColors.white : UIColors.textBody.withValues(alpha: 0.4),
+      style: IconButton.styleFrom(
+        minimumSize: const Size(44, 44),
+        backgroundColor: UIColors.pink,
+        disabledBackgroundColor: UIColors.separate,
+      ),
+    );
   }
 }
