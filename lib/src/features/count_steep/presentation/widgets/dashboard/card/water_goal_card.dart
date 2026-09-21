@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
+import 'package:healthlife/src/features/count_steep/presentation/cubit/activity_dashboard_cubit.dart';
 
 import '../../set_goal_dialog.dart';
 
@@ -60,7 +62,14 @@ class WaterGoalCard extends StatelessWidget {
             color: UIColors.pink,
             borderRadius: BorderRadius.circular(18),
             fontSize: 12,
-            onTap: () => showSetGoalDialog(context),
+            onTap: () {
+              final cubit = context.read<ActivityDashboardCubit>();
+              showSetGoalDialog(
+                context,
+                cubit: cubit,
+                initialGoal: cubit.state.stepGoal,
+              );
+            },
           ),
         ],
       ),

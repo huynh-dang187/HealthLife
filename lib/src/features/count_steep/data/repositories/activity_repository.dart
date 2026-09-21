@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:healthlife/src/features/count_steep/data/models/step_streak_model.dart';
+import 'package:healthlife/src/shared/models/user_model.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -24,6 +25,11 @@ class ActivityRepository {
 
   /// Mục tiêu bước mặc định khi chưa có `users/{uid}.stepGoal`.
   static const defaultStepGoal = 6000;
+
+  /// Mục tiêu mặc định theo độ tuổi/giới tính khi user chưa từng tự đặt.
+  static const _adultMaleGoal = 8000;
+  static const _adultFemaleGoal = 7000;
+  static const _elderGoal = 4000;
 
   /// Chỉ ghi Firestore khi số bước nhảy >= 20 HOẶC đã trôi qua 3 phút.
   static const _minStepDeltaWrite = 20;
@@ -130,7 +136,7 @@ class ActivityRepository {
       return;
     }
 
-    final goal = await _fetchStepGoal(user.uid);
+    final goal = await fetchStepGoal();
     final goalReached = steps >= goal;
     final dateKey = _dateKey(now);
 
@@ -162,22 +168,70 @@ class ActivityRepository {
     return now.difference(lastTime) >= _minWriteInterval;
   }
 
-  /// Mục tiêu bước hiện tại từ `users/{uid}.stepGoal`, mặc định 6000.
-  Future<int> fetchStepGoal() async {
+  /// `users/{uid}.stepGoal` hiện có (`null` khi chưa từng đặt hoặc đọc lỗi).
+  Future<int?> fetchStoredStepGoal() async {
     final user = _auth.currentUser;
-    if (user == null) return defaultStepGoal;
-    return _fetchStepGoal(user.uid);
+    if (user == null) return null;
+    try {
+      final doc = await _firestore.collection('users').doc(user.uid).get();
+      final goal = doc.data()?['stepGoal'];
+      return goal is num ? goal.toInt() : null;
+    } catch (e) {
+      debugPrint('[ActivityRepo] đọc stepGoal lỗi, trả về null: $e');
+      return null;
+    }
   }
 
-  Future<int> _fetchStepGoal(String uid) async {
-    try {
-      final doc = await _firestore.collection('users').doc(uid).get();
-      final goal = doc.data()?['stepGoal'];
-      return goal is num ? goal.toInt() : defaultStepGoal;
-    } catch (e) {
-      debugPrint('[ActivityRepo] đọc stepGoal lỗi, dùng mặc định: $e');
-      return defaultStepGoal;
+  /// Mục tiêu bước hiện tại: giá trị đã lưu, nếu chưa có thì dùng mặc định.
+  Future<int> fetchStepGoal() async {
+    return (await fetchStoredStepGoal()) ?? defaultStepGoal;
+  }
+
+  /// Mục tiêu mặc định theo hồ sơ user:
+  /// - Nam 18-59 tuổi: 8000
+  /// - Nữ 18-59 tuổi: 7000
+  /// - Trên 60 tuổi: 4000
+  ///
+  /// Chỉ dùng làm giá trị khởi tạo LẦN ĐẦU (khi `stepGoal` chưa tồn tại),
+  /// không ghi đè nếu user đã tự chỉnh. Thiếu tuổi/giới tính → 6000.
+  Future<int> calculateDefaultGoal(UserModel? user) async {
+    final dob = user?.dateOfBirth;
+    if (dob == null) return defaultStepGoal;
+
+    final now = _vnNow();
+    var age = now.year - dob.year;
+    if (now.month < dob.month ||
+        (now.month == dob.month && now.day < dob.day)) {
+      age--;
     }
+    debugPrint('[ActivityRepo] calculateDefaultGoal: dob=$dob age=$age');
+
+    if (age > 60) return _elderGoal;
+    switch (user?.gender?.toLowerCase()) {
+      case 'male':
+        return _adultMaleGoal;
+      case 'female':
+        return _adultFemaleGoal;
+      default:
+        return defaultStepGoal;
+    }
+  }
+
+  /// Lưu mục tiêu bước mới vào `users/{uid}.stepGoal` (merge, không xoá dữ liệu).
+  Future<void> updateStepGoal(int goal) async {
+    final user = _auth.currentUser;
+    if (user == null) {
+      debugPrint('[ActivityRepo] bỏ qua updateStepGoal: chưa đăng nhập');
+      return;
+    }
+    await _firestore.collection('users').doc(user.uid).set(
+      {
+        'stepGoal': goal,
+        'updatedAt': FieldValue.serverTimestamp(),
+      },
+      SetOptions(merge: true),
+    );
+    debugPrint('[ActivityRepo] đã lưu stepGoal=$goal cho ${user.uid}');
   }
 
   /// Streak từ lịch sử daily_steps:

@@ -3,15 +3,21 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:healthlife/src/core/presentation/blocs/user/user_cubit.dart';
 import 'package:healthlife/src/features/count_steep/data/repositories/activity_repository.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
 
 import 'activity_dashboard_state.dart';
 
 class ActivityDashboardCubit extends Cubit<ActivityDashboardState> {
-  ActivityDashboardCubit(this._repository) : super(const ActivityDashboardState());
+  ActivityDashboardCubit(
+    this._repository, {
+    UserCubit? userCubit,
+  }) : _userCubit = userCubit,
+       super(const ActivityDashboardState());
 
   final ActivityRepository _repository;
+  final UserCubit? _userCubit;
 
   StreamSubscription<int>? _stepSub;
 
@@ -31,7 +37,8 @@ class ActivityDashboardCubit extends Cubit<ActivityDashboardState> {
         return;
       }
 
-      final goal = await _repository.fetchStepGoal();
+      final storedGoal = await _repository.fetchStoredStepGoal();
+      final goal = storedGoal ?? await _resolveDefaultGoal();
       final streak = await _repository.fetchCurrentStreak();
       if (!isClosed) {
         emit(
@@ -74,6 +81,30 @@ class ActivityDashboardCubit extends Cubit<ActivityDashboardState> {
       if (!isClosed) {
         emit(state.copyWith(status: BlocStatus.failure, error: '$e'));
       }
+    }
+  }
+
+  /// Tính mục tiêu mặc định từ hồ sơ user và ghi `users/{uid}.stepGoal` LẦN ĐẦU.
+  Future<int> _resolveDefaultGoal() async {
+    final user = _userCubit?.state.user;
+    final calculated = await _repository.calculateDefaultGoal(user);
+    await _repository.updateStepGoal(calculated);
+    debugPrint(
+      '[ActivityCubit] khởi tạo mục tiêu mặc định stepGoal=$calculated',
+    );
+    return calculated;
+  }
+
+  /// Lưu mục tiêu mới lên Firestore rồi tải lại goal/streak để UI cập nhật ngay.
+  Future<void> updateStepGoal(int goal) async {
+    try {
+      await _repository.updateStepGoal(goal);
+      if (!isClosed) {
+        emit(state.copyWith(stepGoal: goal));
+      }
+      await refresh();
+    } catch (e) {
+      debugPrint('[ActivityCubit] updateStepGoal failed: $e');
     }
   }
 

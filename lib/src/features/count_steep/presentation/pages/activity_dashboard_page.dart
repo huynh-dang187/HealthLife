@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/src/core/presentation/blocs/user/user_cubit.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
 import 'package:healthlife/src/features/count_steep/data/repositories/activity_repository.dart';
 import 'package:healthlife/src/features/count_steep/presentation/cubit/activity_dashboard_cubit.dart';
@@ -18,8 +19,10 @@ class ActivityDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ActivityDashboardCubit(ActivityRepository())
-        ..start(),
+      create: (context) => ActivityDashboardCubit(
+        ActivityRepository(),
+        userCubit: context.read<UserCubit>(),
+      )..start(),
       child: const _ActivityDashboardView(),
     );
   }
