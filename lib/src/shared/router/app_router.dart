@@ -37,6 +37,8 @@ import 'package:healthlife/src/features/tab_bar/presentation/page/chatbot_screen
 import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_screen.dart';
 import 'package:healthlife/src/features/water_reminder/presentation/pages/water_reminder_screen.dart';
 
+import '../../../activity_repository_test_page.dart';
+
 import '../../features/food_scan/presentation/pages/food_scan_page.dart';
 import '../../features/signIn/presentation/page/otp_screen.dart';
 import 'route_names.dart';
@@ -149,6 +151,10 @@ class AppRouter {
       _route(
         RouteNames.goal_dialog_preview,
         (_) => const GoalDialogPreviewPage(),
+      ),
+      _route(
+        RouteNames.activity_repository_test,
+        (_) => const ActivityRepositoryTestPage(),
       ),
       _route(
         RouteNames.drug_lookup,

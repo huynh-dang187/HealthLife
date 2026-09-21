@@ -65,6 +65,8 @@ dependencies:
   google_sign_in: ^7.2.0
   supabase_flutter: ^2.17.2
   fl_chart: ^1.2.0
+  pedometer: ^4.2.0
+  permission_handler: ^13.0.2
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +76,11 @@ dev_dependencies:
   build_runner: ^2.15.1
   hive_ce_generator: ^1.4.0
   flutter_gen_runner: ^5.15.0
+
+dependency_overrides:
+  # permission_handler_android 14.x cần compileSdk 37 + AGP 9 (kotlin DSL mới),
+  # không build được với AGP 8.11.1 của dự án -> khoá về bản tương thích (13.0.1).
+  permission_handler_android: 13.0.1
 
 flutter_gen:
   output: lib/generated/
