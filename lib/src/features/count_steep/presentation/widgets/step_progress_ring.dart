@@ -17,8 +17,6 @@ class StepProgressRing extends StatelessWidget {
   final int currentSteps;
   final int goalSteps;
   final double strokeWidth;
-
-  /// Bấm icon chỉnh sửa cạnh số mục tiêu (mở dialog đặt mục tiêu).
   final VoidCallback? onEditGoal;
 
   @override

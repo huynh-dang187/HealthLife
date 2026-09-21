@@ -54,7 +54,6 @@ class _SetGoalSheetState extends State<_SetGoalSheet> {
     _scrollController = FixedExtentScrollController(initialItem: initialIndex);
   }
 
-  /// Chọn giá trị gần nhất với mục tiêu hiện tại (nằm trong [min, max]).
   int _nearestIndex(int target) {
     final clamped = target.clamp(_min, _max);
     var nearest = 0;
@@ -69,7 +68,6 @@ class _SetGoalSheetState extends State<_SetGoalSheet> {
     return nearest;
   }
 
-  /// Tăng/giảm mục tiêu 1 nấc, cuộn bánh xe về đúng vị trí.
   void _stepBy(int delta) {
     final index = _values.indexOf(_selected) + delta;
     if (index < 0 || index >= _values.length) return;
@@ -208,7 +206,6 @@ class _SetGoalSheetState extends State<_SetGoalSheet> {
   }
 }
 
-/// Nút tròn +/- bên cạnh bánh xe để tăng/giảm mục tiêu.
 class _StepperButton extends StatelessWidget {
   const _StepperButton({required this.icon, this.onTap});
 
@@ -221,7 +218,9 @@ class _StepperButton extends StatelessWidget {
     return IconButton(
       onPressed: onTap,
       icon: Icon(icon, size: 22),
-      color: enabled ? UIColors.white : UIColors.textBody.withValues(alpha: 0.4),
+      color: enabled
+          ? UIColors.white
+          : UIColors.textBody.withValues(alpha: 0.4),
       style: IconButton.styleFrom(
         minimumSize: const Size(44, 44),
         backgroundColor: UIColors.pink,
