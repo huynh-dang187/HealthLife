@@ -31,7 +31,9 @@ import 'package:healthlife/src/features/profile/presentation/pages/profile_scree
 import 'package:healthlife/src/features/signIn/data/models/otp_args_model.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/phone_input_screen.dart';
 import 'package:healthlife/src/features/signIn/presentation/page/signIn_screen.dart';
-import 'package:healthlife/src/features/sos_iot/presentation/pages/sos_device_screen.dart';
+import 'package:healthlife/src/features/sos_iot/data/models/sos_alert_args.dart';
+import 'package:healthlife/src/features/sos_iot/data/services/sos_notification_service.dart';
+import 'package:healthlife/src/features/sos_iot/presentation/pages/sos_alert_page.dart';
 import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/page/chatbot_screen.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_screen.dart';
@@ -136,9 +138,16 @@ class AppRouter {
             NewsDetailScreen(article: state.extra as NewsArticleModel),
       ),
 
-      _route(
-        RouteNames.sos_device,
-        (_) => const SosDeviceScreen(),
+      _route(RouteNames.sos_device, (_) => const SosAlertPage()),
+      GoRoute(
+        path: RouteNames.sos_alert,
+        builder: (context, state) {
+          final args =
+              state.extra as SosAlertArgs? ??
+              SosNotificationService.instance.takePendingAlert() ??
+              const SosAlertArgs();
+          return SosAlertPage(args: args);
+        },
       ),
       _route(
         RouteNames.activity_dashboard,
@@ -155,14 +164,6 @@ class AppRouter {
       _route(
         RouteNames.activity_repository_test,
         (_) => const ActivityRepositoryTestPage(),
-      ),
-      _route(
-        RouteNames.drug_lookup,
-        (_) => const DrugLookScreen(),
-      ),
-      _route(
-        RouteNames.water_reminder,
-        (_) => const WaterReminderScreen(),
       ),
       _route(
         RouteNames.nutrition_food_search,
@@ -231,10 +232,18 @@ class AppRouter {
     final currentPath = state.matchedLocation;
     final user = FirebaseAuth.instance.currentUser;
 
+    // Có báo động SOS đang chờ → nhảy thẳng tới màn hình báo động,
+    // bỏ qua splash/auth hoàn toàn (không bị `go(home)` của splash ghi đè).
+    if (currentPath != RouteNames.sos_alert &&
+        SosNotificationService.instance.hasPendingAlert) {
+      return RouteNames.sos_alert;
+    }
+
     if (currentPath == RouteNames.splash ||
         currentPath == RouteNames.home ||
         currentPath == RouteNames.medicine_search ||
-        currentPath == RouteNames.hospitalFinder) {
+        currentPath == RouteNames.hospitalFinder ||
+        currentPath == RouteNames.sos_alert) {
       return null;
     }
 
