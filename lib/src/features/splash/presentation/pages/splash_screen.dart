@@ -33,6 +33,11 @@ class _SplashScreenState extends State<SplashScreen> {
     final user = await authFuture;
     if (!mounted) return;
 
+    // Đang hiển thị màn hình báo động SOS → không ghi đè stack đi về home.
+    if (GoRouterState.of(context).matchedLocation == RouteNames.sos_alert) {
+      return;
+    }
+
     // Chưa đăng nhập → vào màn giới thiệu
     if (user == null) {
       context.go(RouteNames.introduction);

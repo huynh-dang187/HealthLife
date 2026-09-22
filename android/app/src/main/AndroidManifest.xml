@@ -5,6 +5,11 @@
     <!-- Đếm bước chân: quyền nhận diện vận động -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 
+    <!-- SOS báo động khẩn cấp -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:label="healthlife"
         android:name="${applicationName}"
@@ -30,6 +35,13 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <activity
+            android:name="com.dexterous.flutterlocalnotifications.FullScreenIntentNotificationActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:theme="@style/Theme.Translucent" />
     </application>
 
     <queries>
