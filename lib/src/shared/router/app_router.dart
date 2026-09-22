@@ -150,6 +150,22 @@ class AppRouter {
         },
       ),
       _route(
+        RouteNames.activity_dashboard,
+        (_) => const ActivityDashboardPage(),
+      ),
+      _route(
+        RouteNames.activity_history,
+        (_) => const ActivityHistoryPage(),
+      ),
+      _route(
+        RouteNames.goal_dialog_preview,
+        (_) => const GoalDialogPreviewPage(),
+      ),
+      _route(
+        RouteNames.activity_repository_test,
+        (_) => const ActivityRepositoryTestPage(),
+      ),
+      _route(
         RouteNames.nutrition_food_search,
         (_) => BlocProvider(
           create: (context) => FoodSearchCubit(
