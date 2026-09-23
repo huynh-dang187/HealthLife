@@ -28,6 +28,16 @@ service cloud.firestore {
       match /daily_steps/{date} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
       }
+
+      // chat_sessions: phiên trò chuyện BiBi, chỉ chủ sở hữu đọc/ghi
+      match /chat_sessions/{sessionId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+
+        // messages: tin nhắn trong phiên, chỉ chủ sở hữu đọc/ghi
+        match /messages/{messageId} {
+          allow read, write: if request.auth != null && request.auth.uid == userId;
+        }
+      }
     }
 
     // các collection khác: mặc định chặn

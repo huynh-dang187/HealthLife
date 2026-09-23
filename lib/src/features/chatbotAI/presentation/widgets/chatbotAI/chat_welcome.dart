@@ -14,43 +14,19 @@ class ChatWelcome extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 96,
-          height: 96,
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: const Color(0xFFE8F7EE),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF1FBF67).withValues(alpha: 30),
-                blurRadius: 28,
-                spreadRadius: 2,
-              ),
-              BoxShadow(
-                color: const Color(0xFF1FBF67).withValues(alpha: 12),
-                blurRadius: 48,
-                spreadRadius: 4,
-              ),
-            ],
-            border: Border.all(
-              color: const Color(0xFF1FBF67).withValues(alpha: 40),
-              width: 1.5,
-            ),
-          ),
-          child: Container(
-            decoration: const BoxDecoration(shape: BoxShape.circle),
-            clipBehavior: Clip.antiAlias,
-            child: Assets.png.icChatbotAI.image(
-              fit: BoxFit.cover,
-              filterQuality: FilterQuality.high,
-            ),
+          decoration: const BoxDecoration(shape: BoxShape.circle),
+          clipBehavior: Clip.antiAlias,
+          child: Assets.png.icChatbotAI.image(
+            width: 170,
+            height: 170,
+            filterQuality: FilterQuality.high,
           ),
         ),
-        18.gap,
+        2.gap,
         AppText.bold(
           LocaleKeys.chatbot_ai_name.tr(),
           fontSize: 30,
-          color: const Color(0xFF1FBF67),
+          color: UIColors.pink,
           fontWeight: FontWeight.w800,
         ),
         10.gap,
@@ -59,7 +35,7 @@ class ChatWelcome extends StatelessWidget {
           fontSize: 14,
           color: UIColors.textBody,
           textAlign: TextAlign.center,
-          height: 1.5,
+          maxLines: 3,
         ),
       ],
     );

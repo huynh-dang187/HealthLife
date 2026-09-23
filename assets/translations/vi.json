@@ -137,6 +137,7 @@
   "chatbot_chat_chip_sleep": "Giấc ngủ",
   "chatbot_chat_usage_remaining": "Lượt sử dụng còn lại: {remaining}/{total}",
   "chatbot_chat_out_of_usage": "Bạn đã hết lượt dùng, vui lòng quay lại sau",
+  "chatbot_chat_typing": "BiBi đang trả lời...",
   "chatbot_history_search_hint": "Tìm kiếm...",
   "chatbot_history_intro_bibi": "Giới thiệu BiBi",
   "chatbot_history_new_conversation": "Cuộc trò chuyện mới",

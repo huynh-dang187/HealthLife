@@ -130,6 +130,7 @@
   "chatbot_chat_chip_sleep": "Sleep",
   "chatbot_chat_usage_remaining": "Remaining usage: {remaining}/{total}",
   "chatbot_chat_out_of_usage": "You have run out of usage, please come back later",
+  "chatbot_chat_typing": "BiBi is typing...",
   "chatbot_history_search_hint": "Search...",
   "chatbot_history_intro_bibi": "About BiBi",
   "chatbot_history_new_conversation": "New conversation",

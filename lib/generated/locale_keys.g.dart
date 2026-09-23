@@ -127,6 +127,7 @@ abstract class  LocaleKeys {
   static const chatbot_chat_chip_sleep = 'chatbot_chat_chip_sleep';
   static const chatbot_chat_usage_remaining = 'chatbot_chat_usage_remaining';
   static const chatbot_chat_out_of_usage = 'chatbot_chat_out_of_usage';
+  static const chatbot_chat_typing = 'chatbot_chat_typing';
   static const chatbot_history_search_hint = 'chatbot_history_search_hint';
   static const chatbot_history_intro_bibi = 'chatbot_history_intro_bibi';
   static const chatbot_history_new_conversation = 'chatbot_history_new_conversation';
