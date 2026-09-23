@@ -36,6 +36,29 @@ function getModel(apiKey, temperature = 0.7) {
   });
 }
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/** Gọi generateContent kèm retry khi API quá tải/tạm lỗi (503, 429, 5xx). */
+async function withGeminiRetry(fn, attempts = 4) {
+  let lastErr;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      const code = String(err?.status ?? err?.message ?? '');
+      const retriable =
+        code.includes('503') ||
+        code.includes('429') ||
+        code.includes('500');
+      if (!retriable) throw err;
+      if (i === attempts - 1) break;
+      await sleep(1000 * 2 ** i);
+    }
+  }
+  throw lastErr;
+}
+
 function todayKey() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -128,10 +151,16 @@ export const chatbotMessage = onCall(
         role: doc.data().role,
         parts: [{ text: doc.data().content }],
       }));
-    const chat = getModel(geminiApiKey.value()).startChat({
-      history,
-    });
-    const result = await chat.sendMessage(`${SYSTEM_PROMPT}\n\nTin nhắn: ${message}`);
+    // Nhúng system prompt vào contents để generateContent không trạng thái
+    // (retry an toàn, không append trùng message như startChat).
+    const contents = [
+      { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
+      ...history,
+    ];
+    const model = getModel(geminiApiKey.value());
+    const result = await withGeminiRetry(() =>
+      model.generateContent({ contents })
+    );
     const reply =
       result.response.text()?.trim() ||
       'Xin lỗi, mình chưa hiểu câu hỏi. Bạn thử diễn đạt lại nhé.';
@@ -176,8 +205,10 @@ export const chatbotGenerateTitle = onCall(
     }
 
     const model = getModel(geminiApiKey.value(), 0.4);
-    const result = await model.generateContent(
-      `Đặt một tiêu đề ngắn (tối đa 6 từ, tiếng Việt, không dấu chấm câu cuối, không dấu ngoặc) cho cuộc trò chuyện bắt đầu bằng câu hỏi: "${message}". Chỉ trả về tiêu đề.`
+    const result = await withGeminiRetry(() =>
+      model.generateContent(
+        `Đặt một tiêu đề ngắn (tối đa 6 từ, tiếng Việt, không dấu chấm câu cuối, không dấu ngoặc) cho cuộc trò chuyện bắt đầu bằng câu hỏi: "${message}". Chỉ trả về tiêu đề.`
+      )
     );
     const title = result.response.text()?.trim().slice(0, 60) || 'Cuộc trò chuyện';
 
