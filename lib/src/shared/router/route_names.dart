@@ -24,9 +24,8 @@ class RouteNames {
   static const activity = '/activity';
   static const activity_dashboard = '/activity_dashboard';
   static const activity_history = '/activity_history';
-  static const goal_dialog_preview = '/goal_dialog_preview';
-  static const activity_repository_test = '/activity_repository_test';
   static const chatbot = '/chatbot';
+  static const chatbot_conversation = '/chatbot/conversation';
   static const nutrition = '/nutrition';
   static const nutrition_food_search = '/nutrition/food_search';
   static const profile = '/profile';

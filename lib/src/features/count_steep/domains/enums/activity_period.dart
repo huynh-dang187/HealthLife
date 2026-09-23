@@ -1,10 +1,11 @@
+import 'package:healthlife/generated/locale_keys.g.dart';
+
 enum ActivityPeriod {
-  week('Tuần', '11 thg 8 - 17 thg 8'),
-  month('Tháng', 'thg 8'),
-  year('Năm', '2026');
+  week(LocaleKeys.count_steep_period_week),
+  month(LocaleKeys.count_steep_period_month),
+  year(LocaleKeys.count_steep_period_year);
 
-  const ActivityPeriod(this.label, this.rangeLabel);
+  const ActivityPeriod(this.labelKey);
 
-  final String label;
-  final String rangeLabel;
+  final String labelKey;
 }

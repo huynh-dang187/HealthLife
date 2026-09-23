@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:healthlife/src/core/presentation/blocs/user/user_cubit.dart';
 import 'package:healthlife/src/features/count_steep/data/repositories/activity_repository.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
 
 import 'activity_dashboard_state.dart';
@@ -30,8 +31,7 @@ class ActivityDashboardCubit extends Cubit<ActivityDashboardState> {
         emit(
           state.copyWith(
             status: BlocStatus.failure,
-            permissionGranted: false,
-            error: 'Chưa được cấp quyền truy cập cảm biến bước chân',
+            error: LocaleKeys.count_steep_permission_denied.tr(),
           ),
         );
         return;
@@ -44,10 +44,8 @@ class ActivityDashboardCubit extends Cubit<ActivityDashboardState> {
         emit(
           state.copyWith(
             status: BlocStatus.success,
-            permissionGranted: true,
             stepGoal: goal,
             streak: streak.currentStreak,
-            bestStreak: streak.bestStreak,
             error: null,
           ),
         );
@@ -60,7 +58,6 @@ class ActivityDashboardCubit extends Cubit<ActivityDashboardState> {
             emit(
               state.copyWith(
                 status: BlocStatus.success,
-                permissionGranted: true,
                 todaySteps: today,
                 error: null,
               ),
@@ -118,7 +115,6 @@ class ActivityDashboardCubit extends Cubit<ActivityDashboardState> {
           state.copyWith(
             stepGoal: goal,
             streak: streak.currentStreak,
-            bestStreak: streak.bestStreak,
           ),
         );
       }

@@ -23,6 +23,11 @@ service cloud.firestore {
       match /meal_logs/{logId} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
       }
+
+      // daily_steps: lịch sử bước chân, chỉ chủ sở hữu đọc/ghi
+      match /daily_steps/{date} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
     }
 
     // các collection khác: mặc định chặn

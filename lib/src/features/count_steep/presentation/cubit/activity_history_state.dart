@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:healthlife/src/features/count_steep/data/models/activity_stat_item.dart';
 import 'package:healthlife/src/features/count_steep/data/models/step_chart_data.dart';
 import 'package:healthlife/src/features/count_steep/domains/enums/activity_period.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
@@ -11,10 +10,8 @@ class ActivityHistoryState extends Equatable {
     this.status = BlocStatus.initial,
     this.period = ActivityPeriod.week,
     this.anchor,
-    this.rangeTitle = '',
     this.goal = 6000,
     this.chartData = const <StepChartData>[],
-    this.stats = const <ActivityStatItem>[],
     this.error,
   });
 
@@ -27,17 +24,11 @@ class ActivityHistoryState extends Equatable {
   /// 1/1 của năm. Căn cứ để xử lý nút "<" ">".
   final DateTime? anchor;
 
-  /// Tiêu đề giữa nút "<" ">" (vd: '11 thg 8 - 17 thg 8').
-  final String rangeTitle;
-
   /// Mục tiêu hiện tại để vẽ đường mục tiêu trên biểu đồ.
   final int goal;
 
   /// Data biểu đồ theo period đang chọn.
   final List<StepChartData> chartData;
-
-  /// 4 card thống kê tính từ chính [chartData].
-  final List<ActivityStatItem> stats;
 
   final String? error;
 
@@ -48,20 +39,16 @@ class ActivityHistoryState extends Equatable {
     BlocStatus? status,
     ActivityPeriod? period,
     DateTime? anchor,
-    String? rangeTitle,
     int? goal,
     List<StepChartData>? chartData,
-    List<ActivityStatItem>? stats,
     String? error,
   }) {
     return ActivityHistoryState(
       status: status ?? this.status,
       period: period ?? this.period,
       anchor: anchor ?? this.anchor,
-      rangeTitle: rangeTitle ?? this.rangeTitle,
       goal: goal ?? this.goal,
       chartData: chartData ?? this.chartData,
-      stats: stats ?? this.stats,
       error: error,
     );
   }
@@ -71,10 +58,8 @@ class ActivityHistoryState extends Equatable {
     status,
     period,
     anchor,
-    rangeTitle,
     goal,
     chartData,
-    stats,
     error,
   ];
 }

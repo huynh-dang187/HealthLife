@@ -1,9 +1,11 @@
 import 'dart:math' as math;
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 
 class StepProgressRing extends StatelessWidget {
   const StepProgressRing({
@@ -60,7 +62,7 @@ class StepProgressRing extends StatelessWidget {
                   ),
                   6.gap,
                   AppText.bold(
-                    _format(currentSteps),
+                    currentSteps.vnFormat,
                     fontSize: 34,
                     color: UIColors.text,
                   ),
@@ -69,14 +71,17 @@ class StepProgressRing extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       AppText.regular(
-                        '/${_format(goalSteps)} bước',
+                        context.tr(
+                          LocaleKeys.count_steep_steps_with_goal,
+                          namedArgs: {'goal': goalSteps.vnFormat},
+                        ),
                         fontSize: 13,
                         color: UIColors.textBody,
                       ),
                       4.gap,
                       if (onEditGoal != null)
                         Tooltip(
-                          message: 'Đặt mục tiêu bước',
+                          message: context.tr(LocaleKeys.count_steep_set_goal_tooltip),
                           child: GestureDetector(
                             onTap: onEditGoal,
                             child: const Padding(
@@ -104,20 +109,6 @@ class StepProgressRing extends StatelessWidget {
     if (height <= 0) return width > 0 ? width : 200.0;
     if (width <= 0) return height;
     return width < height ? width : height;
-  }
-
-  static String _format(int value) {
-    final buffer = StringBuffer();
-    final s = value.toString();
-    final len = s.length;
-    for (var i = 0; i < len; i++) {
-      buffer.write(s[i]);
-      final remaining = len - i - 1;
-      if (remaining > 0 && remaining % 3 == 0) {
-        buffer.write('.');
-      }
-    }
-    return buffer.toString();
   }
 }
 
