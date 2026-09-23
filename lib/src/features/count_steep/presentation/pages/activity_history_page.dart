@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
@@ -10,7 +11,6 @@ import 'package:healthlife/src/features/count_steep/data/models/step_chart_data.
 import 'package:healthlife/src/features/count_steep/data/repositories/activity_repository.dart';
 import 'package:healthlife/src/features/count_steep/presentation/cubit/activity_history_cubit.dart';
 import 'package:healthlife/src/features/count_steep/presentation/cubit/activity_history_state.dart';
-import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
 
 import '../../domains/enums/activity_period.dart';
@@ -108,8 +108,9 @@ String _rangeTitle(BuildContext context, ActivityHistoryState state) {
   final anchor = state.anchor;
   if (anchor == null) return '';
   return switch (state.period) {
-    ActivityPeriod.week => '${_shortDate(context, anchor)} - '
-        '${_shortDate(context, anchor.add(const Duration(days: 6)))}',
+    ActivityPeriod.week =>
+      '${_shortDate(context, anchor)} - '
+          '${_shortDate(context, anchor.add(const Duration(days: 6)))}',
     ActivityPeriod.month => '${_shortMonth(context, anchor)} ${anchor.year}',
     ActivityPeriod.year => '${anchor.year}',
   };
@@ -160,7 +161,7 @@ List<ActivityStatItem> _dayStats(
       : streak.start == streak.end
       ? _shortDate(context, dateOf(streak.start))
       : '${_shortDate(context, dateOf(streak.start))} - '
-          '${_shortDate(context, dateOf(streak.end))}';
+            '${_shortDate(context, dateOf(streak.end))}';
 
   return [
     ActivityStatItem(
@@ -177,7 +178,7 @@ List<ActivityStatItem> _dayStats(
       label: context.tr(LocaleKeys.count_steep_stat_longest_streak),
       value: context.tr(
         LocaleKeys.count_steep_stat_streak_days,
-        namedArgs: {'count': '$streak.length'},
+        namedArgs: {'count': '${streak.length}'},
       ),
       subtitle: streakRange,
     ),
@@ -207,7 +208,7 @@ List<ActivityStatItem> _monthStats(
       : streak.start == streak.end
       ? _shortMonth(context, monthOf(streak.start))
       : '${_shortMonth(context, monthOf(streak.start))} - '
-          '${_shortMonth(context, monthOf(streak.end))}';
+            '${_shortMonth(context, monthOf(streak.end))}';
 
   return [
     ActivityStatItem(
@@ -224,7 +225,7 @@ List<ActivityStatItem> _monthStats(
       label: context.tr(LocaleKeys.count_steep_stat_longest_streak),
       value: context.tr(
         LocaleKeys.count_steep_stat_streak_months,
-        namedArgs: {'count': '$streak.length'},
+        namedArgs: {'count': '${streak.length}'},
       ),
       subtitle: streakRange,
     ),
