@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:healthlife/generated/assets.gen.dart';
+import 'package:healthlife/generated/fonts.gen.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
-import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/src/features/chatbotAI/data/models/chat_message_model.dart';
 
 /// Bong bóng một tin nhắn trong cuộc trò chuyện BiBi.
@@ -46,11 +46,15 @@ class ChatMessageBubble extends StatelessWidget {
                 ),
               ],
       ),
-      child: AppText.regular(
+      child: Text(
         message.content,
-        fontSize: 14,
-        color: isUser ? UIColors.white : UIColors.text,
-        height: 1.4,
+        softWrap: true,
+        style: TextStyle(
+          fontSize: 14,
+          color: isUser ? UIColors.white : UIColors.text,
+          height: 1.4,
+          fontFamily: FontFamily.inter,
+        ),
       ),
     );
 
@@ -74,7 +78,9 @@ class ChatMessageBubble extends StatelessWidget {
           ),
           8.gap,
         ],
-        Flexible(child: Align(alignment: Alignment.centerLeft, child: bubble)),
+        Flexible(
+          child: Align(alignment: Alignment.centerLeft, child: bubble),
+        ),
       ],
     );
   }

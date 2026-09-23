@@ -29,7 +29,10 @@ function getModel(apiKey, temperature = 0.7) {
   const genAI = new GoogleGenerativeAI(apiKey);
   return genAI.getGenerativeModel({
     model: MODEL,
-    generationConfig: { temperature },
+    generationConfig: {
+      temperature,
+      maxOutputTokens: 8192,
+    },
   });
 }
 
@@ -127,9 +130,8 @@ export const chatbotMessage = onCall(
       }));
     const chat = getModel(geminiApiKey.value()).startChat({
       history,
-      systemInstruction: SYSTEM_PROMPT,
     });
-    const result = await chat.sendMessage(message);
+    const result = await chat.sendMessage(`${SYSTEM_PROMPT}\n\nTin nhắn: ${message}`);
     const reply =
       result.response.text()?.trim() ||
       'Xin lỗi, mình chưa hiểu câu hỏi. Bạn thử diễn đạt lại nhé.';

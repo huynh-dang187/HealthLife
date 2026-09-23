@@ -9,7 +9,7 @@ import 'chat_conversation_state.dart';
 /// Quản lý phiên trò chuyện đang mở: stream tin nhắn, gửi tin, số lượt còn lại.
 class ChatConversationCubit extends Cubit<ChatConversationState> {
   ChatConversationCubit(this._repository)
-      : super(const ChatConversationState()) {
+    : super(const ChatConversationState()) {
     _loadUsage();
   }
 
@@ -47,20 +47,22 @@ class ChatConversationCubit extends Cubit<ChatConversationState> {
     _sessionId = sessionId;
     _generatedTitle = true; // đã có tên, không auto-title lại
     emit(state.copyWith(status: BlocStatus.loading, messages: const []));
-    _messagesSub = _repository.watchMessages(sessionId).listen(
-      (messages) {
-        emit(
-          state.copyWith(
-            status: BlocStatus.success,
-            messages: messages,
-            error: null,
-          ),
+    _messagesSub = _repository
+        .watchMessages(sessionId)
+        .listen(
+          (messages) {
+            emit(
+              state.copyWith(
+                status: BlocStatus.success,
+                messages: messages,
+                error: null,
+              ),
+            );
+          },
+          onError: (e) {
+            emit(state.copyWith(status: BlocStatus.failure, error: '$e'));
+          },
         );
-      },
-      onError: (e) {
-        emit(state.copyWith(status: BlocStatus.failure, error: '$e'));
-      },
-    );
   }
 
   /// Gửi một tin nhắn. Nếu là tin đầu tiên của phiên mới thì auto-title.

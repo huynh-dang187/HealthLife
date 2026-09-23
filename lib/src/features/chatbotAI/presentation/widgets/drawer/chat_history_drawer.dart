@@ -58,8 +58,9 @@ class _ChatHistoryDrawerState extends State<ChatHistoryDrawer> {
     final pinnedList = widget.sessions
         .where((s) => s.pinned && matches(s))
         .toList();
-    final normalList =
-        widget.sessions.where((s) => !s.pinned && matches(s)).toList();
+    final normalList = widget.sessions
+        .where((s) => !s.pinned && matches(s))
+        .toList();
 
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.88,

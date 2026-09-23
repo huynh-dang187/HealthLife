@@ -8,8 +8,7 @@ import 'chat_session_list_state.dart';
 
 /// Quản lý danh sách phiên lịch sử (stream Firestore) + rename/delete/pin.
 class ChatSessionListCubit extends Cubit<ChatSessionListState> {
-  ChatSessionListCubit(this._repository)
-      : super(const ChatSessionListState()) {
+  ChatSessionListCubit(this._repository) : super(const ChatSessionListState()) {
     _sub = _repository.watchSessions().listen(
       (sessions) {
         emit(

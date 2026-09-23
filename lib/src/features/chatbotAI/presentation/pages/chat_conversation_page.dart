@@ -2,12 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healthlife/generated/assets.gen.dart';
+import 'package:healthlife/generated/fonts.gen.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
-import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/src/features/chatbotAI/data/models/chat_message_model.dart';
 import 'package:healthlife/src/features/chatbotAI/data/repositories/chatbot_repository.dart';
 import 'package:healthlife/src/features/chatbotAI/presentation/cubit/chat_conversation_cubit.dart';
@@ -44,104 +44,127 @@ class _ChatConversationPageState extends State<ChatConversationPage> {
           create: (context) => ChatSessionListCubit(_repository),
         ),
       ],
-      child: BlocBuilder<ChatSessionListCubit, ChatSessionListState>(
-        builder: (context, listState) {
-          return Scaffold(
-            key: _scaffoldKey,
-            backgroundColor: const Color(0xFFFFF9FA),
-            endDrawer: ChatHistoryDrawer(
-              sessions: listState.sessions,
-              onNewChat: () {
-                Navigator.pop(context);
-                context.read<ChatConversationCubit>().startNewSession();
-              },
-              onIntroTap: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-              onSelectSession: (session) {
-                Navigator.pop(context);
-                context
-                    .read<ChatConversationCubit>()
-                    .openSession(session.id);
-              },
-              onTogglePin: (session, pinned) {
-                context
-                    .read<ChatSessionListCubit>()
-                    .togglePin(session.id, pinned);
-              },
-              onRename: (session, newTitle) {
-                context
-                    .read<ChatSessionListCubit>()
-                    .rename(session.id, newTitle);
-              },
-              onDelete: (session) {
-                context.read<ChatSessionListCubit>().delete(session.id);
-              },
-            ),
-            appBar: AppAppBar(
-              centerTitle: true,
-              title: LocaleKeys.chatbot_chat_new_title.tr(),
-              titleColor: UIColors.text,
-              rightBtns: [
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap:
-                      widget.onMenuTap ??
-                      () => _scaffoldKey.currentState?.openEndDrawer(),
-                  child: Assets.svg.icDrawer.svg(
-                    width: 18,
-                    height: 18,
+      child: BlocListener<ChatConversationCubit, ChatConversationState>(
+        listener: (context, state) {
+          final error = state.error;
+          if (error == null || error.isEmpty) return;
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(
+                  error,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: UIColors.white,
+                    fontFamily: FontFamily.inter,
                   ),
                 ),
-              ],
-            ),
-            body: SafeArea(
-              top: false,
-              child: BlocBuilder<ChatConversationCubit, ChatConversationState>(
-                builder: (context, state) {
-                  final conversation =
-                      context.read<ChatConversationCubit>();
-                  final hasMessages = state.messages.isNotEmpty;
-
-                  return Column(
-                    children: [
-                      Expanded(
-                        child: hasMessages
-                            ? _MessageList(messages: state.messages)
-                            : SingleChildScrollView(
-                                padding: const EdgeInsets.fromLTRB(
-                                  20,
-                                  8,
-                                  20,
-                                  16,
-                                ),
-                                child: Column(
-                                  children: [
-                                    const ChatWelcome(),
-                                    28.gap,
-                                    SuggestedPromptsGrid(
-                                      onPromptTap: (label) =>
-                                          conversation.sendMessage(label),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                      ),
-                      _ChatBottomBar(
-                        bottomInset: context.bottomPadding,
-                        remaining: state.remaining,
-                        total: state.total,
-                        sending: state.sending,
-                        onSend: conversation.sendMessage,
-                      ),
-                    ],
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: const Color(0xFFE8434F),
+              ),
+            );
+        },
+        child: BlocBuilder<ChatSessionListCubit, ChatSessionListState>(
+          builder: (context, listState) {
+            return Scaffold(
+              key: _scaffoldKey,
+              backgroundColor: const Color(0xFFFFF9FA),
+              endDrawer: ChatHistoryDrawer(
+                sessions: listState.sessions,
+                onNewChat: () {
+                  Navigator.pop(context);
+                  context.read<ChatConversationCubit>().startNewSession();
+                },
+                onIntroTap: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                onSelectSession: (session) {
+                  Navigator.pop(context);
+                  context.read<ChatConversationCubit>().openSession(session.id);
+                },
+                onTogglePin: (session, pinned) {
+                  context.read<ChatSessionListCubit>().togglePin(
+                    session.id,
+                    pinned,
                   );
                 },
+                onRename: (session, newTitle) {
+                  context.read<ChatSessionListCubit>().rename(
+                    session.id,
+                    newTitle,
+                  );
+                },
+                onDelete: (session) {
+                  context.read<ChatSessionListCubit>().delete(session.id);
+                },
               ),
-            ),
-          );
-        },
+              appBar: AppAppBar(
+                centerTitle: true,
+                title: LocaleKeys.chatbot_chat_new_title.tr(),
+                titleColor: UIColors.text,
+                rightBtns: [
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap:
+                        widget.onMenuTap ??
+                        () => _scaffoldKey.currentState?.openEndDrawer(),
+                    child: Assets.svg.icDrawer.svg(
+                      width: 18,
+                      height: 18,
+                    ),
+                  ),
+                ],
+              ),
+              body: SafeArea(
+                top: false,
+                child:
+                    BlocBuilder<ChatConversationCubit, ChatConversationState>(
+                      builder: (context, state) {
+                        final conversation = context
+                            .read<ChatConversationCubit>();
+                        final hasMessages = state.messages.isNotEmpty;
+
+                        return Column(
+                          children: [
+                            Expanded(
+                              child: hasMessages
+                                  ? _MessageList(messages: state.messages)
+                                  : SingleChildScrollView(
+                                      padding: const EdgeInsets.fromLTRB(
+                                        20,
+                                        8,
+                                        20,
+                                        16,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          const ChatWelcome(),
+                                          28.gap,
+                                          SuggestedPromptsGrid(
+                                            onPromptTap: (label) =>
+                                                conversation.sendMessage(label),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                            ),
+                            _ChatBottomBar(
+                              bottomInset: context.bottomPadding,
+                              remaining: state.remaining,
+                              total: state.total,
+                              sending: state.sending,
+                              onSend: conversation.sendMessage,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -212,10 +235,13 @@ class _ChatBottomBar extends StatelessWidget {
           if (sending)
             Padding(
               padding: const EdgeInsets.only(top: 8),
-              child: AppText.regular(
+              child: Text(
                 LocaleKeys.chatbot_chat_typing.tr(),
-                fontSize: 12,
-                color: UIColors.textBody,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: UIColors.textBody,
+                  fontFamily: FontFamily.inter,
+                ),
               ),
             ),
         ],

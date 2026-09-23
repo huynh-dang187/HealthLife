@@ -48,7 +48,7 @@ class ChatbotRepository {
     http.Client? client,
   }) : _auth = auth ?? FirebaseAuth.instance,
        _firestore = firestore ?? FirebaseFirestore.instance,
-       _region = region ?? 'asia-southeast1',
+       _region = region ?? 'us-central1',
        _projectId = projectId ?? 'healthlife-e89fd',
        _client = client ?? http.Client();
 
@@ -61,8 +61,7 @@ class ChatbotRepository {
   final String _projectId;
   final http.Client _client;
 
-  String get _baseUrl =>
-      'https://$_region-$_projectId.cloudfunctions.net';
+  String get _baseUrl => 'https://$_region-$_projectId.cloudfunctions.net';
 
   Future<String?> _idToken() async {
     final user = _auth.currentUser;
@@ -90,16 +89,19 @@ class ChatbotRepository {
         )
         .timeout(const Duration(seconds: 90));
 
+    debugPrint(
+      '[ChatbotRepo] $name => ${response.statusCode}: ${response.body}',
+    );
     final decoded = jsonDecode(response.body) as Map<String, dynamic>;
     if (response.statusCode != 200) {
-      final msg = (decoded['error'] as Map<String, dynamic>?)?['message']
-              as String? ??
+      final msg =
+          (decoded['error'] as Map<String, dynamic>?)?['message'] as String? ??
           'Lỗi kết nối BiBi (${response.statusCode})';
       throw StateError(msg);
     }
-    return (decoded['result'] as Map<String, dynamic>?)?['data']
-        as Map<String, dynamic>? ??
-        decoded;
+    final result = decoded['result'];
+    if (result is Map<String, dynamic>) return result;
+    throw StateError('Phản hồi không hợp lệ từ BiBi.');
   }
 
   /// Gửi tin nhắn, nhận reply + usage mới. Truyền `sessionId` null để tạo phiên mới.
@@ -138,10 +140,7 @@ class ChatbotRepository {
     if (uid == null) {
       throw StateError('Bạn cần đăng nhập để dùng BiBi.');
     }
-    return _firestore
-        .collection('users')
-        .doc(uid)
-        .collection('chat_sessions');
+    return _firestore.collection('users').doc(uid).collection('chat_sessions');
   }
 
   Query<Map<String, dynamic>> _messagesQuery(String sessionId) {
