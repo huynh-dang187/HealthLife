@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/fonts.gen.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
-import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/src/core/presentation/widgets/text_field.dart';
 
 class ChatInputBar extends StatefulWidget {
@@ -54,10 +54,13 @@ class _ChatInputBarState extends State<ChatInputBar> {
       children: [
         if (isOut) ...[
           2.gap,
-          AppText.regular(
+          Text(
             LocaleKeys.chatbot_chat_out_of_usage.tr(),
-            fontSize: 12,
-            color: const Color(0xFFC62828),
+            style: const TextStyle(
+              fontSize: 12,
+              color: Color(0xFFC62828),
+              fontFamily: FontFamily.inter,
+            ),
             textAlign: TextAlign.right,
           ),
           6.gap,
@@ -157,15 +160,18 @@ class UsageRemainingText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppText.regular(
+    return Text(
       LocaleKeys.chatbot_chat_usage_remaining.tr(
         namedArgs: {
           'remaining': '$remaining',
           'total': '$total',
         },
       ),
-      fontSize: 12,
-      color: UIColors.textBody,
+      style: const TextStyle(
+        fontSize: 12,
+        color: UIColors.textBody,
+        fontFamily: FontFamily.inter,
+      ),
     );
   }
 }

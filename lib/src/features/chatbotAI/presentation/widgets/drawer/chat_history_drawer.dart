@@ -3,25 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
+import 'package:healthlife/src/features/chatbotAI/data/models/chat_session_model.dart';
 import 'package:healthlife/src/features/chatbotAI/presentation/widgets/drawer/drawer_widget/drawer_action_item.dart';
 import 'package:healthlife/src/features/chatbotAI/presentation/widgets/drawer/drawer_widget/drawer_search_bar.dart';
 import 'package:healthlife/src/features/chatbotAI/presentation/widgets/drawer/drawer_widget/rename_dialog.dart';
 import 'package:healthlife/src/features/chatbotAI/presentation/widgets/drawer/drawer_widget/section_header.dart';
 import 'package:healthlife/src/features/chatbotAI/presentation/widgets/drawer/drawer_widget/session_tile.dart';
-
-class ChatSessionItem {
-  const ChatSessionItem({
-    required this.id,
-    required this.title,
-    required this.lastUpdate,
-    this.pinned = false,
-  });
-
-  final int id;
-  final String title;
-  final DateTime lastUpdate;
-  final bool pinned;
-}
 
 class ChatHistoryDrawer extends StatefulWidget {
   const ChatHistoryDrawer({
@@ -30,12 +17,18 @@ class ChatHistoryDrawer extends StatefulWidget {
     this.onNewChat,
     this.onIntroTap,
     this.onSelectSession,
+    this.onTogglePin,
+    this.onRename,
+    this.onDelete,
   });
 
-  final List<ChatSessionItem> sessions;
+  final List<ChatSessionModel> sessions;
   final VoidCallback? onNewChat;
   final VoidCallback? onIntroTap;
-  final ValueChanged<ChatSessionItem>? onSelectSession;
+  final ValueChanged<ChatSessionModel>? onSelectSession;
+  final void Function(ChatSessionModel session, bool pinned)? onTogglePin;
+  final void Function(ChatSessionModel session, String newTitle)? onRename;
+  final ValueChanged<ChatSessionModel>? onDelete;
 
   @override
   State<ChatHistoryDrawer> createState() => _ChatHistoryDrawerState();
@@ -43,13 +36,6 @@ class ChatHistoryDrawer extends StatefulWidget {
 
 class _ChatHistoryDrawerState extends State<ChatHistoryDrawer> {
   final _searchController = TextEditingController();
-  late final Set<int> _pinned;
-
-  @override
-  void initState() {
-    super.initState();
-    _pinned = widget.sessions.where((s) => s.pinned).map((s) => s.id).toSet();
-  }
 
   @override
   void dispose() {
@@ -57,43 +43,24 @@ class _ChatHistoryDrawerState extends State<ChatHistoryDrawer> {
     super.dispose();
   }
 
-  void _togglePin(ChatSessionItem session) {
-    setState(() {
-      if (!_pinned.remove(session.id)) _pinned.add(session.id);
-    });
-  }
-
-  Future<void> _rename(ChatSessionItem session) async {
+  Future<void> _rename(ChatSessionModel session) async {
     final newTitle = await showRenameDialog(context, session.title);
     if (newTitle == null || newTitle.isEmpty || !mounted) return;
-    final index = widget.sessions.indexWhere((s) => s.id == session.id);
-    if (index == -1) return;
-    setState(() {
-      widget.sessions[index] = ChatSessionItem(
-        id: session.id,
-        title: newTitle,
-        lastUpdate: session.lastUpdate,
-        pinned: session.pinned,
-      );
-    });
-  }
-
-  void _delete(ChatSessionItem session) {
-    setState(() {
-      widget.sessions.removeWhere((s) => s.id == session.id);
-    });
+    widget.onRename?.call(session, newTitle);
   }
 
   @override
   Widget build(BuildContext context) {
     final keyword = _searchController.text.trim().toLowerCase();
-    bool matches(ChatSessionItem s) =>
+    bool matches(ChatSessionModel s) =>
         keyword.isEmpty || s.title.toLowerCase().contains(keyword);
 
-    final pinnedList =
-        widget.sessions.where((s) => _pinned.contains(s.id) && matches(s)).toList();
-    final normalList =
-        widget.sessions.where((s) => !_pinned.contains(s.id) && matches(s)).toList();
+    final pinnedList = widget.sessions
+        .where((s) => s.pinned && matches(s))
+        .toList();
+    final normalList = widget.sessions
+        .where((s) => !s.pinned && matches(s))
+        .toList();
 
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.88,
@@ -129,7 +96,7 @@ class _ChatHistoryDrawerState extends State<ChatHistoryDrawer> {
             if (pinnedList.isNotEmpty) ...[
               SectionHeader(LocaleKeys.chatbot_history_pinned.tr()),
               8.gap,
-              ...pinnedList.map((s) => _tile(s, pinned: true)),
+              ...pinnedList.map((s) => _tile(s)),
               12.gap,
             ],
             ..._timedSections(normalList),
@@ -139,35 +106,35 @@ class _ChatHistoryDrawerState extends State<ChatHistoryDrawer> {
     );
   }
 
-  Widget _tile(ChatSessionItem s, {required bool pinned}) {
+  Widget _tile(ChatSessionModel s) {
     return SessionTile(
       title: s.title,
-      pinned: pinned,
-      onTogglePin: () => _togglePin(s),
+      pinned: s.pinned,
+      onTogglePin: () => widget.onTogglePin?.call(s, !s.pinned),
       onRename: () => _rename(s),
-      onDelete: () => _delete(s),
+      onDelete: () => widget.onDelete?.call(s),
       onTap: () => widget.onSelectSession?.call(s),
     );
   }
 
-  List<Widget> _timedSections(List<ChatSessionItem> sessions) {
+  List<Widget> _timedSections(List<ChatSessionModel> sessions) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
 
-    bool isToday(ChatSessionItem s) => !s.lastUpdate.isBefore(today);
-    bool inLast7Days(ChatSessionItem s) {
+    bool isToday(ChatSessionModel s) => !s.updatedAt.isBefore(today);
+    bool inLast7Days(ChatSessionModel s) {
       final limit = today.subtract(const Duration(days: 7));
-      return !s.lastUpdate.isBefore(limit) && s.lastUpdate.isBefore(today);
+      return !s.updatedAt.isBefore(limit) && s.updatedAt.isBefore(today);
     }
 
-    Widget section(String title, List<ChatSessionItem> list) {
+    Widget section(String title, List<ChatSessionModel> list) {
       if (list.isEmpty) return const SizedBox.shrink();
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SectionHeader(title),
           8.gap,
-          ...list.map((s) => _tile(s, pinned: false)),
+          ...list.map(_tile),
           12.gap,
         ],
       );
