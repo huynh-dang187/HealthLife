@@ -8,34 +8,36 @@ import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
 import 'package:healthlife/src/features/chatbotAI/presentation/widgets/chatbotAI/chat_input_bar.dart';
 import 'package:healthlife/src/features/chatbotAI/presentation/widgets/chatbotAI/chat_welcome.dart';
-import 'package:healthlife/src/features/chatbotAI/presentation/widgets/chatbotAI/suggested_chips.dart';
 import 'package:healthlife/src/features/chatbotAI/presentation/widgets/chatbotAI/suggested_prompts_grid.dart';
 
-class ChatConversationPage extends StatelessWidget {
+class ChatConversationPage extends StatefulWidget {
   const ChatConversationPage({super.key, this.onMenuTap});
 
   final VoidCallback? onMenuTap;
 
   @override
+  State<ChatConversationPage> createState() => _ChatConversationPageState();
+}
+
+class _ChatConversationPageState extends State<ChatConversationPage> {
+  @override
   Widget build(BuildContext context) {
+    const testRemaining = 10;
+    const testTotal = 50;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF6FBF8),
+      backgroundColor: Color(0xFFFFF9FA),
       appBar: AppAppBar(
+        centerTitle: true,
         title: LocaleKeys.chatbot_chat_new_title.tr(),
-        bgColor: UIColors.white,
-        iconColor: const Color(0xFF1FBF67),
         titleColor: UIColors.text,
         rightBtns: [
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: onMenuTap,
+            onTap: widget.onMenuTap,
             child: Assets.svg.icDrawer.svg(
-              width: 20,
-              height: 20,
-              colorFilter: const ColorFilter.mode(
-                Color(0xFF1FBF67),
-                BlendMode.srcIn,
-              ),
+              width: 18,
+              height: 18,
             ),
           ),
         ],
@@ -52,16 +54,14 @@ class ChatConversationPage extends StatelessWidget {
                     const ChatWelcome(),
                     28.gap,
                     const SuggestedPromptsGrid(),
-                    24.gap,
-                    // const SuggestedChips(),
-                    18.gap,
-                    const UsageRemainingText(),
                   ],
                 ),
               ),
             ),
             _ChatBottomBar(
               bottomInset: context.bottomPadding,
+              remaining: testRemaining,
+              total: testTotal,
             ),
           ],
         ),
@@ -71,9 +71,15 @@ class ChatConversationPage extends StatelessWidget {
 }
 
 class _ChatBottomBar extends StatelessWidget {
-  const _ChatBottomBar({required this.bottomInset});
+  const _ChatBottomBar({
+    required this.bottomInset,
+    required this.remaining,
+    required this.total,
+  });
 
   final double bottomInset;
+  final int remaining;
+  final int total;
 
   @override
   Widget build(BuildContext context) {
@@ -82,10 +88,23 @@ class _ChatBottomBar extends StatelessWidget {
         16,
         12,
         16,
-        bottomInset > 0 ? bottomInset : 6,
+        bottomInset > 0 ? bottomInset : 10,
       ),
-
-      child: const ChatInputBar(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          UsageRemainingText(
+            remaining: remaining,
+            total: total,
+          ),
+          6.gap,
+          ChatInputBar(
+            remaining: remaining,
+            total: total,
+          ),
+        ],
+      ),
     );
   }
 }

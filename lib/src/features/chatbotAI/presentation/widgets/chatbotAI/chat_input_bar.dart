@@ -4,14 +4,15 @@ import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
+import 'package:healthlife/src/core/presentation/widgets/text_field.dart';
 
 class ChatInputBar extends StatefulWidget {
   const ChatInputBar({
     super.key,
     this.onSend,
     this.enabled = true,
-    this.remaining = 40,
-    this.total = 50,
+    required this.remaining,
+    required this.total,
   });
 
   final ValueChanged<String>? onSend;
@@ -52,55 +53,32 @@ class _ChatInputBarState extends State<ChatInputBar> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (isOut) ...[
-          const SizedBox(height: 4),
+          2.gap,
           AppText.regular(
             LocaleKeys.chatbot_chat_out_of_usage.tr(),
             fontSize: 12,
             color: const Color(0xFFC62828),
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.right,
           ),
-          const SizedBox(height: 6),
+          6.gap,
         ],
         Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF6FBF8),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: const Color(0xFF1FBF67).withValues(alpha: 40),
-                    width: 1,
-                  ),
-                ),
-                child: TextField(
+              child: SizedBox(
+                height: 46,
+                child: AppTF.common(
                   controller: _controller,
-                  enabled: widget.enabled && !isOut,
-                  minLines: 1,
-                  maxLines: 4,
+                  hintText: LocaleKeys.chatbot_chat_input_hint,
+                  height: 46,
+                  borderCicular: 20,
+                  textColor: UIColors.text,
                   onSubmitted: (_) => _submit(),
-                  style: const TextStyle(
-                    color: UIColors.text,
-                    fontSize: 14.5,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: LocaleKeys.chatbot_chat_input_hint.tr(),
-                    hintStyle: const TextStyle(
-                      color: UIColors.textBody,
-                      fontSize: 14,
-                    ),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 14,
-                    ),
-                  ),
                 ),
               ),
             ),
-            10.gap,
+            4.gap,
             _SendButton(
               ratio: ratio,
               enabled: widget.enabled && !isOut,
@@ -136,60 +114,58 @@ class _SendButton extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: enabled ? onTap : null,
       child: SizedBox(
-        width: 62,
-        height: 62,
+        width: 48,
+        height: 48,
         child: Stack(
           alignment: Alignment.center,
           children: [
-            SizedBox(
-              width: 62,
-              height: 62,
-              child: Transform.rotate(
-                angle: -1.5707963,
-                child: CircularProgressIndicator(
-                  value: ratio,
-                  strokeWidth: 4,
-                  strokeCap: StrokeCap.round,
-                  backgroundColor: const Color(0xFFE3EFE8),
-                  valueColor: AlwaysStoppedAnimation(_lineColor),
-                ),
+            Transform.rotate(
+              angle: -1.5707963,
+              child: CircularProgressIndicator(
+                value: ratio,
+                strokeWidth: 2,
+                strokeCap: StrokeCap.round,
+                backgroundColor: const Color(0xFFE3EFE8),
+                valueColor: AlwaysStoppedAnimation(_lineColor),
               ),
             ),
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: enabled
-                    ? const LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [Color(0xFF3EDC85), Color(0xFF1FBF67)],
-                      )
-                    : const LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [Color(0xFFB9C6C0), Color(0xFF93A39C)],
-                      ),
-                boxShadow: enabled
-                    ? [
-                        BoxShadow(
-                          color: const Color(0xFF1FBF67).withValues(alpha: 35),
-                          blurRadius: 18,
-                          spreadRadius: 1,
-                        ),
-                      ]
-                    : null,
-              ),
+            SizedBox(
+              width: 34,
+              height: 34,
               child: const Icon(
                 Icons.send_rounded,
-                size: 22,
-                color: Colors.white,
+                size: 18,
+                color: UIColors.green,
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class UsageRemainingText extends StatelessWidget {
+  const UsageRemainingText({
+    super.key,
+    required this.remaining,
+    required this.total,
+  });
+
+  final int remaining;
+  final int total;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppText.regular(
+      LocaleKeys.chatbot_chat_usage_remaining.tr(
+        namedArgs: {
+          'remaining': '$remaining',
+          'total': '$total',
+        },
+      ),
+      fontSize: 12,
+      color: UIColors.textBody,
     );
   }
 }
