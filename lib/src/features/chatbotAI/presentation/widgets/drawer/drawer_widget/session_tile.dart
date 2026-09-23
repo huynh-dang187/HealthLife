@@ -1,5 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/fonts.gen.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
@@ -35,11 +35,15 @@ class SessionTile extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: AppText.medium(
+              child: Text(
                 title,
-                fontSize: 14,
-                color: UIColors.text,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: UIColors.text,
+                  fontFamily: FontFamily.inter,
+                ),
                 maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             GestureDetector(
@@ -81,7 +85,7 @@ class SessionTile extends StatelessWidget {
                       ),
                       8.gap,
                       AppText.medium(
-                        LocaleKeys.chatbot_history_rename.tr(),
+                        LocaleKeys.chatbot_history_rename,
                         fontSize: 13,
                         color: UIColors.text,
                       ),
@@ -99,7 +103,7 @@ class SessionTile extends StatelessWidget {
                       ),
                       8.gap,
                       AppText.medium(
-                        LocaleKeys.chatbot_history_delete.tr(),
+                        LocaleKeys.chatbot_history_delete,
                         fontSize: 13,
                         color: const Color(0xFFE8434F),
                       ),
