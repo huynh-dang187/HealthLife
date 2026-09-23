@@ -1,8 +1,10 @@
+import 'package:healthlife/generated/locale_keys.g.dart';
+
 enum ActivityTab {
-  overview('Tổng quan'),
-  history('Lịch sử');
+  overview(LocaleKeys.count_steep_tab_overview),
+  history(LocaleKeys.count_steep_tab_history);
 
-  const ActivityTab(this.label);
+  const ActivityTab(this.labelKey);
 
-  final String label;
+  final String labelKey;
 }

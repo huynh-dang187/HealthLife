@@ -1,3 +1,4 @@
 // Re-export tất cả functions từ các module con
 export { generateDailyTip, testGenerateTip } from './src/features/daily_tips.js';
 export { triggerSosAlert } from './src/features/sos_iot.js';
+export { validateDailyStepRecord } from './src/features/daily_step.js';

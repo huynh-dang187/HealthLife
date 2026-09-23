@@ -1,9 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
+import 'package:healthlife/src/shared/enums/bloc_status.dart';
 import 'package:healthlife/src/features/count_steep/presentation/cubit/activity_dashboard_cubit.dart';
 
 import '../set_goal_dialog.dart';
@@ -20,11 +23,15 @@ class OverviewTab extends StatelessWidget {
     required this.streak,
     required this.currentSteps,
     required this.goalSteps,
+    required this.status,
+    this.error,
   });
 
   final int streak;
   final int currentSteps;
   final int goalSteps;
+  final BlocStatus status;
+  final String? error;
 
   /// Chiều dài sải chân trung bình (m) và kcal/1 bước dùng để ước tính.
   static const _avgStrideMeters = 0.7;
@@ -66,13 +73,27 @@ class OverviewTab extends StatelessWidget {
           24.gap,
           Center(
             child: AppText.regular(
-              'Bạn đã đạt được mục tiêu liên tiếp $streak ngày. Tiếp tục cố gắng nào!',
+              context.tr(
+                LocaleKeys.count_steep_streak_message,
+                namedArgs: {'streak': '$streak'},
+              ),
               fontSize: 13,
               color: UIColors.textBody,
               textAlign: TextAlign.center,
               maxLines: 3,
             ),
           ),
+          if (status == BlocStatus.failure && error != null) ...[
+            12.gap,
+            Center(
+              child: AppText.regular(
+                context.tr(LocaleKeys.count_steep_permission_denied),
+                fontSize: 12,
+                color: UIColors.error,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
           20.gap,
           Row(
             children: [
@@ -81,7 +102,7 @@ class OverviewTab extends StatelessWidget {
                   icon: Icons.map,
                   iconColor: UIColors.pink,
                   value: '${distanceKm.toStringAsFixed(1)} km',
-                  label: 'Quãng đường',
+                  label: context.tr(LocaleKeys.count_steep_distance),
                 ),
               ),
               12.gap,
@@ -90,7 +111,7 @@ class OverviewTab extends StatelessWidget {
                   icon: Icons.local_fire_department,
                   iconColor: Colors.deepOrange,
                   value: '${energyKcal.round()} kcal',
-                  label: 'Năng lượng',
+                  label: context.tr(LocaleKeys.count_steep_energy),
                 ),
               ),
             ],

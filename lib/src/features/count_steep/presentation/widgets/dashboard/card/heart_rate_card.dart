@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 
 /// Card "Theo dõi nhịp tim" — nền tối, nút Đo disabled + badge Sắp ra mắt.
 class HeartRateCard extends StatelessWidget {
@@ -39,13 +41,13 @@ class HeartRateCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppText.semiBold(
-                      'Theo dõi nhịp tim',
+                      context.tr(LocaleKeys.count_steep_card_heart_title),
                       fontSize: 14,
                       color: UIColors.white,
                     ),
                     3.gap,
                     AppText.regular(
-                      'Đo nhanh nhịp tim của bạn',
+                      context.tr(LocaleKeys.count_steep_card_heart_sub),
                       fontSize: 11.5,
                       color: UIColors.white.withValues(alpha: 0.65),
                       maxLines: 2,
@@ -55,7 +57,7 @@ class HeartRateCard extends StatelessWidget {
               ),
               12.gap,
               AppButton.fill(
-                title: 'Đo',
+                title: context.tr(LocaleKeys.count_steep_measure),
                 width: 64,
                 height: 34,
                 color: UIColors.pink,
@@ -79,7 +81,7 @@ class HeartRateCard extends StatelessWidget {
                 ),
               ),
               child: AppText.medium(
-                'Sắp ra mắt',
+                context.tr(LocaleKeys.count_steep_coming_soon),
                 fontSize: 9,
                 color: UIColors.white.withValues(alpha: 0.8),
               ),

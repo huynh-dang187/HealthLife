@@ -1,10 +1,12 @@
 import 'dart:math' as math;
 
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 
 import '../../../data/models/step_chart_data.dart';
 
@@ -66,7 +68,7 @@ class StepBarChart extends StatelessWidget {
         _Legend(),
         8.gap,
         _MarqueeHint(
-          text: 'Chạm vào một cột để xem chi tiết số bước của ngày đó',
+          text: context.tr(LocaleKeys.count_steep_chart_hint),
         ),
       ],
     );
@@ -181,7 +183,7 @@ class _Legend extends StatelessWidget {
         _dot(color: UIColors.coral, borderColor: null),
         6.gap,
         AppText.regular(
-          'Đã đạt được',
+          context.tr(LocaleKeys.count_steep_chart_reached),
           fontSize: 11,
           color: UIColors.textBody,
         ),
@@ -189,7 +191,7 @@ class _Legend extends StatelessWidget {
         _dot(color: UIColors.pinkLight, borderColor: UIColors.coral),
         6.gap,
         AppText.regular(
-          'Chưa đạt được',
+          context.tr(LocaleKeys.count_steep_chart_not_reached),
           fontSize: 11,
           color: UIColors.textBody,
         ),

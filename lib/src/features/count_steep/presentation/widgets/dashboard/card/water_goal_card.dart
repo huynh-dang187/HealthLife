@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 
 /// Card "Ghi lại lượng nước uống" — nền tối, nút Đặt mục tiêu disabled
 /// + badge Sắp ra mắt.
@@ -40,13 +42,13 @@ class WaterGoalCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppText.semiBold(
-                      'Ghi lại lượng nước uống',
+                      context.tr(LocaleKeys.count_steep_card_water_title),
                       fontSize: 14,
                       color: UIColors.white,
                     ),
                     3.gap,
                     AppText.regular(
-                      'Nhắc uống đủ nước mỗi ngày để khỏe hơn',
+                      context.tr(LocaleKeys.count_steep_card_water_sub),
                       fontSize: 11.5,
                       color: UIColors.white.withValues(alpha: 0.65),
                       maxLines: 2,
@@ -56,7 +58,7 @@ class WaterGoalCard extends StatelessWidget {
               ),
               12.gap,
               AppButton.fill(
-                title: 'Đặt mục tiêu',
+                title: context.tr(LocaleKeys.count_steep_set_goal),
                 height: 34,
                 color: UIColors.pink,
                 borderRadius: BorderRadius.circular(18),
@@ -79,7 +81,7 @@ class WaterGoalCard extends StatelessWidget {
                 ),
               ),
               child: AppText.medium(
-                'Sắp ra mắt',
+                context.tr(LocaleKeys.count_steep_coming_soon),
                 fontSize: 9,
                 color: UIColors.white.withValues(alpha: 0.8),
               ),

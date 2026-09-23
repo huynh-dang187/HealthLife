@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/features/count_steep/presentation/cubit/activity_dashboard_cubit.dart';
 
 Future<int?> showSetGoalDialog(
@@ -104,12 +106,15 @@ class _SetGoalSheetState extends State<_SetGoalSheet> {
               ),
             ),
             20.gap,
-            AppText.bold('Đặt mục tiêu', fontSize: 18),
+            AppText.bold(
+              context.tr(LocaleKeys.count_steep_set_goal),
+              fontSize: 18,
+            ),
             12.gap,
             _buildPicker(),
             16.gap,
             AppButton.fill(
-              title: 'Lưu',
+              title: context.tr(LocaleKeys.count_steep_save),
               color: UIColors.pink,
               borderRadius: BorderRadius.circular(16),
               onTap: _save,
@@ -118,7 +123,7 @@ class _SetGoalSheetState extends State<_SetGoalSheet> {
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: AppText.medium(
-                'Hủy bỏ',
+                context.tr(LocaleKeys.count_steep_cancel),
                 fontSize: 15,
                 color: UIColors.textBody,
               ),
@@ -168,12 +173,18 @@ class _SetGoalSheetState extends State<_SetGoalSheet> {
                   Center(
                     child: value == _selected
                         ? AppText.semiBold(
-                            '${_format(value)} bước',
+                            context.tr(
+                              LocaleKeys.count_steep_steps_count,
+                              namedArgs: {'count': value.vnFormat},
+                            ),
                             fontSize: 20,
                             color: UIColors.black,
                           )
                         : AppText.regular(
-                            '${_format(value)} bước',
+                            context.tr(
+                              LocaleKeys.count_steep_steps_count,
+                              namedArgs: {'count': value.vnFormat},
+                            ),
                             fontSize: 15,
                             color: UIColors.textBody.withValues(alpha: 0.9),
                           ),
@@ -189,20 +200,6 @@ class _SetGoalSheetState extends State<_SetGoalSheet> {
         ),
       ],
     );
-  }
-
-  static String _format(int value) {
-    final buffer = StringBuffer();
-    final s = value.toString();
-    final len = s.length;
-    for (var i = 0; i < len; i++) {
-      buffer.write(s[i]);
-      final remaining = len - i - 1;
-      if (remaining > 0 && remaining % 3 == 0) {
-        buffer.write('.');
-      }
-    }
-    return buffer.toString();
   }
 }
 

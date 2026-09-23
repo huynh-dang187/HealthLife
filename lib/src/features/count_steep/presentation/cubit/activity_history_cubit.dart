@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:healthlife/src/features/count_steep/data/models/activity_stat_item.dart';
-import 'package:healthlife/src/features/count_steep/data/models/step_chart_data.dart';
 import 'package:healthlife/src/features/count_steep/data/repositories/activity_repository.dart';
 import 'package:healthlife/src/features/count_steep/domains/enums/activity_period.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
@@ -10,7 +8,7 @@ import 'package:healthlife/src/shared/enums/bloc_status.dart';
 import 'activity_history_state.dart';
 
 /// Quản lý lịch sử: period (Tuần/Tháng/Năm), mốc thời gian đang xem,
-/// data biểu đồ + 4 card thống kê tính từ data thật.
+/// data biểu đồ (thống kê + tiêu đề khoảng được tính tại UI theo locale).
 class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
   ActivityHistoryCubit(this._repository) : super(const ActivityHistoryState());
 
@@ -56,15 +54,12 @@ class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
         ActivityPeriod.year => _repository.getYearlyData(anchor.year),
       };
       final goal = await _repository.fetchStepGoal();
-      final stats = _buildStats(period, data, anchor);
       if (!isClosed) {
         emit(
           state.copyWith(
             status: BlocStatus.success,
             goal: goal,
             chartData: data,
-            stats: stats,
-            rangeTitle: _rangeTitle(period, anchor),
             error: null,
           ),
         );
@@ -94,163 +89,5 @@ class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
       ActivityPeriod.month => DateTime(anchor.year, anchor.month + delta, 1),
       ActivityPeriod.year => DateTime(anchor.year + delta, 1, 1),
     };
-  }
-
-  String _rangeTitle(ActivityPeriod period, DateTime anchor) {
-    return switch (period) {
-      ActivityPeriod.week =>
-        '${_dShort(anchor)} - ${_dShort(anchor.add(const Duration(days: 6)))}',
-      ActivityPeriod.month => 'thg ${anchor.month} ${anchor.year}',
-      ActivityPeriod.year => '${anchor.year}',
-    };
-  }
-
-  // ----- Thống kê -----
-
-  List<ActivityStatItem> _buildStats(
-    ActivityPeriod period,
-    List<StepChartData> data,
-    DateTime anchor,
-  ) {
-    if (data.isEmpty) return const [];
-    return switch (period) {
-      ActivityPeriod.week => _dayStats(
-        data,
-        (i) => anchor.add(Duration(days: i)),
-        'trong tuần',
-        data.length,
-      ),
-      ActivityPeriod.month => _dayStats(
-        data,
-        (i) => DateTime(anchor.year, anchor.month, i + 1),
-        'trong tháng',
-        data.length,
-      ),
-      ActivityPeriod.year => _monthStats(data),
-    };
-  }
-
-  List<ActivityStatItem> _dayStats(
-    List<StepChartData> data,
-    DateTime Function(int index) dateOf,
-    String inScope,
-    int totalDays,
-  ) {
-    final achieved = data.where((d) => d.goalReached).length;
-    final best = _bestIndex(data, pickMax: true);
-    final worst = _bestIndex(data, pickMax: false);
-    final streak = _longestStreak(data);
-
-    final streakRange = streak.length == 0
-        ? 'chưa đạt ngày nào'
-        : streak.start == streak.end
-        ? _dShort(dateOf(streak.start))
-        : '${_dShort(dateOf(streak.start))} - ${_dShort(dateOf(streak.end))}';
-
-    return [
-      ActivityStatItem(
-        label: 'Ngày hoạt động nhất',
-        value: '${_num(data[best].steps)} bước',
-        subtitle: _dShort(dateOf(best)),
-      ),
-      ActivityStatItem(
-        label: 'Ngày thư giãn nhất',
-        value: '${_num(data[worst].steps)} bước',
-        subtitle: _dShort(dateOf(worst)),
-      ),
-      ActivityStatItem(
-        label: 'Chuỗi dài nhất',
-        value: '${streak.length} ngày',
-        subtitle: streakRange,
-      ),
-      ActivityStatItem(
-        label: 'Đạt được mục tiêu',
-        value: '$achieved/$totalDays ngày',
-        subtitle: inScope,
-      ),
-    ];
-  }
-
-  List<ActivityStatItem> _monthStats(List<StepChartData> data) {
-    final achieved = data.where((d) => d.goalReached).length;
-    final best = _bestIndex(data, pickMax: true);
-    final worst = _bestIndex(data, pickMax: false);
-    final streak = _longestStreak(data);
-
-    final streakRange = streak.length == 0
-        ? 'chưa đạt tháng nào'
-        : streak.start == streak.end
-        ? 'thg ${streak.start + 1}'
-        : 'thg ${streak.start + 1} - thg ${streak.end + 1}';
-
-    return [
-      ActivityStatItem(
-        label: 'Tháng hoạt động nhất',
-        value: '${_num(data[best].steps)} bước',
-        subtitle: 'thg ${best + 1}',
-      ),
-      ActivityStatItem(
-        label: 'Tháng thư giãn nhất',
-        value: '${_num(data[worst].steps)} bước',
-        subtitle: 'thg ${worst + 1}',
-      ),
-      ActivityStatItem(
-        label: 'Chuỗi dài nhất',
-        value: '${streak.length} tháng',
-        subtitle: streakRange,
-      ),
-      ActivityStatItem(
-        label: 'Đạt mục tiêu',
-        value: '$achieved/12 tháng',
-        subtitle: 'trong năm',
-      ),
-    ];
-  }
-
-  int _bestIndex(List<StepChartData> data, {required bool pickMax}) {
-    var index = 0;
-    for (var i = 1; i < data.length; i++) {
-      if (pickMax
-          ? data[i].steps > data[index].steps
-          : data[i].steps < data[index].steps) {
-        index = i;
-      }
-    }
-    return index;
-  }
-
-  ({int length, int start, int end}) _longestStreak(
-    List<StepChartData> data,
-  ) {
-    var length = 0, start = -1, end = -1;
-    var run = 0, runStart = -1;
-    for (var i = 0; i < data.length; i++) {
-      if (data[i].goalReached) {
-        if (run == 0) runStart = i;
-        run++;
-        if (run > length) {
-          length = run;
-          start = runStart;
-          end = i;
-        }
-      } else {
-        run = 0;
-      }
-    }
-    return (length: length, start: start, end: end);
-  }
-
-  String _dShort(DateTime d) => '${d.day} thg ${d.month}';
-
-  /// 10000 -> '10.000' (dấu chấm hàng nghìn kiểu Việt Nam).
-  String _num(int value) {
-    final s = value.toString();
-    final buffer = StringBuffer();
-    for (var i = 0; i < s.length; i++) {
-      buffer.write(s[i]);
-      final remaining = s.length - i - 1;
-      if (remaining > 0 && remaining % 3 == 0) buffer.write('.');
-    }
-    return buffer.toString();
   }
 }

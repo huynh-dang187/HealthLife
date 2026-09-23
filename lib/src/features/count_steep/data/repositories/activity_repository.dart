@@ -142,27 +142,31 @@ class ActivityRepository {
       return;
     }
 
-    final goal = await fetchStepGoal();
-    final goalReached = steps >= goal;
     final dateKey = _dateKey(now);
+    try {
+      final goal = await fetchStepGoal();
+      final goalReached = steps >= goal;
 
-    await _firestore
-        .collection('users')
-        .doc(user.uid)
-        .collection('daily_steps')
-        .doc(dateKey)
-        .set({
-          'steps': steps,
-          'goalReached': goalReached,
-          'updatedAt': FieldValue.serverTimestamp(),
-        }, SetOptions(merge: true));
+      await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('daily_steps')
+          .doc(dateKey)
+          .set({
+            'steps': steps,
+            'goalReached': goalReached,
+            'updatedAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
 
-    _lastWrittenSteps = steps;
-    _lastWriteTime = now;
-    debugPrint(
-      '[ActivityRepo] ghi Firestore $dateKey: steps=$steps '
-      'goalReached=$goalReached (goal=$goal)',
-    );
+      _lastWrittenSteps = steps;
+      _lastWriteTime = now;
+      debugPrint(
+        '[ActivityRepo] ghi Firestore $dateKey: steps=$steps '
+        'goalReached=$goalReached (goal=$goal)',
+      );
+    } catch (e) {
+      debugPrint('[ActivityRepo] ghi Firestore $dateKey thất bại: $e');
+    }
   }
 
   bool _shouldWrite(int steps, tz.TZDateTime now) {
