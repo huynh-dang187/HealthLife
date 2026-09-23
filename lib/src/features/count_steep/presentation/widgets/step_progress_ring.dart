@@ -60,7 +60,7 @@ class StepProgressRing extends StatelessWidget {
                   ),
                   6.gap,
                   AppText.bold(
-                    _format(currentSteps),
+                    currentSteps.vnFormat,
                     fontSize: 34,
                     color: UIColors.text,
                   ),
@@ -69,7 +69,7 @@ class StepProgressRing extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       AppText.regular(
-                        '/${_format(goalSteps)} bước',
+                        '/${goalSteps.vnFormat} bước',
                         fontSize: 13,
                         color: UIColors.textBody,
                       ),
@@ -104,20 +104,6 @@ class StepProgressRing extends StatelessWidget {
     if (height <= 0) return width > 0 ? width : 200.0;
     if (width <= 0) return height;
     return width < height ? width : height;
-  }
-
-  static String _format(int value) {
-    final buffer = StringBuffer();
-    final s = value.toString();
-    final len = s.length;
-    for (var i = 0; i < len; i++) {
-      buffer.write(s[i]);
-      final remaining = len - i - 1;
-      if (remaining > 0 && remaining % 3 == 0) {
-        buffer.write('.');
-      }
-    }
-    return buffer.toString();
   }
 }
 

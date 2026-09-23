@@ -30,7 +30,6 @@ class ActivityDashboardCubit extends Cubit<ActivityDashboardState> {
         emit(
           state.copyWith(
             status: BlocStatus.failure,
-            permissionGranted: false,
             error: 'Chưa được cấp quyền truy cập cảm biến bước chân',
           ),
         );
@@ -44,10 +43,8 @@ class ActivityDashboardCubit extends Cubit<ActivityDashboardState> {
         emit(
           state.copyWith(
             status: BlocStatus.success,
-            permissionGranted: true,
             stepGoal: goal,
             streak: streak.currentStreak,
-            bestStreak: streak.bestStreak,
             error: null,
           ),
         );
@@ -60,7 +57,6 @@ class ActivityDashboardCubit extends Cubit<ActivityDashboardState> {
             emit(
               state.copyWith(
                 status: BlocStatus.success,
-                permissionGranted: true,
                 todaySteps: today,
                 error: null,
               ),
@@ -118,7 +114,6 @@ class ActivityDashboardCubit extends Cubit<ActivityDashboardState> {
           state.copyWith(
             stepGoal: goal,
             streak: streak.currentStreak,
-            bestStreak: streak.bestStreak,
           ),
         );
       }

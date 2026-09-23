@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/features/count_steep/data/models/activity_stat_item.dart';
 import 'package:healthlife/src/features/count_steep/data/models/step_chart_data.dart';
 import 'package:healthlife/src/features/count_steep/data/repositories/activity_repository.dart';
@@ -150,12 +151,12 @@ class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
     return [
       ActivityStatItem(
         label: 'Ngày hoạt động nhất',
-        value: '${_num(data[best].steps)} bước',
+        value: '${data[best].steps.vnFormat} bước',
         subtitle: _dShort(dateOf(best)),
       ),
       ActivityStatItem(
         label: 'Ngày thư giãn nhất',
-        value: '${_num(data[worst].steps)} bước',
+        value: '${data[worst].steps.vnFormat} bước',
         subtitle: _dShort(dateOf(worst)),
       ),
       ActivityStatItem(
@@ -186,12 +187,12 @@ class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
     return [
       ActivityStatItem(
         label: 'Tháng hoạt động nhất',
-        value: '${_num(data[best].steps)} bước',
+        value: '${data[best].steps.vnFormat} bước',
         subtitle: 'thg ${best + 1}',
       ),
       ActivityStatItem(
         label: 'Tháng thư giãn nhất',
-        value: '${_num(data[worst].steps)} bước',
+        value: '${data[worst].steps.vnFormat} bước',
         subtitle: 'thg ${worst + 1}',
       ),
       ActivityStatItem(
@@ -241,16 +242,4 @@ class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
   }
 
   String _dShort(DateTime d) => '${d.day} thg ${d.month}';
-
-  /// 10000 -> '10.000' (dấu chấm hàng nghìn kiểu Việt Nam).
-  String _num(int value) {
-    final s = value.toString();
-    final buffer = StringBuffer();
-    for (var i = 0; i < s.length; i++) {
-      buffer.write(s[i]);
-      final remaining = s.length - i - 1;
-      if (remaining > 0 && remaining % 3 == 0) buffer.write('.');
-    }
-    return buffer.toString();
-  }
 }

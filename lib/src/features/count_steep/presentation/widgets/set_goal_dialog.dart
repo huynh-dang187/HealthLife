@@ -168,12 +168,12 @@ class _SetGoalSheetState extends State<_SetGoalSheet> {
                   Center(
                     child: value == _selected
                         ? AppText.semiBold(
-                            '${_format(value)} bước',
+                            '${value.vnFormat} bước',
                             fontSize: 20,
                             color: UIColors.black,
                           )
                         : AppText.regular(
-                            '${_format(value)} bước',
+                            '${value.vnFormat} bước',
                             fontSize: 15,
                             color: UIColors.textBody.withValues(alpha: 0.9),
                           ),
@@ -189,20 +189,6 @@ class _SetGoalSheetState extends State<_SetGoalSheet> {
         ),
       ],
     );
-  }
-
-  static String _format(int value) {
-    final buffer = StringBuffer();
-    final s = value.toString();
-    final len = s.length;
-    for (var i = 0; i < len; i++) {
-      buffer.write(s[i]);
-      final remaining = len - i - 1;
-      if (remaining > 0 && remaining % 3 == 0) {
-        buffer.write('.');
-      }
-    }
-    return buffer.toString();
   }
 }
 
