@@ -129,5 +129,16 @@
   "chatbot_chat_chip_exercise": "Exercise",
   "chatbot_chat_chip_sleep": "Sleep",
   "chatbot_chat_usage_remaining": "Remaining usage: {remaining}/{total}",
-  "chatbot_chat_out_of_usage": "You have run out of usage, please come back later"
+  "chatbot_chat_out_of_usage": "You have run out of usage, please come back later",
+  "chatbot_history_search_hint": "Search...",
+  "chatbot_history_intro_bibi": "About BiBi",
+  "chatbot_history_new_conversation": "New conversation",
+  "chatbot_history_pinned": "Pinned",
+  "chatbot_history_today": "Today",
+  "chatbot_history_previous_7_days": "Previous 7 days",
+  "chatbot_history_rename_title": "Rename conversation",
+  "chatbot_history_rename": "Rename",
+  "chatbot_history_delete": "Delete conversation",
+  "chatbot_history_cancel": "Cancel",
+  "chatbot_history_save": "Save"
 }

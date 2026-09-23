@@ -127,5 +127,16 @@ abstract class  LocaleKeys {
   static const chatbot_chat_chip_sleep = 'chatbot_chat_chip_sleep';
   static const chatbot_chat_usage_remaining = 'chatbot_chat_usage_remaining';
   static const chatbot_chat_out_of_usage = 'chatbot_chat_out_of_usage';
+  static const chatbot_history_search_hint = 'chatbot_history_search_hint';
+  static const chatbot_history_intro_bibi = 'chatbot_history_intro_bibi';
+  static const chatbot_history_new_conversation = 'chatbot_history_new_conversation';
+  static const chatbot_history_pinned = 'chatbot_history_pinned';
+  static const chatbot_history_today = 'chatbot_history_today';
+  static const chatbot_history_previous_7_days = 'chatbot_history_previous_7_days';
+  static const chatbot_history_rename_title = 'chatbot_history_rename_title';
+  static const chatbot_history_rename = 'chatbot_history_rename';
+  static const chatbot_history_delete = 'chatbot_history_delete';
+  static const chatbot_history_cancel = 'chatbot_history_cancel';
+  static const chatbot_history_save = 'chatbot_history_save';
 
 }
