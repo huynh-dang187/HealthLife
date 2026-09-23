@@ -1,13 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:healthlife/generated/assets.gen.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
-import 'package:healthlife/src/core/presentation/widgets/button.dart';
-import 'package:healthlife/src/core/presentation/widgets/text.dart';
-import 'package:healthlife/src/core/presentation/widgets/text_field.dart';
+import 'package:healthlife/src/features/chatbotAI/presentation/widgets/drawer/drawer_widget/drawer_action_item.dart';
+import 'package:healthlife/src/features/chatbotAI/presentation/widgets/drawer/drawer_widget/drawer_search_bar.dart';
+import 'package:healthlife/src/features/chatbotAI/presentation/widgets/drawer/drawer_widget/rename_dialog.dart';
+import 'package:healthlife/src/features/chatbotAI/presentation/widgets/drawer/drawer_widget/section_header.dart';
+import 'package:healthlife/src/features/chatbotAI/presentation/widgets/drawer/drawer_widget/session_tile.dart';
 
 class ChatSessionItem {
   const ChatSessionItem({
@@ -59,56 +59,26 @@ class _ChatHistoryDrawerState extends State<ChatHistoryDrawer> {
 
   void _togglePin(ChatSessionItem session) {
     setState(() {
-      if (!_pinned.remove(session.id)) {
-        _pinned.add(session.id);
-      }
+      if (!_pinned.remove(session.id)) _pinned.add(session.id);
     });
   }
 
-  Future<void> _renameSession(
-    BuildContext context,
-    ChatSessionItem session,
-  ) async {
-    final controller = TextEditingController(text: session.title);
-    final result = await showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: UIColors.white,
-        title: AppText.semiBold(
-          LocaleKeys.chatbot_history_rename_title.tr(),
-          fontSize: 16,
-        ),
-        content: SizedBox(
-          height: 46,
-          child: AppTF.common(
-            controller: controller,
-            hintText: session.title,
-            height: 46,
-            borderCicular: 12,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => context.pop(context),
-            child: AppText.medium(
-              LocaleKeys.chatbot_history_cancel.tr(),
-              fontSize: 14,
-              color: UIColors.textBody,
-            ),
-          ),
-          AppButton.fill(
-            onTap: () => context.pop(context),
-            title: LocaleKeys.chatbot_history_rename.tr(),
-          ),
-        ],
-      ),
-    );
-    if (result != null && result.isNotEmpty && mounted) {
-      setState(() {});
-    }
+  Future<void> _rename(ChatSessionItem session) async {
+    final newTitle = await showRenameDialog(context, session.title);
+    if (newTitle == null || newTitle.isEmpty || !mounted) return;
+    final index = widget.sessions.indexWhere((s) => s.id == session.id);
+    if (index == -1) return;
+    setState(() {
+      widget.sessions[index] = ChatSessionItem(
+        id: session.id,
+        title: newTitle,
+        lastUpdate: session.lastUpdate,
+        pinned: session.pinned,
+      );
+    });
   }
 
-  void _deleteSession(ChatSessionItem session) {
+  void _delete(ChatSessionItem session) {
     setState(() {
       widget.sessions.removeWhere((s) => s.id == session.id);
     });
@@ -120,12 +90,10 @@ class _ChatHistoryDrawerState extends State<ChatHistoryDrawer> {
     bool matches(ChatSessionItem s) =>
         keyword.isEmpty || s.title.toLowerCase().contains(keyword);
 
-    final pinnedList = widget.sessions
-        .where((s) => _pinned.contains(s.id) && matches(s))
-        .toList();
-    final normalList = widget.sessions
-        .where((s) => !_pinned.contains(s.id) && matches(s))
-        .toList();
+    final pinnedList =
+        widget.sessions.where((s) => _pinned.contains(s.id) && matches(s)).toList();
+    final normalList =
+        widget.sessions.where((s) => !_pinned.contains(s.id) && matches(s)).toList();
 
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.88,
@@ -134,74 +102,55 @@ class _ChatHistoryDrawerState extends State<ChatHistoryDrawer> {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    height: 40,
-                    child: AppTF.common(
-                      controller: _searchController,
-                      hintText: LocaleKeys.chatbot_history_search_hint,
-                      height: 40,
-                      borderCicular: 20,
-                      bgColor: const Color(0xFFF3F8F5),
-                      textColor: UIColors.text,
-                      leftWidget: Assets.svg.iconSearch.svg(
-                        width: 16,
-                        height: 16,
-                        colorFilter: const ColorFilter.mode(
-                          UIColors.textBody,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                      onChanged: (_) => setState(() {}),
-                    ),
-                  ),
-                ),
-              ],
+            DrawerSearchBar(
+              controller: _searchController,
+              onChanged: (_) => setState(() {}),
+              onClose: () => Navigator.pop(context),
             ),
             16.gap,
-            _DrawerAction(
+            DrawerActionItem(
               icon: Icons.info_outline_rounded,
               title: LocaleKeys.chatbot_history_intro_bibi.tr(),
               onTap: () {
-                context.pop(context);
+                Navigator.pop(context);
                 widget.onIntroTap?.call();
               },
             ),
             12.gap,
-            _DrawerAction(
+            DrawerActionItem(
               icon: Icons.add_comment_outlined,
               title: LocaleKeys.chatbot_history_new_conversation.tr(),
               onTap: () {
-                context.pop(context);
+                Navigator.pop(context);
                 widget.onNewChat?.call();
               },
             ),
             20.gap,
             if (pinnedList.isNotEmpty) ...[
-              _SectionHeader(LocaleKeys.chatbot_history_pinned.tr()),
+              SectionHeader(LocaleKeys.chatbot_history_pinned.tr()),
               8.gap,
-              ...pinnedList.map(
-                (s) => _SessionTileView(
-                  session: s,
-                  pinned: true,
-                  onTogglePin: () => _togglePin(s),
-                  onRename: () => _renameSession(context, s),
-                  onDelete: () => _deleteSession(s),
-                  onTap: () => widget.onSelectSession?.call(s),
-                ),
-              ),
+              ...pinnedList.map((s) => _tile(s, pinned: true)),
               12.gap,
             ],
-            ..._buildTimedSections(normalList),
+            ..._timedSections(normalList),
           ],
         ),
       ),
     );
   }
 
-  List<Widget> _buildTimedSections(List<ChatSessionItem> sessions) {
+  Widget _tile(ChatSessionItem s, {required bool pinned}) {
+    return SessionTile(
+      title: s.title,
+      pinned: pinned,
+      onTogglePin: () => _togglePin(s),
+      onRename: () => _rename(s),
+      onDelete: () => _delete(s),
+      onTap: () => widget.onSelectSession?.call(s),
+    );
+  }
+
+  List<Widget> _timedSections(List<ChatSessionItem> sessions) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
 
@@ -211,196 +160,28 @@ class _ChatHistoryDrawerState extends State<ChatHistoryDrawer> {
       return !s.lastUpdate.isBefore(limit) && s.lastUpdate.isBefore(today);
     }
 
-    final parts = <Widget>[];
-    void addGroup(String section, List<ChatSessionItem> list) {
-      if (list.isEmpty) return;
-      parts.add(_SectionHeader(section));
-      parts.add(8.gap);
-      parts.addAll(
-        list.map(
-          (s) => _SessionTileView(
-            session: s,
-            pinned: false,
-            onTogglePin: () => _togglePin(s),
-            onRename: () => _renameSession(context, s),
-            onDelete: () => _deleteSession(s),
-            onTap: () => widget.onSelectSession?.call(s),
-          ),
-        ),
+    Widget section(String title, List<ChatSessionItem> list) {
+      if (list.isEmpty) return const SizedBox.shrink();
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SectionHeader(title),
+          8.gap,
+          ...list.map((s) => _tile(s, pinned: false)),
+          12.gap,
+        ],
       );
-      parts.add(12.gap);
     }
 
-    addGroup(
-      LocaleKeys.chatbot_history_today.tr(),
-      sessions.where(isToday).toList(),
-    );
-    addGroup(
-      LocaleKeys.chatbot_history_previous_7_days.tr(),
-      sessions.where(inLast7Days).toList(),
-    );
-    return parts;
-  }
-}
-
-class _SectionHeader extends StatelessWidget {
-  const _SectionHeader(this.title);
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppText.semiBold(title, fontSize: 13, color: UIColors.textBody);
-  }
-}
-
-class _DrawerAction extends StatelessWidget {
-  const _DrawerAction({
-    required this.icon,
-    required this.title,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String title;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: Row(
-        children: [
-          Container(
-            width: 34,
-            height: 34,
-            decoration: BoxDecoration(
-              color: const Color(0xFFEAF5EF),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, size: 18, color: const Color(0xFF1FBF67)),
-          ),
-          12.gap,
-          AppText.semiBold(title, fontSize: 14, color: UIColors.text),
-        ],
+    return [
+      section(
+        LocaleKeys.chatbot_history_today.tr(),
+        sessions.where(isToday).toList(),
       ),
-    );
-  }
-}
-
-class _SessionTileView extends StatelessWidget {
-  const _SessionTileView({
-    required this.session,
-    required this.pinned,
-    required this.onTogglePin,
-    required this.onRename,
-    required this.onDelete,
-    required this.onTap,
-  });
-
-  final ChatSessionItem session;
-  final bool pinned;
-  final VoidCallback onTogglePin;
-  final VoidCallback onRename;
-  final VoidCallback onDelete;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(10),
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-        child: Row(
-          children: [
-            Expanded(
-              child: AppText.medium(
-                session.title,
-                fontSize: 14,
-                color: UIColors.text,
-                maxLines: 1,
-              ),
-            ),
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: onTogglePin,
-              child: Icon(
-                pinned ? Icons.push_pin_rounded : Icons.push_pin_outlined,
-                size: 17,
-                color: pinned
-                    ? const Color(0xFF1FBF67)
-                    : UIColors.textBody.withValues(alpha: 120),
-              ),
-            ),
-            4.gap,
-            PopupMenuButton<_SessionMenuAction>(
-              color: UIColors.white,
-              surfaceTintColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              onSelected: (action) {
-                switch (action) {
-                  case _SessionMenuAction.rename:
-                    onRename();
-                  case _SessionMenuAction.delete:
-                    onDelete();
-                }
-              },
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: _SessionMenuAction.rename,
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.edit_outlined,
-                        size: 18,
-                        color: UIColors.text,
-                      ),
-                      8.gap,
-                      AppText.medium(
-                        LocaleKeys.chatbot_history_rename.tr(),
-                        fontSize: 13,
-                        color: UIColors.text,
-                      ),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  value: _SessionMenuAction.delete,
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.delete_outline_rounded,
-                        size: 18,
-                        color: Color(0xFFE8434F),
-                      ),
-                      8.gap,
-                      AppText.medium(
-                        LocaleKeys.chatbot_history_delete.tr(),
-                        fontSize: 13,
-                        color: const Color(0xFFE8434F),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: Icon(
-                  Icons.more_vert_rounded,
-                  size: 18,
-                  color: UIColors.textBody,
-                ),
-              ),
-            ),
-          ],
-        ),
+      section(
+        LocaleKeys.chatbot_history_previous_7_days.tr(),
+        sessions.where(inLast7Days).toList(),
       ),
-    );
+    ];
   }
 }
-
-enum _SessionMenuAction { rename, delete }

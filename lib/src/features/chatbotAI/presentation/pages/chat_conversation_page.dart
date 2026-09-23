@@ -6,7 +6,7 @@ import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
-import 'package:healthlife/src/features/chatbotAI/presentation/widgets/chatbotAI/chat_history_drawer.dart';
+import 'package:healthlife/src/features/chatbotAI/presentation/widgets/drawer/chat_history_drawer.dart';
 import 'package:healthlife/src/features/chatbotAI/presentation/widgets/chatbotAI/chat_input_bar.dart';
 import 'package:healthlife/src/features/chatbotAI/presentation/widgets/chatbotAI/chat_welcome.dart';
 import 'package:healthlife/src/features/chatbotAI/presentation/widgets/chatbotAI/suggested_prompts_grid.dart';
