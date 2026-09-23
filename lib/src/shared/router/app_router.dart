@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/src/features/chatbotAI/presentation/pages/chat_conversation_page.dart';
+import 'package:healthlife/src/features/chatbotAI/presentation/pages/chatbot_intro_page.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_date_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_gender_screen.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_height_screen.dart';
@@ -34,7 +36,6 @@ import 'package:healthlife/src/features/sos_iot/data/models/sos_alert_args.dart'
 import 'package:healthlife/src/features/sos_iot/data/services/sos_notification_service.dart';
 import 'package:healthlife/src/features/sos_iot/presentation/pages/sos_alert_page.dart';
 import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.dart';
-import 'package:healthlife/src/features/tab_bar/presentation/page/chatbot_screen.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_screen.dart';
 
 import '../../features/food_scan/presentation/pages/food_scan_page.dart';
@@ -154,6 +155,10 @@ class AppRouter {
         (_) => const ActivityHistoryPage(),
       ),
       _route(
+        RouteNames.chatbot_conversation,
+        (_) => const ChatConversationPage(),
+      ),
+      _route(
         RouteNames.nutrition_food_search,
         (_) => BlocProvider(
           create: (context) => FoodSearchCubit(
@@ -204,7 +209,10 @@ class AppRouter {
             routes: [
               _route(
                 RouteNames.chatbot,
-                (_) => const ChatbotScreen(),
+                (context) => ChatbotIntroPage(
+                  onStartChat: () =>
+                      context.push(RouteNames.chatbot_conversation),
+                ),
               ),
             ],
           ),
