@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 
 import '../../domains/enums/activity_tab.dart';
 import 'dashboard/activity_tab_switch.dart';
@@ -28,7 +30,7 @@ class ActivityPageScaffold extends StatelessWidget {
       body: Column(
         children: [
           AppAppBar(
-            title: 'Thiết bị đo bước chân',
+            title: context.tr(LocaleKeys.count_steep_title),
             onBack: onBack,
             centerTitle: centerTitle,
           ),

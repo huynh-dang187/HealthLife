@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
@@ -32,7 +33,7 @@ class ActivityTabSwitch extends StatelessWidget {
               if (tab.index > 0) 4.gap,
               Expanded(
                 child: _TabSwitchItem(
-                  label: tab.label,
+                  label: context.tr(tab.labelKey),
                   active: selected == tab,
                   onTap: () => onChanged(tab),
                 ),

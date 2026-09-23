@@ -1,9 +1,11 @@
 import 'dart:math' as math;
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 
 class StepProgressRing extends StatelessWidget {
   const StepProgressRing({
@@ -69,14 +71,17 @@ class StepProgressRing extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       AppText.regular(
-                        '/${goalSteps.vnFormat} bước',
+                        context.tr(
+                          LocaleKeys.count_steep_steps_with_goal,
+                          namedArgs: {'goal': goalSteps.vnFormat},
+                        ),
                         fontSize: 13,
                         color: UIColors.textBody,
                       ),
                       4.gap,
                       if (onEditGoal != null)
                         Tooltip(
-                          message: 'Đặt mục tiêu bước',
+                          message: context.tr(LocaleKeys.count_steep_set_goal_tooltip),
                           child: GestureDetector(
                             onTap: onEditGoal,
                             child: const Padding(

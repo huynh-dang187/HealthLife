@@ -45,6 +45,8 @@ class _ActivityDashboardView extends StatelessWidget {
             streak: state.streak,
             currentSteps: state.todaySteps,
             goalSteps: state.stepGoal,
+            status: state.status,
+            error: state.error,
           );
         },
       ),
