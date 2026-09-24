@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
@@ -8,6 +9,7 @@ import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
 import 'package:healthlife/src/features/count_steep/presentation/cubit/activity_dashboard_cubit.dart';
+import 'package:healthlife/src/shared/router/route_names.dart';
 
 import '../set_goal_dialog.dart';
 import '../step_progress_ring.dart';
@@ -117,7 +119,9 @@ class OverviewTab extends StatelessWidget {
             ],
           ),
           20.gap,
-          const WaterGoalCard(),
+          WaterGoalCard(
+            onLogWaterTap: () => context.push(RouteNames.water_reminder),
+          ),
           12.gap,
           const HeartRateCard(),
         ],

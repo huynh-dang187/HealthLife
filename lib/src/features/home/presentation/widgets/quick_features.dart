@@ -27,7 +27,7 @@ class QuickFeatures extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemCount: _features.length,
-            separatorBuilder: (_, __) => 12.gap,
+            separatorBuilder: (_, _) => 12.gap,
             itemBuilder: (context, index) {
               final f = _features[index];
               return QuickFeatureItem(

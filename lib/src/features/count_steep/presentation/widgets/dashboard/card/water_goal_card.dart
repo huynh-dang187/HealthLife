@@ -6,10 +6,14 @@ import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
 
-/// Card "Ghi lại lượng nước uống" — nền tối, nút Đặt mục tiêu disabled
-/// + badge Sắp ra mắt.
+/// Card "Ghi lại lượng nước uống" — nền tối.
 class WaterGoalCard extends StatelessWidget {
-  const WaterGoalCard({super.key});
+  const WaterGoalCard({
+    super.key,
+    this.onLogWaterTap,
+  });
+
+  final VoidCallback? onLogWaterTap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,73 +23,50 @@ class WaterGoalCard extends StatelessWidget {
         color: UIColors.darkCard,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Stack(
+      child: Row(
         children: [
-          Row(
-            children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: Colors.blueAccent.withValues(alpha: 0.15),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.water_drop,
-                  size: 22,
-                  color: Colors.lightBlueAccent,
-                ),
-              ),
-              14.gap,
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppText.semiBold(
-                      context.tr(LocaleKeys.count_steep_card_water_title),
-                      fontSize: 14,
-                      color: UIColors.white,
-                    ),
-                    3.gap,
-                    AppText.regular(
-                      context.tr(LocaleKeys.count_steep_card_water_sub),
-                      fontSize: 11.5,
-                      color: UIColors.white.withValues(alpha: 0.65),
-                      maxLines: 2,
-                    ),
-                  ],
-                ),
-              ),
-              12.gap,
-              AppButton.fill(
-                title: context.tr(LocaleKeys.count_steep_set_goal),
-                height: 34,
-                color: UIColors.pink,
-                borderRadius: BorderRadius.circular(18),
-                fontSize: 12,
-                enable: false,
-                onTap: () {},
-              ),
-            ],
-          ),
-          Positioned(
-            top: -6,
-            right: -6,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-              decoration: BoxDecoration(
-                color: UIColors.black.withValues(alpha: 0.55),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: UIColors.white.withValues(alpha: 0.15),
-                ),
-              ),
-              child: AppText.medium(
-                context.tr(LocaleKeys.count_steep_coming_soon),
-                fontSize: 9,
-                color: UIColors.white.withValues(alpha: 0.8),
-              ),
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: Colors.blueAccent.withValues(alpha: 0.15),
+              shape: BoxShape.circle,
             ),
+            child: const Icon(
+              Icons.water_drop,
+              size: 22,
+              color: Colors.lightBlueAccent,
+            ),
+          ),
+          14.gap,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText.semiBold(
+                  context.tr(LocaleKeys.count_steep_card_water_title),
+                  fontSize: 14,
+                  color: UIColors.white,
+                ),
+                3.gap,
+                AppText.regular(
+                  context.tr(LocaleKeys.count_steep_card_water_sub),
+                  fontSize: 11.5,
+                  color: UIColors.white.withValues(alpha: 0.65),
+                  maxLines: 2,
+                ),
+              ],
+            ),
+          ),
+          12.gap,
+          AppButton.fill(
+            title: 'Chi tiết',
+            height: 34,
+            color: Colors.blueAccent,
+            borderRadius: BorderRadius.circular(18),
+            fontSize: 12,
+            enable: true,
+            onTap: onLogWaterTap ?? () {},
           ),
         ],
       ),

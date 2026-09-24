@@ -10,6 +10,13 @@
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!-- Nhắc nhở uống nước: Quyền đặt lịch thông báo chính xác khung giờ trên Android 12+ -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+
+    <!-- Nhắc nhở uống nước: Quyền tự động đăng ký lại lịch nhắc nhở sau khi điện thoại khởi động lại -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:label="healthlife"
         android:name="${applicationName}"
@@ -42,6 +49,22 @@
             android:showWhenLocked="true"
             android:turnScreenOn="true"
             android:theme="@style/Theme.Translucent" />
+
+        <!-- Nhắc nhở uống nước: Receiver xử lý việc kích hoạt và hiển thị thông báo đúng giờ khi app chạy ngầm -->
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
+            android:exported="false" />
+
+        <!-- Nhắc nhở uống nước: Receiver khôi phục lại các lịch đã hẹn sau khi bật lại điện thoại -->
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
 
     <queries>
