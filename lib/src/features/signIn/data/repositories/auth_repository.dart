@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 
 /// Kết quả của luồng verifyPhoneNumber.
 sealed class OtpChannel {}
@@ -19,6 +21,16 @@ final class OtpCodeSent extends OtpChannel {
 final class OtpAutoVerified extends OtpChannel {
   final User user;
   OtpAutoVerified(this.user);
+}
+
+/// Kết quả kiểm tra SĐT đã đăng ký ở server.
+final class PhoneCheckResult {
+  final bool registered;
+  final bool profileCompleted;
+  const PhoneCheckResult({
+    required this.registered,
+    required this.profileCompleted,
+  });
 }
 
 class AuthRepository {
@@ -150,6 +162,46 @@ class AuthRepository {
       codeAutoRetrievalTimeout: (_) {},
     );
     return completer.future;
+  }
+
+  /// Kiểm tra SĐT đã đăng ký trong Firebase Auth chưa (gọi Cloud Function).
+  /// Nếu mạng lỗi/function chưa deploy -> fallback "chưa đăng ký" để không
+  /// chặn nhầm người dùng mới.
+  Future<PhoneCheckResult> checkPhoneRegistered(String fullPhone) async {
+    const projectId = 'healthlife-e89fd';
+    const region = 'us-central1';
+    final url =
+        'https://$region-$projectId.cloudfunctions.net/checkPhoneRegistered';
+    try {
+      final response = await http
+          .post(
+            Uri.parse(url),
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode({'data': {'phone': fullPhone}}),
+          )
+          .timeout(const Duration(seconds: 20));
+      debugPrint(
+        '[AuthRepo] checkPhoneRegistered => ${response.statusCode}',
+      );
+      if (response.statusCode != 200) {
+        return const PhoneCheckResult(
+          registered: false,
+          profileCompleted: false,
+        );
+      }
+      final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+      final result = decoded['result'] as Map<String, dynamic>? ?? const {};
+      return PhoneCheckResult(
+        registered: result['registered'] == true,
+        profileCompleted: result['profileCompleted'] == true,
+      );
+    } catch (e) {
+      debugPrint('[AuthRepo] checkPhoneRegistered lỗi: $e');
+      return const PhoneCheckResult(
+        registered: false,
+        profileCompleted: false,
+      );
+    }
   }
 
   /// Kiểm tra hồ sơ đã hoàn thiện chưa (khớp logic SplashScreen).

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healthlife/src/features/signIn/data/models/country_codes_model.dart';
 import 'package:healthlife/src/features/signIn/data/repositories/auth_repository.dart';
@@ -24,9 +25,15 @@ final class PhoneOtpSent extends PhoneInputState {
   final String verificationId;
   final String fullPhone;
   final int? resendToken;
-  const PhoneOtpSent(this.verificationId, this.fullPhone, this.resendToken);
+  final bool isLogin;
+  const PhoneOtpSent(
+    this.verificationId,
+    this.fullPhone,
+    this.resendToken, {
+    this.isLogin = false,
+  });
   @override
-  List<Object?> get props => [verificationId, fullPhone, resendToken];
+  List<Object?> get props => [verificationId, fullPhone, resendToken, isLogin];
 }
 
 final class PhoneAutoSignedIn extends PhoneInputState {}
@@ -49,6 +56,9 @@ class PhoneInputCubit extends Cubit<PhoneInputState> {
   final AuthRepository _repo;
   PhoneInputCubit(this._repo) : super(PhoneInputInitial(kVietnamCountry));
 
+  /// SĐT đã đăng ký xong profile rồi -> coi là đăng nhập lại, về home.
+  bool _isLogin = false;
+
   void selectCountry(CountryCode country) {
     if (state is PhoneInputInitial) emit(PhoneInputInitial(country));
   }
@@ -65,10 +75,26 @@ class PhoneInputCubit extends Cubit<PhoneInputState> {
 
     emit(PhoneInputSubmitting());
     try {
+      // SĐT đã đăng ký rồi -> vẫn gửi OTP, nhưng sau xác thực vào thẳng home
+      // (không hỏi lại profile).
+      final check = await _repo.checkPhoneRegistered(fullPhone);
+      _isLogin = check.registered && check.profileCompleted;
+      debugPrint(
+        '[PhoneInputCubit] $fullPhone registered=${check.registered} '
+        'profileCompleted=${check.profileCompleted} -> isLogin=$_isLogin',
+      );
+
       final channel = await _repo.sendOtp(phoneNumber: fullPhone);
       switch (channel) {
         case OtpCodeSent(:final verificationId, :final resendToken):
-          emit(PhoneOtpSent(verificationId, fullPhone, resendToken));
+          emit(
+            PhoneOtpSent(
+              verificationId,
+              fullPhone,
+              resendToken,
+              isLogin: _isLogin,
+            ),
+          );
         case OtpAutoVerified():
           emit(PhoneAutoSignedIn());
       }
@@ -80,6 +106,10 @@ class PhoneInputCubit extends Cubit<PhoneInputState> {
   Future<void> completeAuth() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
+    if (_isLogin) {
+      emit(PhoneDestination(RouteNames.home));
+      return;
+    }
     final completed = await _repo.isProfileCompleted(user.uid);
     emit(
       PhoneDestination(
