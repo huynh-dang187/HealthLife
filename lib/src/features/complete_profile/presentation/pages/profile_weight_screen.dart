@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
+import 'package:healthlife/src/core/presentation/blocs/user/user_cubit.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_loading_screen.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
@@ -84,6 +85,10 @@ class ProfileWeightScreen extends StatelessWidget {
                         if (!context.mounted) return;
                         Navigator.of(context).pop();
                         if (ok) {
+                          // Nạp lại user (name/gender/date/height/weight) sau khi
+                          // hoàn tất profile để UI home/profile hiển thị đúng.
+                          await context.read<UserCubit>().loadUser();
+                          if (!context.mounted) return;
                           context.push(RouteNames.home);
                         } else {
                           if (context.canPop()) context.pop();
