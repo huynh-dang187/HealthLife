@@ -5,7 +5,6 @@ import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
-import 'package:healthlife/src/core/presentation/widgets/no_data.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
@@ -242,10 +241,12 @@ class _DashboardScreenViewState extends State<_DashboardScreenView> {
                     ),
                   ],
                 ),
-                12.gap,
+                30.gap,
                 if (state.logs.isEmpty)
-                  NoData(
-                    title: 'Chưa có bữa ăn nào trong khoảng thời gian này',
+                  Center(
+                    child: AppText.italic(
+                      'Chưa có bữa ăn nào trong khoảng thời gian này',
+                    ),
                   )
                 else
                   ...state.logs.map(
