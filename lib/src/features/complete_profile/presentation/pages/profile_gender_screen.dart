@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/generated/assets.gen.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
@@ -27,7 +29,7 @@ class ProfileGender extends StatelessWidget {
           final cubit = context.read<ProfileGenderCubit>();
           return Scaffold(
             appBar: AppAppBar(
-              title: "Nhập giới tính của bạn",
+              title: context.tr(LocaleKeys.complete_profile_gender_title),
               centerTitle: true,
               onBack: () {
                 context.pop();
@@ -40,7 +42,9 @@ class ProfileGender extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     24.gap,
-                    AppText.bold("Cho chúng tôi biết giới tính của bạn nhé"),
+                    AppText.bold(
+                      context.tr(LocaleKeys.complete_profile_gender_subtitle),
+                    ),
                     20.gap,
                     Expanded(
                       child: Column(
@@ -76,12 +80,16 @@ class ProfileGender extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(bottom: context.bottomPadding),
                       child: AppButton.fill(
-                        title: "Tiếp theo",
+                        title: context.tr(
+                          LocaleKeys.complete_profile_action_next,
+                        ),
                         enable: state.selectedGender != null,
                         onTap: () async {
                           AppLoadingScreen.show(
                             context,
-                            message: "Đang lưu...",
+                            message: context.tr(
+                              LocaleKeys.complete_profile_saving,
+                            ),
                           );
                           final ok = await context
                               .read<ProfileGenderCubit>()
@@ -95,8 +103,12 @@ class ProfileGender extends StatelessWidget {
                           } else {
                             if (context.canPop()) context.pop();
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Lưu thất bại, thử lại"),
+                              SnackBar(
+                                content: Text(
+                                  context.tr(
+                                    LocaleKeys.complete_profile_save_failed,
+                                  ),
+                                ),
                               ),
                             );
                           }

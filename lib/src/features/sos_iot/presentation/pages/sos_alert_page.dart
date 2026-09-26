@@ -1,10 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/src/features/sos_iot/data/models/sos_alert_args.dart';
-import 'package:intl/intl.dart';
 
 import '../cubit/sos_alert_cubit.dart';
 import '../cubit/sos_alert_state.dart';
@@ -91,24 +92,33 @@ class _SosAlertViewState extends State<_SosAlertView>
     return showDialog<String>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: AppText.semiBold('Gọi khẩn cấp', fontSize: 17),
+        title: AppText.semiBold(
+          context.tr(LocaleKeys.sos_call_emergency),
+          fontSize: 17,
+        ),
         content: TextField(
           controller: controller,
           keyboardType: TextInputType.phone,
           autofocus: true,
-          decoration: const InputDecoration(
-            hintText: 'Nhập số điện thoại',
-            prefixIcon: Icon(Icons.phone),
+          decoration: InputDecoration(
+            hintText: context.tr(LocaleKeys.sign_in_phone_hint),
+            prefixIcon: const Icon(Icons.phone),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: AppText.medium('Huỷ', fontSize: 14),
+            child: AppText.medium(
+              context.tr(LocaleKeys.profile_cancel),
+              fontSize: 14,
+            ),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(dialogContext, controller.text),
-            child: AppText.semiBold('Gọi', color: Colors.white),
+            child: AppText.semiBold(
+              context.tr(LocaleKeys.sos_call),
+              color: Colors.white,
+            ),
           ),
         ],
       ),
@@ -140,7 +150,7 @@ class _SosAlertViewState extends State<_SosAlertView>
                   SosHeroPulse(scale: _scale, opacity: _fade),
                   40.gap,
                   AppText.bold(
-                    'BÁO ĐỘNG KHẨN CẤP (SOS)',
+                    context.tr(LocaleKeys.sos_alert_title),
                     fontSize: 26,
                     color: Colors.white,
                     textAlign: TextAlign.center,

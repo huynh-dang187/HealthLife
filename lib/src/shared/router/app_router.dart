@@ -13,7 +13,6 @@ import 'package:healthlife/src/features/complete_profile/presentation/pages/prof
 import 'package:healthlife/src/features/complete_profile/presentation/pages/profile_weight_screen.dart';
 import 'package:healthlife/src/features/count_steep/presentation/pages/activity_dashboard_page.dart';
 import 'package:healthlife/src/features/count_steep/presentation/pages/activity_history_page.dart';
-import 'package:healthlife/src/features/drug_lookup/presentation/pages/drug_lookup_screen.dart';
 import 'package:healthlife/src/features/health_news/data/models/news_article_model.dart';
 import 'package:healthlife/src/features/health_news/presentation/pages/health_news_screen.dart';
 import 'package:healthlife/src/features/health_news/presentation/pages/news_detail_screen.dart';
@@ -37,7 +36,7 @@ import 'package:healthlife/src/features/sos_iot/data/services/sos_notification_s
 import 'package:healthlife/src/features/sos_iot/presentation/pages/sos_alert_page.dart';
 import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_screen.dart';
-
+import 'package:healthlife/src/features/water_reminder/presentation/pages/water_reminder_page.dart';
 import '../../features/food_scan/presentation/pages/food_scan_page.dart';
 import '../../features/signIn/presentation/page/otp_screen.dart';
 import 'route_names.dart';
@@ -54,6 +53,7 @@ class AppRouter {
     RouteNames.home,
     RouteNames.medicine_search,
     RouteNames.hospitalFinder,
+    RouteNames.water_reminder,
   ];
 
   static final GoRouter router = GoRouter(
@@ -118,6 +118,11 @@ class AppRouter {
       _route(
         RouteNames.hospitalFinder,
         (_) => const HospitalFinderPage(),
+      ),
+
+      _route(
+        RouteNames.water_reminder,
+            (_) => const WaterReminderPage(),
       ),
 
       _route(
@@ -239,6 +244,7 @@ class AppRouter {
         currentPath == RouteNames.home ||
         currentPath == RouteNames.medicine_search ||
         currentPath == RouteNames.hospitalFinder ||
+        currentPath == RouteNames.water_reminder ||
         currentPath == RouteNames.sos_alert) {
       return null;
     }

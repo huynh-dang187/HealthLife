@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
@@ -39,12 +41,12 @@ class _ChangeProfileSheet extends StatelessWidget {
   const _ChangeProfileSheet();
 
   String? _errorText(ChangeProfileState state) {
-    if (state.nameError) return 'Vui lòng nhập tên của bạn';
+    if (state.nameError) return LocaleKeys.profile_name_required.tr();
     if (state.dayError || state.monthError || state.yearError) {
-      return 'Vui lòng nhập đúng ngày tháng năm sinh';
+      return LocaleKeys.profile_dob_invalid.tr();
     }
-    if (state.heightError) return 'Vui lòng nhập chiều cao hợp lệ';
-    if (state.weightError) return 'Vui lòng nhập cân nặng hợp lệ';
+    if (state.heightError) return LocaleKeys.profile_height_invalid.tr();
+    if (state.weightError) return LocaleKeys.profile_weight_invalid.tr();
     return null;
   }
 
@@ -57,11 +59,20 @@ class _ChangeProfileSheet extends StatelessWidget {
           context.read<UserCubit>().loadUser();
           Navigator.of(context).pop();
           messenger.showSnackBar(
-            const SnackBar(content: Text('Đã cập nhật thông tin')),
+            SnackBar(
+              content: Text(context.tr(LocaleKeys.profile_updated_success)),
+            ),
           );
         } else if (state.status == BlocStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Lưu thất bại: ${state.message}')),
+            SnackBar(
+              content: Text(
+                context.tr(
+                  LocaleKeys.profile_save_failed,
+                  namedArgs: {'message': state.message ?? ''},
+                ),
+              ),
+            ),
           );
         }
       },
@@ -87,7 +98,7 @@ class _ChangeProfileSheet extends StatelessWidget {
                   children: [
                     Expanded(
                       child: AppText.semiBold(
-                        'Thông tin cơ bản',
+                        context.tr(LocaleKeys.profile_basic_info),
                         fontSize: 18,
                       ),
                     ),
@@ -114,7 +125,7 @@ class _ChangeProfileSheet extends StatelessWidget {
                   ],
                 ),
                 20.gap,
-                AppText.medium('Họ tên', fontSize: 13),
+                AppText.medium(context.tr(LocaleKeys.profile_full_name), fontSize: 13),
                 6.gap,
                 AppTF.common(
                   controller: cubit.nameController,
@@ -122,21 +133,24 @@ class _ChangeProfileSheet extends StatelessWidget {
                   onChanged: cubit.onChangeName,
                 ),
                 20.gap,
-                AppText.medium('Giới tính', fontSize: 13),
+                AppText.medium(context.tr(LocaleKeys.profile_gender), fontSize: 13),
                 10.gap,
                 TogglePill(
-                  labels: const ['Nam', 'Nữ'],
+                  labels: [
+                    context.tr(LocaleKeys.complete_profile_gender_female),
+                    context.tr(LocaleKeys.complete_profile_gender_male),
+                  ],
                   selectedIndex: state.gender == Gender.male ? 1 : 0,
                   onChanged: (i) =>
                       cubit.setGender(i == 0 ? Gender.female : Gender.male),
                 ),
                 20.gap,
-                AppText.medium('Ngày sinh', fontSize: 13),
+                AppText.medium(context.tr(LocaleKeys.profile_dob), fontSize: 13),
                 10.gap,
                 Row(
                   children: [
                     DateFieldItem(
-                      label: 'Ngày',
+                      label: context.tr(LocaleKeys.profile_field_day),
                       controller: cubit.dayController,
                       keyboardType: TextInputType.number,
                       maxNum: 2,
@@ -145,7 +159,7 @@ class _ChangeProfileSheet extends StatelessWidget {
                     ),
                     14.gap,
                     DateFieldItem(
-                      label: 'Tháng',
+                      label: context.tr(LocaleKeys.profile_field_month),
                       controller: cubit.monthController,
                       keyboardType: TextInputType.number,
                       maxNum: 2,
@@ -154,7 +168,7 @@ class _ChangeProfileSheet extends StatelessWidget {
                     ),
                     14.gap,
                     DateFieldItem(
-                      label: 'Năm',
+                      label: context.tr(LocaleKeys.profile_field_year),
                       controller: cubit.yearController,
                       keyboardType: TextInputType.number,
                       maxNum: 4,
@@ -165,7 +179,7 @@ class _ChangeProfileSheet extends StatelessWidget {
                   ],
                 ),
                 20.gap,
-                AppText.medium('Chiều cao', fontSize: 13),
+                AppText.medium(context.tr(LocaleKeys.profile_height), fontSize: 13),
                 10.gap,
                 Row(
                   children: [
@@ -191,7 +205,7 @@ class _ChangeProfileSheet extends StatelessWidget {
                   ],
                 ),
                 20.gap,
-                AppText.medium('Cân nặng', fontSize: 13),
+                AppText.medium(context.tr(LocaleKeys.profile_weight), fontSize: 13),
                 10.gap,
                 Row(
                   children: [
@@ -240,7 +254,7 @@ class _ChangeProfileSheet extends StatelessWidget {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : AppText.semiBold(
-                          'Thay đổi thông tin',
+                          context.tr(LocaleKeys.profile_change_info),
                           fontSize: 15,
                           color: UIColors.white,
                         ),

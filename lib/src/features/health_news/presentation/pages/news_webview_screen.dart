@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
@@ -43,7 +45,7 @@ class _NewsWebViewScreenState extends State<NewsWebViewScreen> {
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => Navigator.of(context).maybePop(),
         ),
-        title: AppText.bold('Bài viết', fontSize: 18),
+        title: AppText.bold(context.tr(LocaleKeys.health_news_article_title), fontSize: 18),
       ),
       body: Stack(
         children: [

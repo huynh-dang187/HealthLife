@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
@@ -18,7 +20,9 @@ class ProfileHeader extends StatelessWidget {
     const avatarSize = 104.0;
     final bannerHeight = context.screenHeight * 0.3;
     final name = user?.displayName?.trim();
-    final displayName = (name?.isNotEmpty ?? false) ? name! : 'Thân mến';
+    final displayName = (name?.isNotEmpty ?? false)
+      ? name!
+      : context.tr(LocaleKeys.profile_name_fallback);
 
     return Column(
       children: [
@@ -38,7 +42,7 @@ class ProfileHeader extends StatelessWidget {
         AppText.semiBold(displayName, fontSize: 22, color: UIColors.black),
         4.gap,
         AppText.regular(
-          'Thành viên HLife',
+          context.tr(LocaleKeys.profile_member_label),
           fontSize: 13,
           color: UIColors.textBody,
         ),

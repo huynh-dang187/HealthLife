@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
@@ -29,7 +31,7 @@ class ProfileHeight extends StatelessWidget {
           final cubit = context.read<ProfileHeightCubit>();
           return Scaffold(
             appBar: AppAppBar(
-              title: "Chiều cao của bạn",
+              title: context.tr(LocaleKeys.complete_profile_height_title),
               centerTitle: true,
               onBack: () {
                 context.pop();
@@ -41,7 +43,7 @@ class ProfileHeight extends StatelessWidget {
                 children: [
                   24.gap,
                   AppText.bold(
-                    "Vui lòng cho chúng tôi biết chiều cao của bạn",
+                    context.tr(LocaleKeys.complete_profile_height_subtitle),
                   ),
                   32.gap,
                   Row(
@@ -52,14 +54,21 @@ class ProfileHeight extends StatelessWidget {
                           keyboardType: TextInputType.number,
                           onChanged: cubit.onHeightTextChanged,
                           rightWidget: AppText.medium(
-                            state.unit == HeightUnit.cm ? "cm" : "ft",
+                            context.tr(
+                              state.unit == HeightUnit.cm
+                                  ? LocaleKeys.complete_profile_height_unit_cm
+                                  : LocaleKeys.complete_profile_height_unit_ft,
+                            ),
                             color: const Color(0xFF9A9A9A),
                           ),
                         ),
                       ),
                       12.gap,
                       TogglePill(
-                        labels: const ['cm', 'ft'],
+                        labels: [
+                          context.tr(LocaleKeys.complete_profile_height_unit_cm),
+                          context.tr(LocaleKeys.complete_profile_height_unit_ft),
+                        ],
                         selectedIndex: state.unit == HeightUnit.cm ? 0 : 1,
                         onChanged: (i) => cubit.setUnit(
                           i == 0 ? HeightUnit.cm : HeightUnit.ft,
@@ -78,7 +87,7 @@ class ProfileHeight extends StatelessWidget {
                   if (state.heightError) ...[
                     16.gap,
                     AppText.semiBold(
-                      "Có lỗi xảy ra vui lòng nhập chiều cao hợp lệ!",
+                      context.tr(LocaleKeys.complete_profile_height_error),
                       color: UIColors.coral,
                       maxLines: 3,
                     ),
@@ -87,11 +96,14 @@ class ProfileHeight extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(bottom: context.bottomPadding),
                     child: AppButton.fill(
-                      title: "Tiếp theo",
+                      title: context.tr(LocaleKeys.complete_profile_action_next),
                       color: UIColors.coral,
                       enable: !state.heightError,
                       onTap: () async {
-                        AppLoadingScreen.show(context, message: "Đang lưu...");
+                        AppLoadingScreen.show(
+                          context,
+                          message: context.tr(LocaleKeys.complete_profile_saving),
+                        );
                         final ok = await cubit.saveHeight();
                         if (!context.mounted) return;
                         Navigator.of(context).pop();
@@ -100,8 +112,12 @@ class ProfileHeight extends StatelessWidget {
                         } else {
                           if (context.canPop()) context.pop();
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Lưu thất bại, thử lại"),
+                            SnackBar(
+                              content: Text(
+                                context.tr(
+                                  LocaleKeys.complete_profile_save_failed,
+                                ),
+                              ),
                             ),
                           );
                         }

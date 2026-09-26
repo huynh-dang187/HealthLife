@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
@@ -26,7 +28,7 @@ class ProfileDate extends StatelessWidget {
           final cubit = context.read<ProfileDateCubit>();
           return Scaffold(
             appBar: AppAppBar(
-              title: "Nhập ngày sinh",
+              title: context.tr(LocaleKeys.complete_profile_date_title),
               centerTitle: true,
               onBack: () {
                 context.pop();
@@ -37,7 +39,9 @@ class ProfileDate extends StatelessWidget {
               child: Column(
                 children: [
                   24.gap,
-                  AppText.bold("Vui lòng cho chúng tôi biết ngày sinh của bạn"),
+                  AppText.bold(
+                    context.tr(LocaleKeys.complete_profile_date_subtitle),
+                  ),
                   24.gap,
                   Expanded(
                     child: Column(
@@ -45,7 +49,7 @@ class ProfileDate extends StatelessWidget {
                         Row(
                           children: [
                             DateFieldItem(
-                              label: "Ngày",
+                              label: context.tr(LocaleKeys.complete_profile_date_day),
                               controller: cubit.dayController,
                               keyboardType: TextInputType.number,
                               maxNum: 2,
@@ -54,7 +58,7 @@ class ProfileDate extends StatelessWidget {
                             ),
                             17.gap,
                             DateFieldItem(
-                              label: "Tháng",
+                              label: context.tr(LocaleKeys.complete_profile_date_month),
                               controller: cubit.monthController,
                               keyboardType: TextInputType.number,
                               maxNum: 2,
@@ -63,11 +67,13 @@ class ProfileDate extends StatelessWidget {
                             ),
                             17.gap,
                             DateFieldItem(
-                              label: "Năm",
+                              label: context.tr(LocaleKeys.complete_profile_date_year),
                               controller: cubit.yearController,
                               keyboardType: TextInputType.number,
                               maxNum: 4,
-                              hintText: "2005",
+                              hintText: context.tr(
+                                LocaleKeys.complete_profile_date_year_example,
+                              ),
                               onChanged: cubit.onChangeYear,
                               hasError: state.yearError,
                             ),
@@ -78,7 +84,7 @@ class ProfileDate extends StatelessWidget {
                             state.dayError ||
                             state.monthError) ...[
                           AppText.semiBold(
-                            "Có lỗi xảy ra vui lòng nhập đúng ngày tháng năm sinh của bạn!",
+                            context.tr(LocaleKeys.complete_profile_date_error),
                             color: UIColors.coral,
                             maxLines: 3,
                           ),
@@ -89,9 +95,12 @@ class ProfileDate extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(bottom: context.bottomPadding),
                     child: AppButton.fill(
-                      title: "Tiếp theo",
+                      title: context.tr(LocaleKeys.complete_profile_action_next),
                       onTap: () async {
-                        AppLoadingScreen.show(context, message: "Đang lưu...");
+                        AppLoadingScreen.show(
+                          context,
+                          message: context.tr(LocaleKeys.complete_profile_saving),
+                        );
                         final ok = await cubit.saveDate();
                         if (!context.mounted) return;
                         Navigator.of(context).pop();
@@ -100,8 +109,12 @@ class ProfileDate extends StatelessWidget {
                         } else {
                           if (context.canPop()) context.pop();
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Lưu thất bại, thử lại"),
+                            SnackBar(
+                              content: Text(
+                                context.tr(
+                                  LocaleKeys.complete_profile_save_failed,
+                                ),
+                              ),
                             ),
                           );
                         }

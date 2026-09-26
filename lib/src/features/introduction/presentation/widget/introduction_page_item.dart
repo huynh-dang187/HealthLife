@@ -49,7 +49,9 @@ class IntroductionBottomContent extends StatelessWidget {
             height: 50,
             child: AppButton.fill(
               onTap: onNextPressed ?? () {},
-              title: isLastPage ? "Bắt đầu" : "Tiếp theo",
+              title: isLastPage
+                  ? context.tr(LocaleKeys.introduction_get_started)
+                  : context.tr(LocaleKeys.introduction_next),
             ),
           ),
           48.gap,

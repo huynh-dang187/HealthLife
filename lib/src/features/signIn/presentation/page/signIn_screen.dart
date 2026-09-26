@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/generated/assets.gen.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/blocs/user/user_cubit.dart';
@@ -35,7 +37,14 @@ class SigninScreen extends StatelessWidget {
             );
           } else if (state is GoogleSigninFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Đăng nhập thất bại: ${state.message}')),
+              SnackBar(
+                content: Text(
+                  context.tr(
+                    LocaleKeys.sign_in_failed,
+                    namedArgs: {'message': state.message},
+                  ),
+                ),
+              ),
             );
           }
         },
@@ -64,13 +73,13 @@ class SigninScreen extends StatelessWidget {
                   Assets.png.icSecurity.image(width: 260, height: 190),
                   50.gap,
                   AppText.bold(
-                    "Tạo tài khoản miễn phí",
+                    context.tr(LocaleKeys.sign_in_create_free_account),
                     fontSize: 24,
                     color: UIColors.black,
                   ),
                   14.gap,
                   AppText.bold(
-                    "Lưu trữ dữ liệu sức khỏe của bạn và nhận các thông tin phân tích được cá nhân hóa trên tất cả thiết bị của bạn",
+                    context.tr(LocaleKeys.sign_in_value_prop),
                     fontSize: 12,
                     color: UIColors.black,
                     maxLines: 3,
@@ -88,7 +97,7 @@ class SigninScreen extends StatelessWidget {
                       const Expanded(child: AppDivider()),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: AppText.regular("Hoặc", fontSize: 14),
+                        child: AppText.regular(context.tr(LocaleKeys.sign_in_or), fontSize: 14),
                       ),
                       const Expanded(child: AppDivider()),
                     ],

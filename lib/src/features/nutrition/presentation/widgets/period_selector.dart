@@ -30,7 +30,7 @@ class PeriodSelector extends StatelessWidget {
             if (period != NutritionPeriod.values.first) 4.gap,
             Expanded(
               child: _PeriodChip(
-                label: period.vn,
+                label: period.label,
                 selected: selected == period,
                 onTap: () => onChanged(period),
               ),

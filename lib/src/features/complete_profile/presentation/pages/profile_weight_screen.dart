@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/blocs/user/user_cubit.dart';
@@ -28,7 +30,7 @@ class ProfileWeightScreen extends StatelessWidget {
           final cubit = context.read<ProfileWeightCubit>();
           return Scaffold(
             appBar: AppAppBar(
-              title: "Nhập cân nặng của bạn",
+              title: context.tr(LocaleKeys.complete_profile_weight_title),
               centerTitle: true,
               onBack: () {
                 context.pop();
@@ -39,7 +41,9 @@ class ProfileWeightScreen extends StatelessWidget {
               child: Column(
                 children: [
                   24.gap,
-                  AppText.bold("Vui lòng cho chúng tôi biết cân nặng của bạn"),
+                  AppText.bold(
+                    context.tr(LocaleKeys.complete_profile_weight_subtitle),
+                  ),
                   32.gap,
                   Row(
                     children: [
@@ -49,14 +53,21 @@ class ProfileWeightScreen extends StatelessWidget {
                           keyboardType: TextInputType.number,
                           onChanged: cubit.onWeightTextChanged,
                           rightWidget: AppText.medium(
-                            state.unit == WeightUnit.kg ? "kg" : "lbs",
+                            context.tr(
+                              state.unit == WeightUnit.kg
+                                  ? LocaleKeys.complete_profile_weight_unit_kg
+                                  : LocaleKeys.complete_profile_weight_unit_lbs,
+                            ),
                             color: const Color(0xFF9A9A9A),
                           ),
                         ),
                       ),
                       12.gap,
                       TogglePill(
-                        labels: const ['kg', 'lbs'],
+                        labels: [
+                          context.tr(LocaleKeys.complete_profile_weight_unit_kg),
+                          context.tr(LocaleKeys.complete_profile_weight_unit_lbs),
+                        ],
                         selectedIndex: state.unit == WeightUnit.kg ? 0 : 1,
                         onChanged: (i) => cubit.setUnit(
                           i == 0 ? WeightUnit.kg : WeightUnit.lbs,
@@ -67,7 +78,7 @@ class ProfileWeightScreen extends StatelessWidget {
                   if (state.weightError) ...[
                     16.gap,
                     AppText.semiBold(
-                      "Có lỗi xảy ra vui lòng nhập cân nặng hợp lệ!",
+                      context.tr(LocaleKeys.complete_profile_weight_error),
                       color: UIColors.coral,
                       maxLines: 3,
                     ),
@@ -76,11 +87,14 @@ class ProfileWeightScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(bottom: 16),
                     child: AppButton.fill(
-                      title: "Tiếp theo",
+                      title: context.tr(LocaleKeys.complete_profile_action_next),
                       enable: !state.weightError,
                       color: UIColors.coral,
                       onTap: () async {
-                        AppLoadingScreen.show(context, message: "Đang lưu...");
+                        AppLoadingScreen.show(
+                          context,
+                          message: context.tr(LocaleKeys.complete_profile_saving),
+                        );
                         final ok = await cubit.saveWeight();
                         if (!context.mounted) return;
                         Navigator.of(context).pop();
@@ -93,8 +107,12 @@ class ProfileWeightScreen extends StatelessWidget {
                         } else {
                           if (context.canPop()) context.pop();
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Lưu thất bại, thử lại"),
+                            SnackBar(
+                              content: Text(
+                                context.tr(
+                                  LocaleKeys.complete_profile_save_failed,
+                                ),
+                              ),
                             ),
                           );
                         }

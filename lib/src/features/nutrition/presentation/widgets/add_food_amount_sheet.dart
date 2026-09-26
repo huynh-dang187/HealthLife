@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
@@ -83,7 +85,9 @@ class _AddFoodAmountSheetState extends State<_AddFoodAmountSheet> {
     } else {
       setState(() => _saving = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Không thể thêm thực phẩm, thử lại sau')),
+        SnackBar(
+          content: Text(context.tr(LocaleKeys.nutrition_add_failed)),
+        ),
       );
     }
   }
@@ -139,11 +143,29 @@ class _AddFoodAmountSheetState extends State<_AddFoodAmountSheet> {
           12.gap,
           Row(
             children: [
-              _quickChip('1 phần (${_format(_serving)}g)'),
+              _quickChip(
+                context.tr(
+                  LocaleKeys.nutrition_serving_1x,
+                  namedArgs: {'grams': _format(_serving)},
+                ),
+                _serving,
+              ),
               8.gap,
-              _quickChip('Nửa phần (${_format(_serving / 2)}g)'),
+              _quickChip(
+                context.tr(
+                  LocaleKeys.nutrition_serving_half,
+                  namedArgs: {'grams': _format(_serving / 2)},
+                ),
+                _serving / 2,
+              ),
               8.gap,
-              _quickChip('2 phần (${_format(_serving * 2)}g)'),
+              _quickChip(
+                context.tr(
+                  LocaleKeys.nutrition_serving_double,
+                  namedArgs: {'grams': _format(_serving * 2)},
+                ),
+                _serving * 2,
+              ),
             ],
           ),
           20.gap,
@@ -160,7 +182,7 @@ class _AddFoodAmountSheetState extends State<_AddFoodAmountSheet> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     AppText.regular(
-                      'Tổng năng lượng',
+                      context.tr(LocaleKeys.nutrition_total_energy),
                       fontSize: 12,
                       color: UIColors.textBody,
                     ),
@@ -175,10 +197,19 @@ class _AddFoodAmountSheetState extends State<_AddFoodAmountSheet> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _ValueCell('Đạm', '${scaled.protein.round()}g'),
+                    _ValueCell(
+                    context.tr(LocaleKeys.nutrition_protein_short),
+                    '${scaled.protein.round()}g',
+                  ),
                     _ValueCell('Carbs', '${scaled.carb.round()}g'),
-                    _ValueCell('Chất béo', '${scaled.fat.round()}g'),
-                    _ValueCell('Chất xơ', '${scaled.fiber.round()}g'),
+                    _ValueCell(
+                      context.tr(LocaleKeys.nutrition_fat),
+                      '${scaled.fat.round()}g',
+                    ),
+                    _ValueCell(
+                      context.tr(LocaleKeys.nutrition_fiber),
+                      '${scaled.fiber.round()}g',
+                    ),
                   ],
                 ),
               ],
@@ -186,7 +217,7 @@ class _AddFoodAmountSheetState extends State<_AddFoodAmountSheet> {
           ),
           20.gap,
           AppButton.fill(
-            title: 'Thêm vào nhật ký',
+            title: context.tr(LocaleKeys.nutrition_add_to_log),
             height: 48,
             enable: _grams > 0 && !_saving,
             borderRadius: BorderRadius.circular(16),
@@ -204,11 +235,14 @@ class _AddFoodAmountSheetState extends State<_AddFoodAmountSheet> {
                         ),
                       ),
                       8.gap,
-                      AppText.semiBold('Đang thêm...', color: UIColors.white),
+                      AppText.semiBold(
+                        context.tr(LocaleKeys.nutrition_adding),
+                        color: UIColors.white,
+                      ),
                     ],
                   )
                 : AppText.semiBold(
-                    'Thêm vào nhật ký',
+                    context.tr(LocaleKeys.nutrition_add_to_log),
                     fontSize: 15,
                     color: UIColors.white,
                   ),
@@ -250,18 +284,11 @@ class _AddFoodAmountSheetState extends State<_AddFoodAmountSheet> {
     ),
   );
 
-  Widget _quickChip(String label) {
+  Widget _quickChip(String label, double grams) {
     return InkWell(
       borderRadius: BorderRadius.circular(20),
       onTap: _serving > 0
-          ? () {
-              final grams = label.contains('Nửa')
-                  ? _serving / 2
-                  : label.contains('2 phần')
-                  ? _serving * 2
-                  : _serving;
-              setState(() => _setGrams(grams));
-            }
+          ? () => setState(() => _setGrams(grams))
           : null,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),

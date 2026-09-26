@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/features/daily_tips/data/models/daily_tips_model.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
 
@@ -9,7 +11,7 @@ final class DailyTipState {
   /// Text hiển thị, fallback khi chưa có/trống.
   String get displayTip {
     final t = tip?.tip.trim();
-    return (t?.isNotEmpty ?? false) ? t! : 'Chăm sóc sức khỏe mỗi ngày bạn nhé';
+    return (t?.isNotEmpty ?? false) ? t! : LocaleKeys.daily_tip_fallback.tr();
   }
 
   /// Emoji hiển thị, null → dùng icon mặc định.

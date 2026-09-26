@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
@@ -31,9 +32,12 @@ class ProfileScreen extends StatelessWidget {
       context: context,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: AppText.semiBold('Đăng xuất', fontSize: 18),
+        title: AppText.semiBold(
+          context.tr(LocaleKeys.profile_logout),
+          fontSize: 18,
+        ),
         content: AppText.regular(
-          'Bạn có chắc muốn đăng xuất khỏi HLife?',
+          context.tr(LocaleKeys.profile_logout_confirm),
           fontSize: 14,
           maxLines: 2,
         ),
@@ -43,7 +47,10 @@ class ProfileScreen extends StatelessWidget {
               Expanded(
                 child: InkWell(
                   onTap: () => context.pop(false),
-                  child: AppText.medium('Hủy', color: UIColors.textBody),
+                  child: AppText.medium(
+                    context.tr(LocaleKeys.profile_cancel),
+                    color: UIColors.textBody,
+                  ),
                 ),
               ),
               Expanded(
@@ -53,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
                   child: AppButton.fill(
                     onTap: () => context.pop(true),
                     titleWidget: AppText.medium(
-                      'Đăng xuất',
+                      context.tr(LocaleKeys.profile_logout),
                       color: UIColors.white,
                     ),
                   ),
@@ -107,14 +114,14 @@ class ProfileScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: ProfileMenuSection(
-                          title: 'Cài đặt',
+                          title: context.tr(LocaleKeys.profile_settings),
                           items: [
                             ProfileMenuItem(
                               icon: Assets.svg.icChangeInfo.svg(
                                 width: 18,
                                 color: UIColors.coral,
                               ),
-                              label: 'Thông tin cơ bản',
+                              label: context.tr(LocaleKeys.profile_basic_info),
                               onTap: () => showChangeProfileSheet(context),
                             ),
                             ProfileMenuItem(
@@ -122,7 +129,7 @@ class ProfileScreen extends StatelessWidget {
                                 width: 18,
                                 color: UIColors.coral,
                               ),
-                              label: 'Ngôn ngữ',
+                              label: context.tr(LocaleKeys.profile_language),
                               onTap: () => showLanguageModal(context),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -142,7 +149,9 @@ class ProfileScreen extends StatelessWidget {
                                 width: 18,
                                 color: UIColors.coral,
                               ),
-                              label: 'Thông báo',
+                              label: context.tr(
+                                LocaleKeys.profile_notifications,
+                              ),
                               trailing: _NotificationSwitch(),
                             ),
                             ProfileMenuItem(
@@ -150,7 +159,7 @@ class ProfileScreen extends StatelessWidget {
                                 width: 18,
                                 color: UIColors.coral,
                               ),
-                              label: 'Nhà tài trợ',
+                              label: context.tr(LocaleKeys.profile_sponsor),
                             ),
                           ],
                         ),
@@ -159,7 +168,7 @@ class ProfileScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: AppButton.fill(
-                          title: 'Đăng xuất',
+                          title: context.tr(LocaleKeys.profile_logout),
                           color: UIColors.pink,
                           height: 40,
                           enable:

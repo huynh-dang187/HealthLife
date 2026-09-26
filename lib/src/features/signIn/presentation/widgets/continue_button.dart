@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
@@ -21,7 +23,11 @@ class ContinueButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final title = Row(
       children: [
-        AppText.semiBold("Tiếp tục với", fontSize: 16, color: textColor),
+        AppText.semiBold(
+          context.tr(LocaleKeys.sign_in_continue_with),
+          fontSize: 16,
+          color: textColor,
+        ),
         8.gap,
         icon,
       ],

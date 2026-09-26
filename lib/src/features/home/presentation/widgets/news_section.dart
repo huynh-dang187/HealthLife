@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
@@ -27,7 +29,7 @@ class NewsSection extends StatelessWidget {
             children: [
               Expanded(
                 child: AppText.semiBold(
-                  'Bảng tin sức khỏe hôm nay',
+                  context.tr(LocaleKeys.home_news_section_title),
                   fontSize: 16,
                 ),
               ),
@@ -36,7 +38,7 @@ class NewsSection extends StatelessWidget {
                 child: Row(
                   children: [
                     AppText.medium(
-                      'Xem tất cả',
+                      context.tr(LocaleKeys.home_news_view_all),
                       fontSize: 12,
                       color: UIColors.pink,
                     ),
