@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/core/presentation/blocs/user/user_cubit.dart';
 import 'package:healthlife/src/features/daily_tips/presentation/pages/daily_tip_card.dart';
 
@@ -18,7 +20,7 @@ class GreetingBanner extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppText.regular(
-            'Xin chào',
+            context.tr(LocaleKeys.home_greeting_hello),
             fontSize: 14,
             color: UIColors.black.withValues(alpha: 0.7),
           ),
@@ -31,7 +33,7 @@ class GreetingBanner extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(
-                  text: 'chào mừng bạn đến với ',
+                  text: context.tr(LocaleKeys.home_greeting_welcome_to),
                   style: TextStyle(
                     fontSize: 13,
                     color: UIColors.black.withValues(alpha: 0.75),
@@ -61,5 +63,7 @@ class GreetingBanner extends StatelessWidget {
 String _greetingName(BuildContext context) {
   final user = context.watch<UserCubit>().state.user;
   final name = user?.displayName?.trim();
-  return (name?.isNotEmpty ?? false) ? name! : 'Bạn yêu quý';
+  return (name?.isNotEmpty ?? false)
+      ? name!
+      : context.tr(LocaleKeys.home_greeting_fallback_name);
 }

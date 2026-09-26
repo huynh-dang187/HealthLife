@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
-import 'package:intl/intl.dart';
 
 String formatRelativeTime(DateTime dateTime) {
   final now = DateTime.now();

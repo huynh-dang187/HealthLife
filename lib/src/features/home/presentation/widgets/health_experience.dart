@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 
 import '../../../../common/constants/colors.dart';
 import '../../../../common/extensions/num_x.dart';
@@ -15,13 +17,16 @@ class HealthExperience extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 20, top: 24),
-          child: AppText.semiBold('Trải nghiệm sức khỏe hôm nay', fontSize: 16),
+          child: AppText.semiBold(
+            context.tr(LocaleKeys.home_health_experience_title),
+            fontSize: 16,
+          ),
         ),
         6.gap,
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: AppText.regular(
-            'Cùng kiểm tra kiến thức sức khỏe của bạn',
+            context.tr(LocaleKeys.home_health_experience_subtitle),
             fontSize: 12,
             color: UIColors.textBody,
           ),

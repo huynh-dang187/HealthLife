@@ -210,5 +210,19 @@ abstract class  LocaleKeys {
   static const health_news_detail_title = 'health_news_detail_title';
   static const health_news_no_detail = 'health_news_no_detail';
   static const health_news_open_source = 'health_news_open_source';
+  static const home_quick_features_title = 'home_quick_features_title';
+  static const home_quick_sos_device = 'home_quick_sos_device';
+  static const home_quick_medicine_search = 'home_quick_medicine_search';
+  static const home_quick_hospital_finder = 'home_quick_hospital_finder';
+  static const home_quick_water_reminder = 'home_quick_water_reminder';
+  static const home_quick_activity_dashboard = 'home_quick_activity_dashboard';
+  static const home_search_hint = 'home_search_hint';
+  static const home_health_experience_title = 'home_health_experience_title';
+  static const home_health_experience_subtitle = 'home_health_experience_subtitle';
+  static const home_greeting_hello = 'home_greeting_hello';
+  static const home_greeting_welcome_to = 'home_greeting_welcome_to';
+  static const home_greeting_fallback_name = 'home_greeting_fallback_name';
+  static const home_news_section_title = 'home_news_section_title';
+  static const home_news_view_all = 'home_news_view_all';
 
 }

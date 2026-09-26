@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/generated/assets.gen.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
 
 import '../../../../common/constants/colors.dart';
@@ -18,7 +20,10 @@ class QuickFeatures extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 20, top: 20),
-          child: AppText.semiBold('Các chức năng chính', fontSize: 16),
+          child: AppText.semiBold(
+            context.tr(LocaleKeys.home_quick_features_title),
+            fontSize: 16,
+          ),
         ),
         12.gap,
         SizedBox(
@@ -32,7 +37,7 @@ class QuickFeatures extends StatelessWidget {
               final f = _features[index];
               return QuickFeatureItem(
                 icon: f.icon,
-                title: f.title,
+                title: context.tr(f.title),
                 color: f.color,
                 onTap: () => context.push(f.router),
               );
@@ -60,31 +65,31 @@ class _FeatureData {
 final _features = [
   _FeatureData(
     Assets.png.icSosDevice.image(width: 40, height: 40),
-    'Thiết bị SOS',
+    LocaleKeys.home_quick_sos_device,
     UIColors.coral,
     RouteNames.sos_device,
   ),
   _FeatureData(
     Assets.png.icDrugLookup.image(),
-    'Tra cứu thuốc',
+    LocaleKeys.home_quick_medicine_search,
     UIColors.green,
     RouteNames.medicine_search,
   ),
   _FeatureData(
     Assets.png.icHospitalFinder.image(),
-    'Tìm bệnh viện',
+    LocaleKeys.home_quick_hospital_finder,
     Colors.teal,
     RouteNames.hospitalFinder,
   ),
   _FeatureData(
     Assets.png.icWaterReminder.image(),
-    'Nhắc uống nước',
+    LocaleKeys.home_quick_water_reminder,
     Colors.blueAccent,
     RouteNames.water_reminder,
   ),
   _FeatureData(
     Assets.png.icFootCounter.image(),
-    'Đếm bước chân',
+    LocaleKeys.home_quick_activity_dashboard,
     Colors.yellow,
     RouteNames.activity_dashboard,
   ),

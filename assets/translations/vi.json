@@ -222,5 +222,20 @@
   "health_news_article_title": "Bài viết",
   "health_news_detail_title": "Chi tiết tin",
   "health_news_no_detail": "Chưa có nội dung chi tiết cho bài viết này.",
-  "health_news_open_source": "Mở bài gốc"
+  "health_news_open_source": "Mở bài gốc",
+
+  "home_quick_features_title": "Các chức năng chính",
+  "home_quick_sos_device": "Thiết bị SOS",
+  "home_quick_medicine_search": "Tra cứu thuốc",
+  "home_quick_hospital_finder": "Tìm bệnh viện",
+  "home_quick_water_reminder": "Nhắc uống nước",
+  "home_quick_activity_dashboard": "Đếm bước chân",
+  "home_search_hint": "Nhập nội dung tìm kiếm của bạn",
+  "home_health_experience_title": "Trải nghiệm sức khỏe hôm nay",
+  "home_health_experience_subtitle": "Cùng kiểm tra kiến thức sức khỏe của bạn",
+  "home_greeting_hello": "Xin chào",
+  "home_greeting_welcome_to": "chào mừng bạn đến với ",
+  "home_greeting_fallback_name": "Bạn yêu quý",
+  "home_news_section_title": "Bảng tin sức khỏe hôm nay",
+  "home_news_view_all": "Xem tất cả"
 }

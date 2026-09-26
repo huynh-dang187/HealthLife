@@ -215,5 +215,20 @@
   "health_news_article_title": "Article",
   "health_news_detail_title": "News detail",
   "health_news_no_detail": "There is no detailed content for this article yet.",
-  "health_news_open_source": "Open source article"
+  "health_news_open_source": "Open source article",
+
+  "home_quick_features_title": "Main features",
+  "home_quick_sos_device": "SOS Device",
+  "home_quick_medicine_search": "Drug Lookup",
+  "home_quick_hospital_finder": "Find Hospital",
+  "home_quick_water_reminder": "Water Reminder",
+  "home_quick_activity_dashboard": "Step Counter",
+  "home_search_hint": "Enter your search content",
+  "home_health_experience_title": "Today's health experience",
+  "home_health_experience_subtitle": "Let's test your health knowledge",
+  "home_greeting_hello": "Hello",
+  "home_greeting_welcome_to": "welcome to ",
+  "home_greeting_fallback_name": "Dear friend",
+  "home_news_section_title": "Today's health news",
+  "home_news_view_all": "View all"
 }

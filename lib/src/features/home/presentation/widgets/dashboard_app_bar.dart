@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/generated/assets.gen.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/core/presentation/widgets/text_field.dart';
 
 import '../../../../common/constants/colors.dart';
@@ -23,7 +25,7 @@ class DashboardAppBar extends StatelessWidget {
                 color: UIColors.darkBackground,
               ),
               borderCicular: 23,
-              hintText: "Nhập nội dung tìm kiếm của bạn",
+              hintText: context.tr(LocaleKeys.home_search_hint),
             ),
           ),
           10.gap,
