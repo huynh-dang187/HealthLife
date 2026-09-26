@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
@@ -45,7 +47,7 @@ class _CarouselView extends StatelessWidget {
           BlocStatus.failure => Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: AppText.regular(
-              'Hôm nay chưa có câu hỏi, bạn thử lại sau nhé',
+              context.tr(LocaleKeys.quiz_no_question_today),
               fontSize: 13,
               color: UIColors.textBody,
             ),
@@ -53,7 +55,7 @@ class _CarouselView extends StatelessWidget {
           BlocStatus.success when state.questions.isEmpty => Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: AppText.regular(
-              'Hôm nay chưa có câu hỏi, bạn thử lại sau nhé',
+              context.tr(LocaleKeys.quiz_no_question_today),
               fontSize: 13,
               color: UIColors.textBody,
             ),
@@ -154,14 +156,14 @@ class _QuizCard extends StatelessWidget {
           ],
           if (state.isAnswered(index)) ...[
             10.gap,
-            _buildResult(),
+            _buildResult(context),
           ],
         ],
       ),
     );
   }
 
-  Widget _buildResult() {
+  Widget _buildResult(BuildContext context) {
     final correct = state.selectedFor(index) == question.correctIndex;
     final color = correct ? UIColors.green : UIColors.coral;
     return Container(
@@ -185,8 +187,13 @@ class _QuizCard extends StatelessWidget {
               Expanded(
                 child: AppText.semiBold(
                   correct
-                      ? 'Chính xác!'
-                      : 'Đáp án đúng: ${question.correctOption}',
+                      ? context.tr(LocaleKeys.quiz_correct)
+                      : context.tr(
+                          LocaleKeys.quiz_correct_answer,
+                          namedArgs: {
+                            'answer': question.correctOption,
+                          },
+                        ),
                   fontSize: 11,
                   color: color,
                   maxLines: 1,

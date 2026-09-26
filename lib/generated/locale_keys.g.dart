@@ -282,5 +282,36 @@ abstract class  LocaleKeys {
   static const nutrition_search_prompt = 'nutrition_search_prompt';
   static const nutrition_search_failed = 'nutrition_search_failed';
   static const nutrition_search_empty = 'nutrition_search_empty';
+  static const profile_logout = 'profile_logout';
+  static const profile_logout_confirm = 'profile_logout_confirm';
+  static const profile_cancel = 'profile_cancel';
+  static const profile_settings = 'profile_settings';
+  static const profile_basic_info = 'profile_basic_info';
+  static const profile_language = 'profile_language';
+  static const profile_language_select = 'profile_language_select';
+  static const profile_language_choose_title = 'profile_language_choose_title';
+  static const profile_notifications = 'profile_notifications';
+  static const profile_sponsor = 'profile_sponsor';
+  static const profile_full_name = 'profile_full_name';
+  static const profile_gender = 'profile_gender';
+  static const profile_dob = 'profile_dob';
+  static const profile_field_day = 'profile_field_day';
+  static const profile_field_month = 'profile_field_month';
+  static const profile_field_year = 'profile_field_year';
+  static const profile_height = 'profile_height';
+  static const profile_weight = 'profile_weight';
+  static const profile_change_info = 'profile_change_info';
+  static const profile_updated_success = 'profile_updated_success';
+  static const profile_save_failed = 'profile_save_failed';
+  static const profile_name_required = 'profile_name_required';
+  static const profile_dob_invalid = 'profile_dob_invalid';
+  static const profile_height_invalid = 'profile_height_invalid';
+  static const profile_weight_invalid = 'profile_weight_invalid';
+  static const profile_member_label = 'profile_member_label';
+  static const profile_name_fallback = 'profile_name_fallback';
+  static const quiz_no_question_today = 'quiz_no_question_today';
+  static const quiz_correct = 'quiz_correct';
+  static const quiz_correct_answer = 'quiz_correct_answer';
+  static const quiz_category_general = 'quiz_category_general';
 
 }
