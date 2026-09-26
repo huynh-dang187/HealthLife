@@ -24,9 +24,15 @@ void main() async {
   // Khởi tạo hạ tầng notification SOS (FCM + local notification + full-screen).
   await SosNotificationService.instance.initialize();
 
-  await Supabase.initialize(
-    url: 'https://ttdvkuuwxynvtenquueb.supabase.co',
-    publishableKey: 'sb_publishable_a5Vhhso3Uz-wZwjYRnwGuQ_cxjo2sKi',
+await Supabase.initialize(
+    url: const String.fromEnvironment(
+      'SUPABASE_URL',
+      defaultValue: 'https://ttdvkuuwxynvtenququeb.supabase.co',
+    ),
+    publishableKey: const String.fromEnvironment(
+      'SUPABASE_PUBLISHABLE_KEY',
+      defaultValue: 'sb_publishable_a5Vhhso3Uz-wZwjYRnwGuQ_cxjo2sKi',
+    ),
   );
 
   runApp(const MyApp());
