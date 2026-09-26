@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:http/http.dart' as http;
 
 /// Kết quả của luồng verifyPhoneNumber.
@@ -213,24 +215,25 @@ class AuthRepository {
     return doc.data()?['profileCompleted'] ?? false;
   }
 
-  /// Map lỗi FirebaseAuth -> thông báo tiếng Việt.
+  /// Map lỗi FirebaseAuth -> thông báo đã localize.
   String mapAuthError(Object error) {
     if (error is FirebaseAuthException) {
       switch (error.code) {
         case 'invalid-phone-number':
-          return 'Số điện thoại không hợp lệ';
+          return LocaleKeys.sign_in_invalid_phone.tr();
         case 'invalid-verification-code':
-          return 'Mã xác nhận sai hoặc đã hết hạn';
+          return LocaleKeys.sign_in_wrong_code_expired.tr();
         case 'quota-exceeded':
-          return 'Đã vượt giới hạn gửi mã, vui lòng thử lại sau';
+          return LocaleKeys.sign_in_quota_exceeded.tr();
         case 'too-many-requests':
-          return 'Quá nhiều yêu cầu, vui lòng thử lại sau';
+          return LocaleKeys.sign_in_too_many_requests.tr();
         case 'sms-error':
-          return 'Không gửi được SMS, vui lòng thử lại';
+          return LocaleKeys.sign_in_sms_error.tr();
         case 'network-request-failed':
-          return 'Mất kết nối mạng, vui lòng thử lại';
+          return LocaleKeys.sign_in_network_error.tr();
         default:
-          return error.message ?? 'Đã có lỗi xảy ra, vui lòng thử lại';
+          return error.message ??
+              LocaleKeys.sign_in_generic_error.tr();
       }
     }
     return error.toString();

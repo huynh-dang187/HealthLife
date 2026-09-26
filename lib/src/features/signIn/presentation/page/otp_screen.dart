@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
@@ -144,7 +146,10 @@ class _OtpScreenState extends State<OtpScreen> {
                 icon: const Icon(Icons.arrow_back_ios_new),
                 onPressed: () => Navigator.of(context).maybePop(),
               ),
-              title: AppText.bold('Xác nhận mã OTP', fontSize: 18),
+              title: AppText.bold(
+                context.tr(LocaleKeys.sign_in_otp_title),
+                fontSize: 18,
+              ),
             ),
             body: Padding(
               padding: EdgeInsets.only(
@@ -156,10 +161,13 @@ class _OtpScreenState extends State<OtpScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   32.gap,
-                  AppText.bold('Nhập mã xác nhận', fontSize: 22),
+                  AppText.bold(context.tr(LocaleKeys.sign_in_otp_field_title), fontSize: 22),
                   8.gap,
                   AppText.regular(
-                    'Mã gồm 6 chữ số đã được gửi tới $_fullPhone',
+                    context.tr(
+                      LocaleKeys.sign_in_otp_sent_to,
+                      namedArgs: {'phone': _fullPhone},
+                    ),
                     fontSize: 13,
                     color: UIColors.textBody,
                   ),
@@ -214,7 +222,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   AppButton.fill(
                     enable: !isVerifying,
                     onTap: () => _verify(context.read<OtpVerificationCubit>()),
-                    title: 'Xác nhận',
+                    title: context.tr(LocaleKeys.sign_in_confirm),
                     height: 50,
                     width: double.infinity,
                     titleWidget: isVerifying
@@ -229,7 +237,10 @@ class _OtpScreenState extends State<OtpScreen> {
                   Center(
                     child: _seconds > 0
                         ? AppText.regular(
-                            'Gửi lại mã sau ${_seconds}s',
+                            context.tr(
+                              LocaleKeys.sign_in_resend_in,
+                              namedArgs: {'seconds': '$_seconds'},
+                            ),
                             fontSize: 13,
                             color: UIColors.textBody,
                           )
@@ -240,7 +251,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                     context.read<OtpVerificationCubit>(),
                                   ),
                             child: AppText.medium(
-                              'Gửi lại mã',
+                              context.tr(LocaleKeys.sign_in_resend),
                               fontSize: 14,
                               color: UIColors.pink,
                             ),
