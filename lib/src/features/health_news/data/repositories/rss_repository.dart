@@ -8,7 +8,10 @@ import 'package:webfeed_revised/domain/rss_item.dart';
 import '../models/news_article_model.dart';
 
 class RssRepository {
-  static const _url = 'https://suckhoedoisong.vn/suc-khoe-tv.rss';
+  static const _url = String.fromEnvironment(
+    'HEALTH_NEWS_RSS_URL',
+    defaultValue: 'https://suckhoedoisong.vn/suc-khoe-tv.rss',
+  );
 
   final Box _cacheBox;
 

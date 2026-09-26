@@ -19,36 +19,55 @@ class GreetingBanner extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppText.regular(
-            context.tr(LocaleKeys.home_greeting_hello),
-            fontSize: 14,
-            color: UIColors.black.withValues(alpha: 0.7),
+          Row(
+            children: [
+              AppText.regular(
+                context.tr(LocaleKeys.home_greeting_hello),
+                fontSize: 14,
+                color: UIColors.black.withValues(alpha: 0.6),
+              ),
+              6.gap,
+              AppText.regular(
+                '👋',
+              ),
+            ],
           ),
-          4.gap,
-          AppText.bold(
+          2.gap,
+          AppText.italic(
             _greetingName(context),
-            fontSize: 20,
+            fontSize: 26,
+            color: UIColors.black,
+            fontWeight: FontWeight.bold,
           ),
-          Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: context.tr(LocaleKeys.home_greeting_welcome_to),
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: UIColors.black.withValues(alpha: 0.75),
+          6.gap,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              color: UIColors.white.withValues(alpha: 0.55),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: context.tr(LocaleKeys.home_greeting_welcome_to),
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: UIColors.black.withValues(alpha: 0.75),
+                    ),
                   ),
-                ),
-                TextSpan(
-                  text: 'HLIFE',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: UIColors.coral, // ← HLIFE màu hồng
-                    fontWeight: FontWeight.w900,
+                  TextSpan(
+                    text: 'HLIFE',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: UIColors.coral,
+                      fontWeight: FontWeight.w900,
+                    ),
                   ),
-                ),
-                const TextSpan(text: '!'),
-              ],
+                  const TextSpan(text: '!'),
+                ],
+              ),
             ),
           ),
           20.gap,

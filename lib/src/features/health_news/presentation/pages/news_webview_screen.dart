@@ -45,7 +45,10 @@ class _NewsWebViewScreenState extends State<NewsWebViewScreen> {
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => Navigator.of(context).maybePop(),
         ),
-        title: AppText.bold(context.tr(LocaleKeys.health_news_article_title), fontSize: 18),
+        title: AppText.bold(
+          context.tr(LocaleKeys.health_news_article_title),
+          fontSize: 18,
+        ),
       ),
       body: Stack(
         children: [

@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../shared/enums/bloc_status.dart';
 import '../../data/datasources/hospital_finder_local_data_source.dart';
 import '../../data/services/hospital_finder_service.dart';
+import '../../data/services/maps_url.dart';
 import '../../domain/entities/medical_place.dart';
 import 'hospital_finder_state.dart';
 
@@ -122,7 +123,7 @@ class HospitalFinderCubit extends Cubit<HospitalFinderState> {
     await _localDataSource.savePlaceToHistory(place);
     await loadSearchHistory();
 
-    final url = 'https://www.google.com/maps/dir/?api=1&destination=${place.latitude},${place.longitude}&travelmode=driving';
+    final url = googleMapsDirectionsUrl(place.latitude, place.longitude);
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     } else {

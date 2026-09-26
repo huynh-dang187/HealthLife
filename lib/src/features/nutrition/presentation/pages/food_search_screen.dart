@@ -12,19 +12,35 @@ import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/src/core/presentation/widgets/text_field.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
 
+import '../../data/datasources/nutrition_remote_data_source.dart';
 import '../../data/model/food_model.dart';
+import '../../data/repositories/nutrition_repository.dart';
 import '../cubit/foodSearch/food_search_cubit.dart';
 import '../cubit/foodSearch/food_search_state.dart';
 import '../widgets/add_food_amount_sheet.dart';
 
-class FoodSearchScreen extends StatefulWidget {
+class FoodSearchScreen extends StatelessWidget {
   const FoodSearchScreen({super.key});
 
   @override
-  State<FoodSearchScreen> createState() => _FoodSearchScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => FoodSearchCubit(
+        NutritionRepository(NutritionRemoteDataSource()),
+      ),
+      child: const _FoodSearchScreenBody(),
+    );
+  }
 }
 
-class _FoodSearchScreenState extends State<FoodSearchScreen> {
+class _FoodSearchScreenBody extends StatefulWidget {
+  const _FoodSearchScreenBody();
+
+  @override
+  State<_FoodSearchScreenBody> createState() => _FoodSearchScreenBodyState();
+}
+
+class _FoodSearchScreenBodyState extends State<_FoodSearchScreenBody> {
   final TextEditingController _searchController = TextEditingController();
 
   @override

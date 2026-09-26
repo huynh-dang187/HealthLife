@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
-import 'package:healthlife/generated/locale_keys.g.dart';
 
 /// Card "Theo dõi nhịp tim" — nền tối, nút Đo disabled + badge Sắp ra mắt.
 class HeartRateCard extends StatelessWidget {
@@ -13,7 +13,7 @@ class HeartRateCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: UIColors.darkCard,
         borderRadius: BorderRadius.circular(20),

@@ -30,7 +30,10 @@ class NewsDetailScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => Navigator.of(context).maybePop(),
         ),
-        title: AppText.bold(context.tr(LocaleKeys.health_news_detail_title), fontSize: 18),
+        title: AppText.bold(
+          context.tr(LocaleKeys.health_news_detail_title),
+          fontSize: 18,
+        ),
       ),
       body: Column(
         children: [

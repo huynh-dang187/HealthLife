@@ -29,7 +29,10 @@ class HealthNewsScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => Navigator.of(context).maybePop(),
         ),
-        title: AppText.bold(context.tr(LocaleKeys.health_news_title), fontSize: 18),
+        title: AppText.bold(
+          context.tr(LocaleKeys.health_news_title),
+          fontSize: 18,
+        ),
         centerTitle: true,
       ),
       body: BlocProvider(
@@ -58,8 +61,8 @@ class _NewsBody extends StatelessWidget {
 
         if (state.status == BlocStatus.failure && state.news.isEmpty) {
           return _ErrorView(
-            message: state.message ??
-                context.tr(LocaleKeys.health_news_load_failed),
+            message:
+                state.message ?? context.tr(LocaleKeys.health_news_load_failed),
           );
         }
 

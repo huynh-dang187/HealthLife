@@ -48,8 +48,13 @@ class ChatbotRepository {
     http.Client? client,
   }) : _auth = auth ?? FirebaseAuth.instance,
        _firestore = firestore ?? FirebaseFirestore.instance,
-       _region = region ?? 'us-central1',
-       _projectId = projectId ?? 'healthlife-e89fd',
+       _region = region ??
+           const String.fromEnvironment('REGION', defaultValue: 'us-central1'),
+       _projectId = projectId ??
+           const String.fromEnvironment(
+             'PROJECT_ID',
+             defaultValue: 'healthlife-e89fd',
+           ),
        _client = client ?? http.Client();
 
   static const _defaultQuota = 50;

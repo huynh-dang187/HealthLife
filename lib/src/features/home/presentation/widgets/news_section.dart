@@ -22,7 +22,6 @@ class NewsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Header "Bảng tin sức khỏe hôm nay" + nút "Xem tất cả" (onTap: () {} để sau)
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 12, top: 24),
           child: Row(
@@ -57,7 +56,6 @@ class NewsSection extends StatelessWidget {
         12.gap,
         BlocBuilder<HealthNewsCubit, HealthNewsState>(
           builder: (context, state) {
-            // Loading: chưa có tin → skeleton
             if (state.status == BlocStatus.loading && state.news.isEmpty) {
               return const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
@@ -71,11 +69,11 @@ class NewsSection extends StatelessWidget {
                 ),
               );
             }
-            // Failure: chưa có tin → ẩn section
+
             if (state.status == BlocStatus.failure && state.news.isEmpty) {
               return const SizedBox.shrink();
             }
-            // Có tin → hiện 3 tin mới nhất (ảnh thật + thời gian tương đối)
+
             final items = state.news.take(10).toList();
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),

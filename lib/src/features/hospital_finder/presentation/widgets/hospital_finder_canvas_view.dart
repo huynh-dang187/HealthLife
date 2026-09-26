@@ -25,7 +25,10 @@ class HospitalFinderCanvasView extends StatelessWidget {
           ),
           children: [
             TileLayer(
-              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              urlTemplate: const String.fromEnvironment(
+                'OSM_TILE_URL',
+                defaultValue: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              ),
               userAgentPackageName: 'com.healthlife.app',
             ),
             // Vẽ đường đi (Polyline)

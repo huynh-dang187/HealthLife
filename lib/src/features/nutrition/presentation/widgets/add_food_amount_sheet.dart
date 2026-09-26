@@ -285,18 +285,29 @@ class _AddFoodAmountSheetState extends State<_AddFoodAmountSheet> {
   );
 
   Widget _quickChip(String label, double grams) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(20),
-      onTap: _serving > 0
-          ? () => setState(() => _setGrams(grams))
-          : null,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: UIColors.separate),
+    return Expanded(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: _serving > 0
+            ? () => setState(() => _setGrams(grams))
+            : null,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: UIColors.separate),
+          ),
+          alignment: Alignment.center,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: AppText.medium(
+              label,
+              fontSize: 10.5,
+              color: UIColors.pink,
+              maxLines: 1,
+            ),
+          ),
         ),
-        child: AppText.medium(label, fontSize: 10.5, color: UIColors.pink),
       ),
     );
   }

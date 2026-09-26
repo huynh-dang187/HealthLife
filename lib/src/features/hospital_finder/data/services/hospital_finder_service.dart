@@ -7,7 +7,10 @@ import '../../domain/entities/medical_place.dart';
 
 class HospitalFinderService {
   final SupabaseClient _supabase = Supabase.instance.client;
-  static const String _osrmUrl = 'http://router.project-osrm.org/route/v1/driving';
+  static const String _osrmUrl = String.fromEnvironment(
+    'OSRM_ROUTE_URL',
+    defaultValue: 'http://router.project-osrm.org/route/v1/driving',
+  );
 
   Future<List<MedicalPlace>> fetchNearbyFacilities(double lat, double lng) async {
     try {
