@@ -209,5 +209,18 @@
 
   "daily_tip_title": "Mỗi ngày một lời khuyên",
   "daily_tip_fallback": "Chăm sóc sức khỏe mỗi ngày bạn nhé",
-  "daily_tip_empty": "Chăm sóc sức khỏe mỗi ngày"
+  "daily_tip_empty": "Chăm sóc sức khỏe mỗi ngày",
+
+  "health_news_title": "Bảng tin sức khỏe",
+  "health_news_load_failed": "Không thể tải tin tức",
+  "health_news_retry": "Thử lại",
+  "health_news_empty": "Chưa có bài viết nào",
+  "health_news_stale_message": "Không thể tải tin mới. Đang hiển thị dữ liệu đã lưu.",
+  "health_news_time_just_now": "Vừa xong",
+  "health_news_time_minutes_ago": "{minutes} phút trước",
+  "health_news_time_hours_ago": "{hours} giờ trước",
+  "health_news_article_title": "Bài viết",
+  "health_news_detail_title": "Chi tiết tin",
+  "health_news_no_detail": "Chưa có nội dung chi tiết cho bài viết này.",
+  "health_news_open_source": "Mở bài gốc"
 }

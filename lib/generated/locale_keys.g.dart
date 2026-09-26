@@ -198,5 +198,17 @@ abstract class  LocaleKeys {
   static const daily_tip_title = 'daily_tip_title';
   static const daily_tip_fallback = 'daily_tip_fallback';
   static const daily_tip_empty = 'daily_tip_empty';
+  static const health_news_title = 'health_news_title';
+  static const health_news_load_failed = 'health_news_load_failed';
+  static const health_news_retry = 'health_news_retry';
+  static const health_news_empty = 'health_news_empty';
+  static const health_news_stale_message = 'health_news_stale_message';
+  static const health_news_time_just_now = 'health_news_time_just_now';
+  static const health_news_time_minutes_ago = 'health_news_time_minutes_ago';
+  static const health_news_time_hours_ago = 'health_news_time_hours_ago';
+  static const health_news_article_title = 'health_news_article_title';
+  static const health_news_detail_title = 'health_news_detail_title';
+  static const health_news_no_detail = 'health_news_no_detail';
+  static const health_news_open_source = 'health_news_open_source';
 
 }

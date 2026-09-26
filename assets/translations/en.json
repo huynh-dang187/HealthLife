@@ -202,5 +202,18 @@
 
   "daily_tip_title": "A health tip every day",
   "daily_tip_fallback": "Take care of your health every day",
-  "daily_tip_empty": "Take care of your health daily"
+  "daily_tip_empty": "Take care of your health daily",
+
+  "health_news_title": "Health News",
+  "health_news_load_failed": "Unable to load the news",
+  "health_news_retry": "Try again",
+  "health_news_empty": "No articles yet",
+  "health_news_stale_message": "Could not load new news. Showing saved data.",
+  "health_news_time_just_now": "Just now",
+  "health_news_time_minutes_ago": "{minutes} minutes ago",
+  "health_news_time_hours_ago": "{hours} hours ago",
+  "health_news_article_title": "Article",
+  "health_news_detail_title": "News detail",
+  "health_news_no_detail": "There is no detailed content for this article yet.",
+  "health_news_open_source": "Open source article"
 }
