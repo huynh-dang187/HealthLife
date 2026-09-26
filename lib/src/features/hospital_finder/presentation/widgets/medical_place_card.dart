@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../common/constants/colors.dart';
+import '../../data/services/maps_url.dart';
 import '../../domain/entities/medical_place.dart';
 import '../cubit/hospital_finder_cubit.dart';
 import '../cubit/hospital_finder_state.dart';
@@ -111,7 +112,11 @@ class MedicalPlaceCard extends StatelessWidget {
                   child: ElevatedButton.icon(
                     onPressed: () async {
                       final url = Uri.parse(
-                          'https://www.google.com/maps/dir/?api=1&destination=${place.latitude},${place.longitude}&travelmode=driving');
+                          googleMapsDirectionsUrl(
+                            place.latitude,
+                            place.longitude,
+                          ),
+                        );
                       if (await canLaunchUrl(url)) {
                         await launchUrl(url, mode: LaunchMode.externalApplication);
                       }

@@ -170,8 +170,14 @@ class AuthRepository {
   /// Nếu mạng lỗi/function chưa deploy -> fallback "chưa đăng ký" để không
   /// chặn nhầm người dùng mới.
   Future<PhoneCheckResult> checkPhoneRegistered(String fullPhone) async {
-    const projectId = 'healthlife-e89fd';
-    const region = 'us-central1';
+    const projectId = String.fromEnvironment(
+      'PROJECT_ID',
+      defaultValue: 'healthlife-e89fd',
+    );
+    const region = String.fromEnvironment(
+      'REGION',
+      defaultValue: 'us-central1',
+    );
     final url =
         'https://$region-$projectId.cloudfunctions.net/checkPhoneRegistered';
     try {

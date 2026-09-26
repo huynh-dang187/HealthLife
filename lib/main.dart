@@ -21,12 +21,15 @@ void main() async {
   await GoogleSignIn.instance.initialize();
   await EasyLocalization.ensureInitialized();
 
-  // Khởi tạo hạ tầng notification SOS (FCM + local notification + full-screen).
   await SosNotificationService.instance.initialize();
 
   await Supabase.initialize(
-    url: 'https://ttdvkuuwxynvtenquueb.supabase.co',
-    publishableKey: 'sb_publishable_a5Vhhso3Uz-wZwjYRnwGuQ_cxjo2sKi',
+    url: const String.fromEnvironment(
+      'SUPABASE_URL',
+    ),
+    publishableKey: const String.fromEnvironment(
+      'SUPABASE_PUBLISHABLE_KEY',
+    ),
   );
 
   runApp(const MyApp());
