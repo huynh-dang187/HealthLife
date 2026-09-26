@@ -28,6 +28,7 @@ class _OtpScreenState extends State<OtpScreen> {
   late String _verificationId = widget.otpArgs.verificationId;
   late int? _resendToken = widget.otpArgs.resendToken;
   late final String _fullPhone = widget.otpArgs.fullPhone;
+  late final bool _isLogin = widget.otpArgs.isLogin;
   StreamSubscription<User?>? _authSub;
   bool _handled = false;
 
@@ -46,7 +47,9 @@ class _OtpScreenState extends State<OtpScreen> {
     _startCountdown();
     _authSub = FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user != null && !_handled && mounted) {
-        context.read<OtpVerificationCubit>().completeAuth();
+        context
+            .read<OtpVerificationCubit>()
+            .completeAuth(isLogin: _isLogin);
       }
     });
   }
@@ -107,7 +110,11 @@ class _OtpScreenState extends State<OtpScreen> {
       child: BlocConsumer<OtpVerificationCubit, OtpState>(
         listener: (context, state) {
           if (state is OtpSuccess) {
-            if (!_handled) context.read<OtpVerificationCubit>().completeAuth();
+            if (!_handled) {
+              context
+                  .read<OtpVerificationCubit>()
+                  .completeAuth(isLogin: _isLogin);
+            }
           } else if (state is OtpDestination) {
             if (_handled) return;
             _handled = true;

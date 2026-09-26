@@ -65,6 +65,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
               :final verificationId,
               :final fullPhone,
               :final resendToken,
+              :final isLogin,
             ):
               context.push(
                 RouteNames.phone_otp,
@@ -72,6 +73,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                   verificationId: verificationId,
                   fullPhone: fullPhone,
                   resendToken: resendToken,
+                  isLogin: isLogin,
                 ),
               );
             case PhoneAutoSignedIn():

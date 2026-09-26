@@ -89,9 +89,13 @@ class OtpVerificationCubit extends Cubit<OtpState> {
     }
   }
 
-  Future<void> completeAuth() async {
+  Future<void> completeAuth({bool isLogin = false}) async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
+    if (isLogin) {
+      emit(OtpDestination(RouteNames.home));
+      return;
+    }
     final completed = await _repo.isProfileCompleted(user.uid);
     emit(
       OtpDestination(
