@@ -205,5 +205,9 @@
   "complete_profile_weight_unit_lbs": "lbs",
   "complete_profile_action_next": "Tiếp theo",
   "complete_profile_saving": "Đang lưu...",
-  "complete_profile_save_failed": "Lưu thất bại, thử lại"
+  "complete_profile_save_failed": "Lưu thất bại, thử lại",
+
+  "daily_tip_title": "Mỗi ngày một lời khuyên",
+  "daily_tip_fallback": "Chăm sóc sức khỏe mỗi ngày bạn nhé",
+  "daily_tip_empty": "Chăm sóc sức khỏe mỗi ngày"
 }

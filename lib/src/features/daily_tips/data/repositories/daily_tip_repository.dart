@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/features/daily_tips/data/models/daily_tips_model.dart';
 import 'package:intl/intl.dart';
 
@@ -34,7 +36,7 @@ class DailyTipRepository {
     final list = (jsonDecode(raw) as List)
         .map((e) => DailyTip.fromJson(e as Map<String, dynamic>))
         .toList();
-    if (list.isEmpty) return const DailyTip(tip: 'Chăm sóc sức khỏe mỗi ngày');
+    if (list.isEmpty) return const DailyTip(tip: LocaleKeys.daily_tip_empty);
     final index = DateTime.now().day % list.length;
     return list[index];
   }

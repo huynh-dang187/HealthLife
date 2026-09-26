@@ -198,5 +198,9 @@
   "complete_profile_weight_unit_lbs": "lbs",
   "complete_profile_action_next": "Next",
   "complete_profile_saving": "Saving...",
-  "complete_profile_save_failed": "Save failed, please try again"
+  "complete_profile_save_failed": "Save failed, please try again",
+
+  "daily_tip_title": "A health tip every day",
+  "daily_tip_fallback": "Take care of your health every day",
+  "daily_tip_empty": "Take care of your health daily"
 }

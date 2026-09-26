@@ -195,5 +195,8 @@ abstract class  LocaleKeys {
   static const complete_profile_action_next = 'complete_profile_action_next';
   static const complete_profile_saving = 'complete_profile_saving';
   static const complete_profile_save_failed = 'complete_profile_save_failed';
+  static const daily_tip_title = 'daily_tip_title';
+  static const daily_tip_fallback = 'daily_tip_fallback';
+  static const daily_tip_empty = 'daily_tip_empty';
 
 }
