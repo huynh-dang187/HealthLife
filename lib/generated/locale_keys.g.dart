@@ -169,6 +169,23 @@ abstract class  LocaleKeys {
   static const water_reminder_notification_body = 'water_reminder_notification_body';
   static const water_reminder_test_notification_title = 'water_reminder_test_notification_title';
   static const water_reminder_test_notification_body = 'water_reminder_test_notification_body';
+  static const water_reminder_settings_subtitle = 'water_reminder_settings_subtitle';
+  static const water_reminder_goal_label = 'water_reminder_goal_label';
+  static const water_reminder_enabled_sub = 'water_reminder_enabled_sub';
+  static const water_reminder_disabled_sub = 'water_reminder_disabled_sub';
+  static const water_reminder_schedule = 'water_reminder_schedule';
+  static const water_reminder_schedule_range = 'water_reminder_schedule_range';
+  static const water_reminder_quick_add_sub = 'water_reminder_quick_add_sub';
+  static const water_reminder_delete_title = 'water_reminder_delete_title';
+  static const water_reminder_delete_confirm = 'water_reminder_delete_confirm';
+  static const water_reminder_delete = 'water_reminder_delete';
+  static const water_reminder_channel_desc = 'water_reminder_channel_desc';
+  static const water_reminder_load_error = 'water_reminder_load_error';
+  static const water_reminder_add_error = 'water_reminder_add_error';
+  static const water_reminder_delete_error = 'water_reminder_delete_error';
+  static const water_reminder_goal_error = 'water_reminder_goal_error';
+  static const water_reminder_settings_error = 'water_reminder_settings_error';
+  static const water_reminder_schedule_error = 'water_reminder_schedule_error';
   static const complete_profile_name_title = 'complete_profile_name_title';
   static const complete_profile_name_hint = 'complete_profile_name_hint';
   static const complete_profile_name_question = 'complete_profile_name_question';
@@ -365,5 +382,9 @@ abstract class  LocaleKeys {
   static const sos_stop_alarm = 'sos_stop_alarm';
   static const sos_call_family = 'sos_call_family';
   static const sos_view_location = 'sos_view_location';
+  static const tab_home = 'tab_home';
+  static const tab_activity = 'tab_activity';
+  static const tab_nutrition = 'tab_nutrition';
+  static const tab_utilities = 'tab_utilities';
 
 }

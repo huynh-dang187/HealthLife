@@ -172,6 +172,23 @@
   "water_reminder_notification_body": "Stay hydrated to keep your body healthy and energized!",
   "water_reminder_test_notification_title": "Test Notification 💧",
   "water_reminder_test_notification_body": "If you see this notification, the feature is working properly!",
+  "water_reminder_settings_subtitle": "Set your goal and drinking schedule",
+  "water_reminder_goal_label": "Target water amount",
+  "water_reminder_enabled_sub": "Reminder schedule is on",
+  "water_reminder_disabled_sub": "Notifications are off",
+  "water_reminder_schedule": "Reminder schedule",
+  "water_reminder_schedule_range": "Reminder time range",
+  "water_reminder_quick_add_sub": "Choose how much water you just drank",
+  "water_reminder_delete_title": "Confirm deletion",
+  "water_reminder_delete_confirm": "Are you sure you want to delete this {amount} ml record?",
+  "water_reminder_delete": "Delete",
+  "water_reminder_channel_desc": "Periodic water drinking reminders",
+  "water_reminder_load_error": "Failed to load data: {error}",
+  "water_reminder_add_error": "Failed to add water: {error}",
+  "water_reminder_delete_error": "Failed to delete a log: {error}",
+  "water_reminder_goal_error": "Failed to update goal: {error}",
+  "water_reminder_settings_error": "Failed to update reminder settings: {error}",
+  "water_reminder_schedule_error": "Failed to update reminder schedule: {error}",
 
   "complete_profile_name_title": "Enter your name",
   "complete_profile_name_hint": "Enter your name",
@@ -377,5 +394,10 @@
   "sos_time": "Time",
   "sos_stop_alarm": "STOP ALARM",
   "sos_call_family": "CALL FAMILY",
-  "sos_view_location": "VIEW LOCATION"
+  "sos_view_location": "VIEW LOCATION",
+
+  "tab_home": "Home",
+  "tab_activity": "Activity",
+  "tab_nutrition": "Nutrition",
+  "tab_utilities": "Utilities"
 }

@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/generated/assets.gen.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/widget/app_glass.dart';
@@ -22,10 +24,13 @@ class _TabInfo {
 }
 
 final _tabs = [
-  _TabInfo(Assets.svg.icHome.svg(width: 25, height: 25), 'Trang chủ'),
-  _TabInfo(Assets.svg.icExercise.svg(width: 25, height: 25), 'Hoạt động'),
-  _TabInfo(Assets.svg.icNutrion.svg(width: 25), 'Dinh dưỡng'),
-  _TabInfo(Assets.svg.icExtension.svg(width: 25), 'Tiện ích'),
+  _TabInfo(Assets.svg.icHome.svg(width: 25, height: 25), LocaleKeys.tab_home),
+  _TabInfo(
+    Assets.svg.icExercise.svg(width: 25, height: 25),
+    LocaleKeys.tab_activity,
+  ),
+  _TabInfo(Assets.svg.icNutrion.svg(width: 25), LocaleKeys.tab_nutrition),
+  _TabInfo(Assets.svg.icExtension.svg(width: 25), LocaleKeys.tab_utilities),
 ];
 
 const _aiIndex = 4;
@@ -213,7 +218,7 @@ class _MainTabScreenState extends State<MainTabScreen>
                                             Expanded(
                                               child: TabBarItem(
                                                 icon: _tabs[i].icon,
-                                                title: _tabs[i].title,
+                                                title: context.tr(_tabs[i].title),
                                                 selected: index == i,
                                                 onTap: () => _onTap(i),
                                               ),

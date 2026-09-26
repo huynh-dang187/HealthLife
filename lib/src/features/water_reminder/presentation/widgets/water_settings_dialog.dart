@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 
 import '../../../../common/constants/colors.dart';
 import '../../../../common/extensions/num_x.dart';
@@ -123,13 +125,13 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText.bold(
-                  'Cài đặt nhắc nhở',
+                  context.tr(LocaleKeys.water_reminder_settings_title),
                   fontSize: 18,
                   color: UIColors.text,
                 ),
                 2.gap,
                 AppText.regular(
-                  'Thiết lập mục tiêu và lịch uống nước',
+                  context.tr(LocaleKeys.water_reminder_settings_subtitle),
                   fontSize: 12,
                   color: UIColors.textBody,
                 ),
@@ -147,7 +149,7 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
             8.gap,
             _buildSectionTitle(
               icon: Icons.flag_rounded,
-              title: 'Mục tiêu hàng ngày',
+              title: context.tr(LocaleKeys.water_reminder_daily_goal),
             ),
 
             10.gap,
@@ -182,7 +184,7 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AppText.medium(
-                          'Lượng nước mục tiêu',
+                          context.tr(LocaleKeys.water_reminder_goal_label),
                           fontSize: 12,
                           color: UIColors.textBody,
                         ),
@@ -224,7 +226,7 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
 
             _buildSectionTitle(
               icon: Icons.notifications_active_rounded,
-              title: 'Nhắc nhở uống nước',
+              title: context.tr(LocaleKeys.water_reminder_title),
             ),
 
             10.gap,
@@ -248,14 +250,16 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
                 ),
                 dense: true,
                 title: AppText.semiBold(
-                  'Bật thông báo nhắc nhở',
+                  context.tr(LocaleKeys.water_reminder_enable_reminder),
                   fontSize: 14,
                   color: UIColors.text,
                 ),
                 subtitle: AppText.regular(
-                  _isReminderEnabled
-                      ? 'Đang bật lịch nhắc nhở'
-                      : 'Thông báo đang tắt',
+                  context.tr(
+                    _isReminderEnabled
+                        ? LocaleKeys.water_reminder_enabled_sub
+                        : LocaleKeys.water_reminder_disabled_sub,
+                  ),
                   fontSize: 11,
                   color: UIColors.textBody,
                 ),
@@ -273,14 +277,14 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
 
               _buildSectionTitle(
                 icon: Icons.schedule_rounded,
-                title: 'Lịch nhắc nhở',
+                title: context.tr(LocaleKeys.water_reminder_schedule),
               ),
 
               10.gap,
 
               // Interval
               AppText.medium(
-                'Tần suất nhắc nhở',
+                context.tr(LocaleKeys.water_reminder_frequency),
                 fontSize: 12,
                 color: UIColors.textBody,
               ),
@@ -328,19 +332,27 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
                 items: [
                   DropdownMenuItem(
                     value: 1,
-                    child: AppText.regular('Mỗi 1 giờ'),
+                    child: AppText.regular(
+                      context.tr(LocaleKeys.water_reminder_interval_1h),
+                    ),
                   ),
                   DropdownMenuItem(
                     value: 2,
-                    child: AppText.regular('Mỗi 2 giờ'),
+                    child: AppText.regular(
+                      context.tr(LocaleKeys.water_reminder_interval_2h),
+                    ),
                   ),
                   DropdownMenuItem(
                     value: 3,
-                    child: AppText.regular('Mỗi 3 giờ'),
+                    child: AppText.regular(
+                      context.tr(LocaleKeys.water_reminder_interval_3h),
+                    ),
                   ),
                   DropdownMenuItem(
                     value: 4,
-                    child: AppText.regular('Mỗi 4 giờ'),
+                    child: AppText.regular(
+                      context.tr(LocaleKeys.water_reminder_interval_4h),
+                    ),
                   ),
                 ],
                 onChanged: (val) {
@@ -355,7 +367,7 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
               16.gap,
 
               AppText.medium(
-                'Khung giờ nhắc nhở',
+                context.tr(LocaleKeys.water_reminder_schedule_range),
                 fontSize: 12,
                 color: UIColors.textBody,
               ),
@@ -366,7 +378,7 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
                 children: [
                   Expanded(
                     child: _buildTimePicker(
-                      label: 'Bắt đầu',
+                      label: context.tr(LocaleKeys.water_reminder_start_time),
                       time: _startTime,
                       icon: Icons.wb_sunny_outlined,
                       onTap: () => _selectTime(true),
@@ -375,7 +387,7 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
                   10.gap,
                   Expanded(
                     child: _buildTimePicker(
-                      label: 'Kết thúc',
+                      label: context.tr(LocaleKeys.water_reminder_end_time),
                       time: _endTime,
                       icon: Icons.nightlight_outlined,
                       onTap: () => _selectTime(false),
@@ -394,7 +406,7 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
             Expanded(
               child: AppButton.outline(
                 onTap: () => Navigator.of(context).pop(),
-                title: 'Hủy',
+                title: context.tr(LocaleKeys.water_reminder_cancel),
                 height: 44,
               ),
             ),
@@ -415,7 +427,7 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
 
                   Navigator.of(context).pop();
                 },
-                title: 'Lưu cài đặt',
+                title: context.tr(LocaleKeys.water_reminder_save),
                 color: _primaryColor,
                 height: 44,
               ),

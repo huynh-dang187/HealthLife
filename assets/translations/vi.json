@@ -179,6 +179,23 @@
   "water_reminder_notification_body": "Hãy bổ sung nước ngay để giữ cơ thể khỏe mạnh và tỉnh táo nhé!",
   "water_reminder_test_notification_title": "Thông báo thử nghiệm 💧",
   "water_reminder_test_notification_body": "Nếu bạn thấy thông báo này nghĩa là tính năng đã hoạt động!",
+  "water_reminder_settings_subtitle": "Thiết lập mục tiêu và lịch uống nước",
+  "water_reminder_goal_label": "Lượng nước mục tiêu",
+  "water_reminder_enabled_sub": "Đang bật lịch nhắc nhở",
+  "water_reminder_disabled_sub": "Thông báo đang tắt",
+  "water_reminder_schedule": "Lịch nhắc nhở",
+  "water_reminder_schedule_range": "Khung giờ nhắc nhở",
+  "water_reminder_quick_add_sub": "Chọn lượng nước bạn vừa uống",
+  "water_reminder_delete_title": "Xác nhận xóa",
+  "water_reminder_delete_confirm": "Bạn có chắc chắn muốn xóa bản ghi {amount} ml này không?",
+  "water_reminder_delete": "Xóa",
+  "water_reminder_channel_desc": "Thông báo nhắc nhở uống nước định kỳ",
+  "water_reminder_load_error": "Không thể tải dữ liệu: {error}",
+  "water_reminder_add_error": "Lỗi khi thêm lượng nước: {error}",
+  "water_reminder_delete_error": "Lỗi khi xóa nhật ký: {error}",
+  "water_reminder_goal_error": "Lỗi khi cập nhật mục tiêu: {error}",
+  "water_reminder_settings_error": "Lỗi khi cài đặt nhắc nhở: {error}",
+  "water_reminder_schedule_error": "Lỗi khi cập nhật lịch nhắc: {error}",
 
   "complete_profile_name_title": "Nhập tên của bạn",
   "complete_profile_name_hint": "Nhập tên của bạn",
@@ -384,5 +401,10 @@
   "sos_time": "Thời gian",
   "sos_stop_alarm": "TẮT CÒI BÁO ĐỘNG",
   "sos_call_family": "GỌI NGƯỜI THÂN",
-  "sos_view_location": "XEM VỊ TRÍ"
+  "sos_view_location": "XEM VỊ TRÍ",
+
+  "tab_home": "Trang chủ",
+  "tab_activity": "Hoạt động",
+  "tab_nutrition": "Dinh dưỡng",
+  "tab_utilities": "Tiện ích"
 }

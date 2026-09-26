@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 
 import '../../../../common/constants/colors.dart';
 import '../../../../common/extensions/num_x.dart';
@@ -84,23 +86,35 @@ class WaterLogTile extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (dialogCtx) => AlertDialog(
-                  title: AppText.bold('Xác nhận xóa', fontSize: 18),
+                  title: AppText.bold(
+                    context.tr(LocaleKeys.water_reminder_delete_title),
+                    fontSize: 18,
+                  ),
                   content: AppText.regular(
-                    'Bạn có chắc chắn muốn xóa bản ghi ${log.amount} ml này không?',
+                    context.tr(
+                      LocaleKeys.water_reminder_delete_confirm,
+                      namedArgs: {'amount': '${log.amount}'},
+                    ),
                     fontSize: 14,
                     maxLines: 4,
                   ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(dialogCtx).pop(),
-                      child: AppText.medium('Hủy', color: UIColors.textBody),
+                      child: AppText.medium(
+                        context.tr(LocaleKeys.water_reminder_cancel),
+                        color: UIColors.textBody,
+                      ),
                     ),
                     TextButton(
                       onPressed: () {
                         Navigator.of(dialogCtx).pop();
                         onDelete();
                       },
-                      child: AppText.bold('Xóa', color: UIColors.error),
+                      child: AppText.bold(
+                        context.tr(LocaleKeys.water_reminder_delete),
+                        color: UIColors.error,
+                      ),
                     ),
                   ],
                 ),

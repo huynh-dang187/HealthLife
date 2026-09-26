@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import '../../data/models/water_settings_model.dart';
 import '../../data/repositories/water_repository.dart';
 import '../../services/water_notification_service.dart';
@@ -36,7 +38,9 @@ class WaterCubit extends Cubit<WaterState> {
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,
-        errorMessage: 'Không thể tải dữ liệu: ${e.toString()}',
+        errorMessage: LocaleKeys.water_reminder_load_error.tr(
+          namedArgs: {'error': e.toString()},
+        ),
       ));
     }
   }
@@ -62,7 +66,9 @@ class WaterCubit extends Cubit<WaterState> {
       }
     } catch (e) {
       emit(state.copyWith(
-        errorMessage: 'Lỗi khi thêm lượng nước: ${e.toString()}',
+        errorMessage: LocaleKeys.water_reminder_add_error.tr(
+          namedArgs: {'error': e.toString()},
+        ),
       ));
     }
   }
@@ -82,7 +88,9 @@ class WaterCubit extends Cubit<WaterState> {
       _syncNotificationSchedule(settings: state.settings, intake: currentIntake);
     } catch (e) {
       emit(state.copyWith(
-        errorMessage: 'Lỗi khi xóa nhật ký: ${e.toString()}',
+        errorMessage: LocaleKeys.water_reminder_delete_error.tr(
+          namedArgs: {'error': e.toString()},
+        ),
       ));
     }
   }
@@ -102,7 +110,9 @@ class WaterCubit extends Cubit<WaterState> {
       _syncNotificationSchedule(settings: updatedSettings, intake: state.currentIntake);
     } catch (e) {
       emit(state.copyWith(
-        errorMessage: 'Lỗi khi cập nhật mục tiêu: ${e.toString()}',
+        errorMessage: LocaleKeys.water_reminder_goal_error.tr(
+          namedArgs: {'error': e.toString()},
+        ),
       ));
     }
   }
@@ -118,7 +128,9 @@ class WaterCubit extends Cubit<WaterState> {
       _syncNotificationSchedule(settings: updatedSettings, intake: state.currentIntake);
     } catch (e) {
       emit(state.copyWith(
-        errorMessage: 'Lỗi khi cài đặt nhắc nhở: ${e.toString()}',
+        errorMessage: LocaleKeys.water_reminder_settings_error.tr(
+          namedArgs: {'error': e.toString()},
+        ),
       ));
     }
   }
@@ -142,7 +154,9 @@ class WaterCubit extends Cubit<WaterState> {
       _syncNotificationSchedule(settings: updatedSettings, intake: state.currentIntake);
     } catch (e) {
       emit(state.copyWith(
-        errorMessage: 'Lỗi khi cập nhật lịch nhắc: ${e.toString()}',
+        errorMessage: LocaleKeys.water_reminder_schedule_error.tr(
+          namedArgs: {'error': e.toString()},
+        ),
       ));
     }
   }

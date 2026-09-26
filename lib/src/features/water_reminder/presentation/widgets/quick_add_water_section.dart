@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 
 import '../../../../common/constants/colors.dart';
 import '../../../../common/extensions/num_x.dart';
@@ -62,13 +64,13 @@ class QuickAddWaterSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppText.bold(
-                      'Thêm nhanh lượng nước',
+                      context.tr(LocaleKeys.water_reminder_quick_add),
                       fontSize: 16,
                       color: UIColors.text,
                     ),
                     2.gap,
                     AppText.regular(
-                      'Chọn lượng nước bạn vừa uống',
+                      context.tr(LocaleKeys.water_reminder_quick_add_sub),
                       fontSize: 11,
                       color: UIColors.textBody,
                     ),
@@ -181,7 +183,7 @@ class QuickAddWaterSection extends StatelessWidget {
               ),
               5.gap,
               AppText.semiBold(
-                'Tùy chỉnh',
+                context.tr(LocaleKeys.water_reminder_custom),
                 fontSize: 13,
                 color: Colors.white,
               ),
