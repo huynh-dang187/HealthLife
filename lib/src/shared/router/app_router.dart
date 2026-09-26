@@ -22,9 +22,6 @@ import 'package:healthlife/src/features/hospital_finder/presentation/page/hospit
 import 'package:healthlife/src/features/introduction/presentation/page/introduction_screen.dart';
 import 'package:healthlife/src/features/medicine_search/presentation/cubit/medicine_search_cubit.dart';
 import 'package:healthlife/src/features/medicine_search/presentation/page/medicine_search_page.dart';
-import 'package:healthlife/src/features/nutrition/data/datasources/nutrition_remote_data_source.dart';
-import 'package:healthlife/src/features/nutrition/data/repositories/nutrition_repository.dart';
-import 'package:healthlife/src/features/nutrition/presentation/cubit/foodSearch/food_search_cubit.dart';
 import 'package:healthlife/src/features/nutrition/presentation/pages/food_search_screen.dart';
 import 'package:healthlife/src/features/nutrition/presentation/pages/nutrition_dashboard_screen.dart';
 import 'package:healthlife/src/features/profile/presentation/pages/profile_screen.dart';
@@ -165,14 +162,7 @@ class AppRouter {
       ),
       _route(
         RouteNames.nutrition_food_search,
-        (_) => BlocProvider(
-          create: (context) => FoodSearchCubit(
-            NutritionRepository(
-              NutritionRemoteDataSource(),
-            ),
-          ),
-          child: const FoodSearchScreen(),
-        ),
+        (_) => const FoodSearchScreen(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
