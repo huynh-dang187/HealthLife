@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
@@ -40,7 +41,7 @@ class GenderOption extends StatelessWidget {
             image,
             11.gap,
             AppText.bold(
-              gender.label,
+              context.tr(gender.labelKey),
               fontSize: 26,
             ),
           ],

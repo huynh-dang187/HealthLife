@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../common/constants/colors.dart';
 import '../../../../common/extensions/num_x.dart';
 import '../../../../core/presentation/widgets/text.dart';
@@ -15,82 +16,174 @@ class QuickAddWaterSection extends StatelessWidget {
 
   static const List<int> defaultAmounts = [100, 150, 200, 300, 400];
 
+  static const _primaryColor = Color(0xFF0288D1);
+  static const _waterColor = Color(0xFFE3F5FC);
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AppText.bold(
-          'Thêm nhanh lượng nước',
-          fontSize: 16,
-          color: UIColors.text,
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: const Color(0xFFE0EEF4),
         ),
-        12.gap,
-        Wrap(
-          spacing: 10,
-          runSpacing: 10,
-          children: [
-            ...defaultAmounts.map((amount) {
-              return _buildQuickAddChip(
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF0288D1).withValues(alpha: 0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: _waterColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.water_drop_rounded,
+                  color: _primaryColor,
+                  size: 21,
+                ),
+              ),
+              10.gap,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppText.bold(
+                      'Thêm nhanh lượng nước',
+                      fontSize: 16,
+                      color: UIColors.text,
+                    ),
+                    2.gap,
+                    AppText.regular(
+                      'Chọn lượng nước bạn vừa uống',
+                      fontSize: 11,
+                      color: UIColors.textBody,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          16.gap,
+
+          // Quick add buttons
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              ...defaultAmounts.map(
+                (amount) => _buildQuickAddButton(
+                  context,
+                  amount: amount,
+                  onTap: () => onAddWater(amount),
+                ),
+              ),
+              _buildCustomButton(
                 context,
-                label: '+$amount ml',
-                icon: Icons.local_drink,
-                onTap: () => onAddWater(amount),
-              );
-            }),
-            _buildQuickAddChip(
-              context,
-              label: 'Tùy chỉnh',
-              icon: Icons.tune,
-              isCustom: true,
-              onTap: onCustomTap,
-            ),
-          ],
-        ),
-      ],
+                onTap: onCustomTap,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildQuickAddChip(
+  Widget _buildQuickAddButton(
     BuildContext context, {
-    required String label,
-    required IconData icon,
+    required int amount,
     required VoidCallback onTap,
-    bool isCustom = false,
   }) {
-    final theme = Theme.of(context);
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 13,
+            vertical: 10,
+          ),
           decoration: BoxDecoration(
-            color: isCustom
-                ? theme.primaryColor.withValues(alpha: 0.1)
-                : const Color(0xFFE0F7FA),
-            borderRadius: BorderRadius.circular(16),
+            color: _waterColor,
+            borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: isCustom
-                  ? theme.primaryColor.withValues(alpha: 0.4)
-                  : const Color(0xFF80DEEA),
-              width: 1,
+              color: const Color(0xFFB8E4F2),
             ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                icon,
-                size: 18,
-                color: isCustom ? theme.primaryColor : const Color(0xFF0083B0),
+              const Icon(
+                Icons.add_rounded,
+                size: 17,
+                color: _primaryColor,
               ),
-              6.gap,
+              3.gap,
               AppText.semiBold(
-                label,
-                fontSize: 14,
-                color: isCustom ? theme.primaryColor : const Color(0xFF006064),
+                '$amount ml',
+                fontSize: 13,
+                color: const Color(0xFF006B96),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCustomButton(
+    BuildContext context, {
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 13,
+            vertical: 10,
+          ),
+          decoration: BoxDecoration(
+            color: _primaryColor,
+            borderRadius: BorderRadius.circular(14),
+            boxShadow: [
+              BoxShadow(
+                color: _primaryColor.withValues(alpha: 0.2),
+                blurRadius: 6,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.tune_rounded,
+                size: 17,
+                color: Colors.white,
+              ),
+              5.gap,
+              AppText.semiBold(
+                'Tùy chỉnh',
+                fontSize: 13,
+                color: Colors.white,
               ),
             ],
           ),

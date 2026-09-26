@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +15,7 @@ import 'package:healthlife/src/features/complete_profile/data/repositories/profi
 import 'package:healthlife/src/features/complete_profile/presentation/cubit/profile_name/profile_name_cubit.dart';
 import 'package:healthlife/src/features/complete_profile/presentation/cubit/profile_name/profile_name_state.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 
 class ProfileName extends StatelessWidget {
   const ProfileName({super.key});
@@ -29,7 +31,7 @@ class ProfileName extends StatelessWidget {
           final cubit = context.read<ProfileNameCubit>();
           return Scaffold(
             appBar: AppAppBar(
-              title: "Nhập tên của bạn",
+              title: context.tr(LocaleKeys.complete_profile_name_title),
               centerTitle: true,
               onBack: () {
                 context.pop();
@@ -46,13 +48,17 @@ class ProfileName extends StatelessWidget {
                         children: [
                           Center(
                             child: AppText.bold(
-                              "Bạn muốn HLife gọi bạn là gì?",
+                              context.tr(
+                                LocaleKeys.complete_profile_name_question,
+                              ),
                             ),
                           ),
                           17.gap,
                           AppTF.common(
                             controller: nameController,
-                            hintText: "Nhập tên của bạn",
+                            hintText: context.tr(
+                              LocaleKeys.complete_profile_name_hint,
+                            ),
                             rightWidget: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: InkWell(
@@ -72,9 +78,12 @@ class ProfileName extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(bottom: context.bottomPadding),
                     child: AppButton.fill(
-                      title: "Tiếp theo",
+                      title: context.tr(LocaleKeys.complete_profile_action_next),
                       onTap: () async {
-                        AppLoadingScreen.show(context, message: "Đang lưu...");
+                        AppLoadingScreen.show(
+                          context,
+                          message: context.tr(LocaleKeys.complete_profile_saving),
+                        );
                         final ok = await cubit.saveName(state.changeName);
                         if (!context.mounted) return;
                         Navigator.of(context).pop();
@@ -83,8 +92,12 @@ class ProfileName extends StatelessWidget {
                           context.push(RouteNames.profile_gender);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Lưu thất bại, thử lại"),
+                            SnackBar(
+                              content: Text(
+                                context.tr(
+                                  LocaleKeys.complete_profile_save_failed,
+                                ),
+                              ),
                             ),
                           );
                         }

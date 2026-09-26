@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../common/constants/colors.dart';
 import '../../../../common/extensions/num_x.dart';
 import '../../../../core/presentation/widgets/text.dart';
@@ -87,6 +88,7 @@ class WaterLogTile extends StatelessWidget {
                   content: AppText.regular(
                     'Bạn có chắc chắn muốn xóa bản ghi ${log.amount} ml này không?',
                     fontSize: 14,
+                    maxLines: 4,
                   ),
                   actions: [
                     TextButton(

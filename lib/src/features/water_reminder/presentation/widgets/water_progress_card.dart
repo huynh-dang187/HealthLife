@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../common/constants/colors.dart';
 import '../../../../common/extensions/num_x.dart';
 import '../../../../core/presentation/widgets/text.dart';
@@ -130,12 +131,15 @@ class WaterProgressCard extends StatelessWidget {
                   size: 18,
                 ),
                 8.gap,
-                AppText.semiBold(
-                  isGoalReached
-                      ? 'Tuyệt vời! Bạn đã hoàn thành mục tiêu 🎉'
-                      : 'Còn thiếu $remaining ml nữa để đạt mục tiêu',
-                  color: UIColors.white,
-                  fontSize: 13,
+                Expanded(
+                  child: AppText.semiBold(
+                    isGoalReached
+                        ? 'Tuyệt vời! Bạn đã hoàn thành mục tiêu 🎉'
+                        : 'Còn thiếu $remaining ml nữa để đạt mục tiêu',
+                    color: UIColors.white,
+                    fontSize: 13,
+                    maxLines: 10,
+                  ),
                 ),
               ],
             ),
