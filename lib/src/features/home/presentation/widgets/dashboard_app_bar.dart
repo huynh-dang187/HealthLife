@@ -48,12 +48,10 @@ class _RoundAction extends StatelessWidget {
   const _RoundAction({
     required this.icon,
     required this.onTap,
-    this.hasDot = false,
   });
 
   final Widget icon;
   final VoidCallback onTap;
-  final bool hasDot;
 
   @override
   Widget build(BuildContext context) {

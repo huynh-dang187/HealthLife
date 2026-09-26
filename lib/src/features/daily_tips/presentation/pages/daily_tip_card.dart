@@ -50,7 +50,7 @@ class DailyTipCard extends StatelessWidget {
                       state.displayTip,
                       fontSize: 13,
                       color: UIColors.text,
-                      maxLines: 3,
+                      maxLines: 10,
                     ),
                   ],
                 ),
@@ -65,7 +65,10 @@ class DailyTipCard extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 child: emoji != null
-                    ? Text(emoji, style: const TextStyle(fontSize: 20))
+                    ? AppText.bold(
+                        emoji,
+                        fontSize: 20,
+                      )
                     : Icon(
                         Icons.medical_services_outlined,
                         size: 20,
