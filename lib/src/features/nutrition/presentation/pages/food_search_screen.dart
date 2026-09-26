@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/generated/assets.gen.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
@@ -45,7 +47,10 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: UIColors.lightBackground,
-      appBar: AppAppBar(title: 'Tìm thực phẩm', centerTitle: true),
+      appBar: AppAppBar(
+        title: context.tr(LocaleKeys.nutrition_search_title),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -54,7 +59,7 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
               child: AppTF.common(
                 controller: _searchController,
                 autofocus: true,
-                hintText: 'Nhập tên món ăn, nguyên liệu...',
+                hintText: context.tr(LocaleKeys.nutrition_search_hint),
                 bgColor: UIColors.lightGray,
                 borderCicular: 14,
                 leftWidget: Assets.svg.iconSearch.svg(
@@ -74,7 +79,9 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
                 builder: (context, state) {
                   if (state.query.trim().isEmpty) {
                     return Center(
-                      child: AppText.italic('Nhập từ khóa để tìm kiếm món ăn'),
+                      child: AppText.italic(
+                        context.tr(LocaleKeys.nutrition_search_prompt),
+                      ),
                     );
                   }
                   if (state.status == BlocStatus.loading) {
@@ -84,12 +91,16 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> {
                   }
                   if (state.status == BlocStatus.failure) {
                     return Center(
-                      child: NoData(title: 'Tìm kiếm gặp sự cố, thử lại sau'),
+                      child: NoData(
+                        title: context.tr(LocaleKeys.nutrition_search_failed),
+                      ),
                     );
                   }
                   if (state.results.isEmpty) {
                     return Center(
-                      child: NoData(title: 'Không tìm thấy món ăn nào'),
+                      child: NoData(
+                        title: context.tr(LocaleKeys.nutrition_search_empty),
+                      ),
                     );
                   }
 

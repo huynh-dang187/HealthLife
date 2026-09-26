@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../../generated/assets.gen.dart';
@@ -53,15 +55,15 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final String name = widget.medicine['name'] ?? 'Chưa có tên';
+    final String name = widget.medicine['name'] ?? context.tr(LocaleKeys.no_name);
     final String imageUrl = (widget.medicine['image_url'] ?? '').toString().trim();
-    final String category = widget.medicine['category'] ?? 'Chưa phân loại';
-    final String priceText = widget.medicine['price_text'] ?? 'Đang cập nhật';
+    final String category = widget.medicine['category'] ?? context.tr(LocaleKeys.medicine_detail_category_fallback);
+    final String priceText = widget.medicine['price_text'] ?? context.tr(LocaleKeys.updating);
 
-    final String mainEffect = widget.medicine['main_effect'] ?? 'Đang cập nhật thông tin tác dụng chính.';
-    final String usage = widget.medicine['usage_instructions'] ?? 'Đang cập nhật hướng dẫn sử dụng.';
-    final String contraindications = widget.medicine['contraindications'] ?? 'Đang cập nhật chống chỉ định.';
-    final String notes = widget.medicine['notes'] ?? 'Đang cập nhật lưu ý khi dùng.';
+    final String mainEffect = widget.medicine['main_effect'] ?? context.tr(LocaleKeys.medicine_detail_effect_fallback);
+    final String usage = widget.medicine['usage_instructions'] ?? context.tr(LocaleKeys.medicine_detail_usage_fallback);
+    final String contraindications = widget.medicine['contraindications'] ?? context.tr(LocaleKeys.medicine_detail_contraindications_fallback);
+    final String notes = widget.medicine['notes'] ?? context.tr(LocaleKeys.medicine_detail_notes_fallback);
 
     return Scaffold(
       backgroundColor: UIColors.white,
@@ -84,7 +86,7 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
                   ),
                   Expanded(
                     child: AppText.bold(
-                      'Chi tiết thuốc',
+                      context.tr(LocaleKeys.medicine_detail_title),
                       textAlign: TextAlign.center,
                       fontSize: 22,
                       color: Colors.black,
@@ -147,7 +149,10 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: AppText.bold(
-                        'LOẠI THUỐC: $category',
+                        context.tr(
+                          LocaleKeys.medicine_detail_category,
+                          namedArgs: {'category': category},
+                        ),
                         fontSize: 12,
                         color: Colors.black87,
                       ),
@@ -176,15 +181,28 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
               ),
               20.gap,
 
-              _buildExpandableCard('Mô tả', mainEffect, defaultExpanded: true),
-              _buildExpandableCard('Liều dùng, cách dùng', usage),
-              _buildExpandableCard('Chống chỉ định', contraindications),
-              _buildExpandableCard('Lưu ý', notes),
+              _buildExpandableCard(
+                context.tr(LocaleKeys.medicine_detail_description),
+                mainEffect,
+                defaultExpanded: true,
+              ),
+              _buildExpandableCard(
+                context.tr(LocaleKeys.medicine_detail_usage_title),
+                usage,
+              ),
+              _buildExpandableCard(
+                context.tr(LocaleKeys.medicine_detail_contraindications_title),
+                contraindications,
+              ),
+              _buildExpandableCard(
+                context.tr(LocaleKeys.medicine_detail_notes_title),
+                notes,
+              ),
 
               24.gap,
 
               AppText.bold(
-                'SẢN PHẨM CÙNG LOẠI',
+                context.tr(LocaleKeys.medicine_detail_related_title),
                 fontSize: 15,
               ),
               12.gap,
@@ -192,7 +210,10 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
               if (_isLoadingRelated)
                 const Center(child: CircularProgressIndicator(color: Color(0xFFE5B8B7)))
               else if (_relatedMedicines.isEmpty)
-                const Text('Không có sản phẩm cùng loại', style: TextStyle(color: Colors.grey, fontSize: 13))
+                Text(
+                  context.tr(LocaleKeys.medicine_detail_related_empty),
+                  style: const TextStyle(color: Colors.grey, fontSize: 13),
+                )
               else
                 SizedBox(
                   height: 120,

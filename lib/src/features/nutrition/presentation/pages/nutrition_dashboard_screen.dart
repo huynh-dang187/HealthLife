@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
@@ -8,7 +10,6 @@ import 'package:healthlife/src/core/presentation/widgets/button.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
-import 'package:intl/intl.dart';
 
 import '../../data/datasources/nutrition_remote_data_source.dart';
 import '../../data/model/meal_log_model.dart';
@@ -61,7 +62,7 @@ class _DashboardScreenViewState extends State<_DashboardScreenView> {
         await context.read<NutritionDashboardCubit>().reload();
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Đã thêm vào nhật ký')),
+          SnackBar(content: Text(context.tr(LocaleKeys.nutrition_added_success))),
         );
       }
     } else if (method == AddFoodMethod.scan) {
@@ -82,8 +83,12 @@ class _DashboardScreenViewState extends State<_DashboardScreenView> {
       await context.read<NutritionDashboardCubit>().deleteLog(log);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Đã xoá bữa ăn khỏi nhật ký')),
-      );
+          SnackBar(
+            content: Text(
+              context.tr(LocaleKeys.nutrition_deleted_success),
+            ),
+          ),
+        );
     }
   }
 
@@ -92,7 +97,7 @@ class _DashboardScreenViewState extends State<_DashboardScreenView> {
     return Scaffold(
       backgroundColor: UIColors.lightBackground,
       appBar: AppAppBar(
-        title: 'Dinh dưỡng',
+        title: context.tr(LocaleKeys.nutrition_title),
         centerTitle: true,
         leftBtn: const SizedBox(width: 16),
       ),
@@ -117,7 +122,7 @@ class _DashboardScreenViewState extends State<_DashboardScreenView> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     AppText.regular(
-                      'Không tải được dữ liệu',
+                      context.tr(LocaleKeys.nutrition_load_failed),
                       color: UIColors.textBody,
                     ),
                     if (state.error != null) ...[
@@ -133,7 +138,7 @@ class _DashboardScreenViewState extends State<_DashboardScreenView> {
                     ],
                     12.gap,
                     AppButton.outline(
-                      title: 'Thử lại',
+                      title: context.tr(LocaleKeys.nutrition_retry),
                       onTap: () =>
                           context.read<NutritionDashboardCubit>().load(),
                     ),
@@ -172,7 +177,7 @@ class _DashboardScreenViewState extends State<_DashboardScreenView> {
                         icon: Icons.egg_alt_outlined,
                         color: UIColors.pink,
                         bg: UIColors.pinkLight,
-                        label: 'Chất đạm',
+                        label: context.tr(LocaleKeys.nutrition_protein),
                         value:
                             '${state.consumed.protein.round()}/${targets.protein.round()}g',
                         percent: state.consumedProteinPercent,
@@ -196,7 +201,7 @@ class _DashboardScreenViewState extends State<_DashboardScreenView> {
                         icon: Icons.water_drop_outlined,
                         color: const Color(0xFFE9A13B),
                         bg: const Color(0xFFFFF3E0),
-                        label: 'Chất béo',
+                        label: context.tr(LocaleKeys.nutrition_fat),
                         value:
                             '${state.consumed.fat.round()}/${targets.fat.round()}g',
                         percent: state.consumedFatPercent,
@@ -209,7 +214,7 @@ class _DashboardScreenViewState extends State<_DashboardScreenView> {
                 20.gap,
                 Row(
                   children: [
-                    AppText.bold('Nhật ký ăn', fontSize: 16),
+                    AppText.bold(context.tr(LocaleKeys.nutrition_food_log), fontSize: 16),
                     const Spacer(),
                     GestureDetector(
                       onTap: _onAddFood,
@@ -231,7 +236,7 @@ class _DashboardScreenViewState extends State<_DashboardScreenView> {
                             ),
                             6.gap,
                             AppText.semiBold(
-                              'Thêm thực phẩm',
+                              context.tr(LocaleKeys.nutrition_add_food),
                               fontSize: 13,
                               color: UIColors.white,
                             ),
@@ -245,7 +250,7 @@ class _DashboardScreenViewState extends State<_DashboardScreenView> {
                 if (state.logs.isEmpty)
                   Center(
                     child: AppText.italic(
-                      'Chưa có bữa ăn nào trong khoảng thời gian này',
+                      context.tr(LocaleKeys.nutrition_no_meal),
                     ),
                   )
                 else
@@ -311,7 +316,7 @@ class _SummaryCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: _MiniStat(
-                        label: 'Mục tiêu',
+                        label: context.tr(LocaleKeys.nutrition_goal),
                         value: '${goalCalo.round()}',
                         unit: 'kcal',
                       ),
@@ -319,7 +324,7 @@ class _SummaryCard extends StatelessWidget {
                     8.gap,
                     Expanded(
                       child: _MiniStat(
-                        label: 'Đã nạp',
+                        label: context.tr(LocaleKeys.nutrition_consumed_short),
                         value: '${percent.round()}',
                         unit: '%',
                       ),
@@ -402,7 +407,7 @@ class _AllValuesCard extends StatelessWidget {
         iconColor: UIColors.pink,
         collapsedIconColor: UIColors.textBody,
         title: AppText.medium(
-          'Xem tất cả các giá trị dinh dưỡng',
+          context.tr(LocaleKeys.nutrition_all_values),
           fontSize: 13,
         ),
         children: [
@@ -411,12 +416,12 @@ class _AllValuesCard extends StatelessWidget {
             runSpacing: 8,
             children: [
               _ValueChip(
-                label: 'Calo',
+                label: context.tr(LocaleKeys.nutrition_calo),
                 value:
                     '${state.consumed.calo.round()}/${targets.calo.round()} kcal',
               ),
               _ValueChip(
-                label: 'Chất đạm',
+                label: context.tr(LocaleKeys.nutrition_protein),
                 value:
                     '${state.consumed.protein.round()}/${targets.protein.round()}g',
               ),
@@ -426,11 +431,11 @@ class _AllValuesCard extends StatelessWidget {
                     '${state.consumed.carb.round()}/${targets.carb.round()}g',
               ),
               _ValueChip(
-                label: 'Chất béo',
+                label: context.tr(LocaleKeys.nutrition_fat),
                 value: '${state.consumed.fat.round()}/${targets.fat.round()}g',
               ),
               _ValueChip(
-                label: 'Chất xơ',
+                label: context.tr(LocaleKeys.nutrition_fiber),
                 value:
                     '${state.consumed.fiber.round()}/${targets.fiber.round()}g',
               ),
@@ -492,7 +497,7 @@ class _LogDetailSheet extends StatelessWidget {
             ),
           ),
           20.gap,
-          AppText.bold('Chi tiết bữa ăn', fontSize: 16),
+          AppText.bold(context.tr(LocaleKeys.nutrition_meal_detail), fontSize: 16),
           16.gap,
           Container(
             width: double.infinity,
@@ -517,10 +522,19 @@ class _LogDetailSheet extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _ValueCell('Đạm', '${log.protein.round()}g'),
+                    _ValueCell(
+                    context.tr(LocaleKeys.nutrition_protein_short),
+                    '${log.protein.round()}g',
+                  ),
                     _ValueCell('Carbs', '${log.carb.round()}g'),
-                    _ValueCell('Chất béo', '${log.fat.round()}g'),
-                    _ValueCell('Chất xơ', '${log.fiber.round()}g'),
+                    _ValueCell(
+                      context.tr(LocaleKeys.nutrition_fat),
+                      '${log.fat.round()}g',
+                    ),
+                    _ValueCell(
+                      context.tr(LocaleKeys.nutrition_fiber),
+                      '${log.fiber.round()}g',
+                    ),
                   ],
                 ),
               ],
@@ -528,7 +542,7 @@ class _LogDetailSheet extends StatelessWidget {
           ),
           20.gap,
           AppButton.outline(
-            title: 'Xoá khỏi nhật ký',
+            title: context.tr(LocaleKeys.nutrition_remove_from_log),
             height: 48,
             onTap: () => Navigator.pop(context, true),
           ),
