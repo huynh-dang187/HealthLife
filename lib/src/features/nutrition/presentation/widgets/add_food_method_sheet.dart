@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/generated/assets.gen.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
@@ -51,10 +53,13 @@ class _AddFoodMethodSheet extends StatelessWidget {
             ),
           ),
           20.gap,
-          AppText.bold('Thêm thực phẩm bằng cách nào?', fontSize: 16),
+          AppText.bold(
+            context.tr(LocaleKeys.nutrition_add_method_title),
+            fontSize: 16,
+          ),
           4.gap,
           AppText.regular(
-            'Chọn cách bạn muốn ghi nhận bữa ăn vào nhật ký',
+            context.tr(LocaleKeys.nutrition_add_method_subtitle),
             fontSize: 12,
             color: UIColors.textBody,
           ),
@@ -63,8 +68,10 @@ class _AddFoodMethodSheet extends StatelessWidget {
             icon: Icons.search,
             color: UIColors.pink,
             bg: UIColors.pinkLight,
-            title: 'Tìm kiếm trong cơ sở dữ liệu',
-            subtitle: 'Tìm theo tên món ăn hoặc nguyên liệu',
+            title: context.tr(LocaleKeys.nutrition_add_method_search_title),
+            subtitle: context.tr(
+              LocaleKeys.nutrition_add_method_search_subtitle,
+            ),
             enabled: true,
             onTap: () => Navigator.pop(context, AddFoodMethod.search),
           ),
@@ -73,8 +80,8 @@ class _AddFoodMethodSheet extends StatelessWidget {
             icon: Icons.mic_none,
             color: UIColors.vibrantBlue,
             bg: const Color(0xFFEDF0FF),
-            title: 'Sử dụng giọng nói của bạn',
-            subtitle: 'Sắp ra mắt',
+            title: context.tr(LocaleKeys.nutrition_add_method_voice_title),
+            subtitle: context.tr(LocaleKeys.nutrition_coming_soon),
             enabled: false,
           ),
           12.gap,
@@ -82,8 +89,8 @@ class _AddFoodMethodSheet extends StatelessWidget {
             icon: Icons.document_scanner_outlined,
             color: UIColors.green,
             bg: const Color(0xFFE7F6EC),
-            title: 'Scan thức ăn với AI',
-            subtitle: 'Sắp ra mắt — nhóm AI phụ trách',
+            title: context.tr(LocaleKeys.nutrition_add_method_scan_title),
+            subtitle: context.tr(LocaleKeys.nutrition_add_method_scan_subtitle),
             enabled: true,
             onTap: () => Navigator.pop(context, AddFoodMethod.scan),
           ),

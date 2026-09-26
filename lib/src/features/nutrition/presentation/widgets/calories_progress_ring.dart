@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
@@ -45,7 +47,7 @@ class CaloriesProgressRing extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               AppText.medium(
-                'Đã nạp vào',
+                context.tr(LocaleKeys.nutrition_consumed),
                 fontSize: 11,
                 color: UIColors.textBody,
               ),

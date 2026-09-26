@@ -1,10 +1,11 @@
+import 'package:healthlife/generated/locale_keys.g.dart';
+
 enum Gender {
-  female('Nữ', 'female'),
-  male('Nam', 'male')
-  ;
+  female(LocaleKeys.complete_profile_gender_female, 'female'),
+  male(LocaleKeys.complete_profile_gender_male, 'male');
 
-  const Gender(this.label, this.value);
+  const Gender(this.labelKey, this.value);
 
-  final String label;
+  final String labelKey;
   final String value;
 }

@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
@@ -27,7 +29,7 @@ class HealthNewsScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => Navigator.of(context).maybePop(),
         ),
-        title: AppText.bold('Bảng tin sức khỏe', fontSize: 18),
+        title: AppText.bold(context.tr(LocaleKeys.health_news_title), fontSize: 18),
         centerTitle: true,
       ),
       body: BlocProvider(
@@ -55,7 +57,10 @@ class _NewsBody extends StatelessWidget {
         }
 
         if (state.status == BlocStatus.failure && state.news.isEmpty) {
-          return _ErrorView(message: state.message ?? 'Không thể tải tin tức');
+          return _ErrorView(
+            message: state.message ??
+                context.tr(LocaleKeys.health_news_load_failed),
+          );
         }
 
         // success (hoặc có dữ liệu cache)
@@ -141,7 +146,7 @@ class _ErrorView extends StatelessWidget {
             16.gap,
             AppButton.fill(
               onTap: () => context.read<HealthNewsCubit>().loadNews(),
-              title: 'Thử lại',
+              title: context.tr(LocaleKeys.health_news_retry),
               width: 120,
             ),
           ],
@@ -159,7 +164,7 @@ class _EmptyView extends StatelessWidget {
     final isDark = context.isDarkMode;
     return Center(
       child: AppText.regular(
-        'Chưa có bài viết nào',
+        context.tr(LocaleKeys.health_news_empty),
         fontSize: 14,
         color: isDark ? UIColors.darkTextSecondary : UIColors.textBody,
       ),

@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/features/signIn/data/models/country_codes_model.dart';
 import 'package:healthlife/src/features/signIn/data/repositories/auth_repository.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
@@ -69,7 +71,7 @@ class PhoneInputCubit extends Cubit<PhoneInputState> {
 
     final fullPhone = _normalize(current.country.dialCode, rawNumber);
     if (fullPhone.length < 10 || fullPhone.length > 14) {
-      emit(PhoneInputFailure('Số điện thoại không hợp lệ'));
+      emit(PhoneInputFailure(LocaleKeys.sign_in_invalid_phone.tr()));
       return;
     }
 

@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
@@ -40,7 +42,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
             final c = kCountryCodes[index];
             return ListTile(
               leading: Text(c.flagEmoji, style: const TextStyle(fontSize: 24)),
-              title: Text(c.name),
+              title: Text(context.tr(c.nameKey)),
               trailing: AppText.medium(c.dialCode, fontSize: 14),
               onTap: () => Navigator.of(context).pop(c),
             );
@@ -102,7 +104,10 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                 icon: const Icon(Icons.arrow_back_ios_new),
                 onPressed: () => Navigator.of(context).maybePop(),
               ),
-              title: AppText.bold('Nhập số điện thoại', fontSize: 18),
+              title: AppText.bold(
+                context.tr(LocaleKeys.sign_in_phone_title),
+                fontSize: 18,
+              ),
             ),
             body: Padding(
               padding: EdgeInsets.only(
@@ -114,10 +119,10 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   32.gap,
-                  AppText.bold('Số điện thoại của bạn', fontSize: 22),
+                  AppText.bold(context.tr(LocaleKeys.sign_in_phone_field_title), fontSize: 22),
                   8.gap,
                   AppText.regular(
-                    'Chúng tôi sẽ gửi mã xác nhận qua SMS',
+                    context.tr(LocaleKeys.sign_in_sms_hint),
                     fontSize: 13,
                     color: UIColors.textBody,
                   ),
@@ -142,7 +147,10 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                           ),
                           12.gap,
                           Expanded(
-                            child: AppText.medium(country.name, fontSize: 14),
+                            child: AppText.medium(
+                            context.tr(country.nameKey),
+                            fontSize: 14,
+                          ),
                           ),
                           AppText.medium(country.dialCode, fontSize: 14),
                           8.gap,
@@ -166,7 +174,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                     ],
                     decoration: InputDecoration(
                       prefixText: '${country.dialCode} ',
-                      hintText: 'Số điện thoại',
+                      hintText: context.tr(LocaleKeys.sign_in_phone_hint),
                       filled: true,
                       fillColor: UIColors.lightGray,
                       border: OutlineInputBorder(
@@ -185,7 +193,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                     onTap: () => context.read<PhoneInputCubit>().sendOtp(
                       _phoneController.text,
                     ),
-                    title: 'Gửi mã xác nhận',
+                    title: context.tr(LocaleKeys.sign_in_send_code),
                     height: 50,
                     width: double.infinity,
                     titleWidget: isSubmitting

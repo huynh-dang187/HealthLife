@@ -1,3 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
+
 class QuizQuestion {
   const QuizQuestion({
     required this.question,
@@ -26,7 +29,7 @@ class QuizQuestion {
       options: options,
       correctIndex: correctIndex,
       explanation: (json['explanation'] as String?) ?? '',
-      category: (json['category'] as String?) ?? 'Tổng quát',
+      category: (json['category'] as String?) ?? LocaleKeys.quiz_category_general.tr(),
     );
   }
 }

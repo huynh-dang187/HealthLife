@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import '../../../../common/constants/colors.dart';
 import '../../../../common/extensions/num_x.dart';
 import '../../../../core/presentation/widgets/button.dart';
@@ -54,7 +56,7 @@ class _CustomWaterDialogState extends State<CustomWaterDialog> {
           const Icon(Icons.water_drop, color: Color(0xFF0288D1)),
           8.gap,
           AppText.bold(
-            'Lượng nước tùy chỉnh',
+            context.tr(LocaleKeys.water_reminder_custom_amount),
             fontSize: 18,
             color: UIColors.text,
           ),
@@ -121,7 +123,7 @@ class _CustomWaterDialogState extends State<CustomWaterDialog> {
               width: 80,
               child: AppButton.outline(
                 onTap: () => Navigator.of(context).pop(),
-                title: 'Hủy',
+                title: context.tr(LocaleKeys.water_reminder_cancel),
                 height: 38,
               ),
             ),
@@ -135,7 +137,7 @@ class _CustomWaterDialogState extends State<CustomWaterDialog> {
                     Navigator.of(context).pop();
                   }
                 },
-                title: 'Thêm',
+                title: context.tr(LocaleKeys.water_reminder_add),
                 color: const Color(0xFF0288D1),
                 height: 38,
               ),

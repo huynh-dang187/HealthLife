@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
@@ -9,7 +10,7 @@ Future<void> showLanguageModal(BuildContext context) {
   return showGeneralDialog<void>(
     context: context,
     barrierDismissible: true,
-    barrierLabel: 'Chọn ngôn ngữ',
+    barrierLabel: context.tr(LocaleKeys.profile_language_select),
     barrierColor: UIColors.black.withValues(alpha: 0.5),
     transitionDuration: const Duration(milliseconds: 220),
     pageBuilder: (context, _, _) => const _LanguageModal(),
@@ -97,7 +98,7 @@ class _LanguageModalState extends State<_LanguageModal> {
               ),
               4.gap,
               AppText.semiBold(
-                'Chọn ngôn ngữ bạn muốn',
+                context.tr(LocaleKeys.profile_language_choose_title),
                 fontSize: 17,
                 color: UIColors.black,
               ),

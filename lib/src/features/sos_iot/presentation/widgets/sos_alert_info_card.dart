@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 
@@ -29,19 +31,19 @@ class SosAlertInfoCard extends StatelessWidget {
         children: [
           _InfoRow(
             icon: Icons.sensors,
-            label: 'Thiết bị',
+            label: context.tr(LocaleKeys.sos_device),
             value: deviceName,
           ),
           12.gap,
           _InfoRow(
             icon: Icons.battery_full,
-            label: 'Mức pin',
+            label: context.tr(LocaleKeys.sos_battery_level),
             value: '$batteryLevel%',
           ),
           12.gap,
           _InfoRow(
             icon: Icons.access_time,
-            label: 'Thời gian',
+            label: context.tr(LocaleKeys.sos_time),
             value: time,
           ),
         ],

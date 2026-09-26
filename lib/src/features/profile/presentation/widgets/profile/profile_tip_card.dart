@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
@@ -40,7 +42,7 @@ class ProfileTipCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppText.semiBold(
-                      'Mỗi ngày một lời khuyên',
+                      context.tr(LocaleKeys.daily_tip_title),
                       fontSize: 14,
                       color: UIColors.pink,
                     ),

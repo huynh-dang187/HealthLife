@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
+
 import '../../../../common/constants/colors.dart';
 import '../../../../common/extensions/num_x.dart';
 import '../../../../core/presentation/widgets/text.dart';
@@ -51,7 +54,7 @@ class WaterProgressCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppText.medium(
-                    'Lượng nước hôm nay',
+                    context.tr(LocaleKeys.water_reminder_today_intake),
                     color: UIColors.white.withValues(alpha: 0.8),
                     fontSize: 14,
                   ),
@@ -130,12 +133,18 @@ class WaterProgressCard extends StatelessWidget {
                   size: 18,
                 ),
                 8.gap,
-                AppText.semiBold(
-                  isGoalReached
-                      ? 'Tuyệt vời! Bạn đã hoàn thành mục tiêu 🎉'
-                      : 'Còn thiếu $remaining ml nữa để đạt mục tiêu',
-                  color: UIColors.white,
-                  fontSize: 13,
+                Expanded(
+                  child: AppText.semiBold(
+                    context.tr(
+                      isGoalReached
+                          ? LocaleKeys.water_reminder_goal_reached
+                          : LocaleKeys.water_reminder_remaining_goal,
+                      namedArgs: {'amount': '$remaining'},
+                    ),
+                    color: UIColors.white,
+                    fontSize: 13,
+                    maxLines: 10,
+                  ),
                 ),
               ],
             ),

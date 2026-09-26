@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -105,16 +106,16 @@ class WaterNotificationService {
       int notificationId = 1000;
       final now = DateTime.now();
 
-      const androidDetails = AndroidNotificationDetails(
+      final androidDetails = AndroidNotificationDetails(
         'water_reminder_channel',
-        'Nhắc nhở uống nước',
-        channelDescription: 'Thông báo nhắc nhở uống nước định kỳ',
+        LocaleKeys.water_reminder_title.tr(),
+        channelDescription: LocaleKeys.water_reminder_channel_desc.tr(),
         importance: Importance.max,
         priority: Priority.high,
         icon: '@mipmap/ic_launcher',
       );
 
-      const notificationDetails = NotificationDetails(
+      final notificationDetails = NotificationDetails(
         android: androidDetails,
         iOS: DarwinNotificationDetails(
           presentAlert: true,

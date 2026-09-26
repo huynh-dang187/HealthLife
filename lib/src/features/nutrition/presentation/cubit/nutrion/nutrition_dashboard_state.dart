@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 
 import '../../../../../shared/enums/bloc_status.dart';
 import '../../../data/model/daily_target_model.dart';
@@ -8,11 +10,11 @@ import '../../../data/model/meal_log_model.dart';
 enum NutritionPeriod { day, week, month, year }
 
 extension NutritionPeriodLabel on NutritionPeriod {
-  String get vn => switch (this) {
-    NutritionPeriod.day => 'Ngày',
-    NutritionPeriod.week => 'Tuần',
-    NutritionPeriod.month => 'Tháng',
-    NutritionPeriod.year => 'Năm',
+  String get label => switch (this) {
+    NutritionPeriod.day => LocaleKeys.nutrition_period_day.tr(),
+    NutritionPeriod.week => LocaleKeys.nutrition_period_week.tr(),
+    NutritionPeriod.month => LocaleKeys.nutrition_period_month.tr(),
+    NutritionPeriod.year => LocaleKeys.nutrition_period_year.tr(),
   };
 }
 

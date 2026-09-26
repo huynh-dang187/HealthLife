@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/common/extensions/context_x.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
@@ -28,7 +30,7 @@ class NewsDetailScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => Navigator.of(context).maybePop(),
         ),
-        title: AppText.bold('Chi tiết tin', fontSize: 18),
+        title: AppText.bold(context.tr(LocaleKeys.health_news_detail_title), fontSize: 18),
       ),
       body: Column(
         children: [
@@ -67,7 +69,7 @@ class NewsDetailScreen extends StatelessWidget {
                         // Nội dung
                         article.description.trim().isEmpty
                             ? AppText.regular(
-                                'Chưa có nội dung chi tiết cho bài viết này.',
+                                context.tr(LocaleKeys.health_news_no_detail),
                                 fontSize: 14,
                                 height: 1.5,
                                 color: isDark
@@ -97,7 +99,7 @@ class NewsDetailScreen extends StatelessWidget {
                 RouteNames.news_webview,
                 extra: article.link,
               ),
-              title: 'Mở bài gốc',
+              title: context.tr(LocaleKeys.health_news_open_source),
               height: 48,
               width: double.infinity,
             ),

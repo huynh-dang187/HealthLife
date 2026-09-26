@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/features/health_news/data/models/news_article_model.dart';
 import 'package:healthlife/src/features/health_news/data/repositories/rss_repository.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
@@ -72,7 +74,7 @@ class HealthNewsCubit extends Cubit<HealthNewsState> {
           state.copyWith(
             status: BlocStatus.success,
             news: cached,
-            message: 'Không thể tải tin mới. Đang hiển thị dữ liệu đã lưu.',
+            message: LocaleKeys.health_news_stale_message.tr(),
           ),
         );
       }

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 
@@ -34,7 +36,7 @@ class SosAlertActionButtons extends StatelessWidget {
               ),
             ),
             child: AppText.bold(
-              'TẮT CÒI BÁO ĐỘNG',
+              context.tr(LocaleKeys.sos_stop_alarm),
               fontSize: 17,
               color: Colors.red.shade900,
             ),
@@ -46,7 +48,7 @@ class SosAlertActionButtons extends StatelessWidget {
             Expanded(
               child: _SecondaryButton(
                 icon: Icons.phone,
-                label: 'GỌI NGƯỜI THÂN',
+                label: context.tr(LocaleKeys.sos_call_family),
                 onTap: onCall,
               ),
             ),
@@ -54,7 +56,7 @@ class SosAlertActionButtons extends StatelessWidget {
             Expanded(
               child: _SecondaryButton(
                 icon: Icons.map,
-                label: 'XEM VỊ TRÍ',
+                label: context.tr(LocaleKeys.sos_view_location),
                 onTap: onMap,
               ),
             ),
