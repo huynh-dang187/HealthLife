@@ -31,6 +31,9 @@ import 'package:healthlife/src/features/signIn/presentation/page/signIn_screen.d
 import 'package:healthlife/src/features/sos_iot/data/models/sos_alert_args.dart';
 import 'package:healthlife/src/features/sos_iot/data/services/sos_notification_service.dart';
 import 'package:healthlife/src/features/sos_iot/presentation/pages/sos_alert_page.dart';
+import 'package:healthlife/src/features/sos_iot/presentation/pages/sos_device_page.dart';
+import 'package:healthlife/src/features/sos_iot/presentation/pages/sos_manage_page.dart';
+import 'package:healthlife/src/features/sos_iot/presentation/pages/sos_pair_page.dart';
 import 'package:healthlife/src/features/splash/presentation/pages/splash_screen.dart';
 import 'package:healthlife/src/features/tab_bar/presentation/page/main_tab_screen.dart';
 import 'package:healthlife/src/features/water_reminder/presentation/pages/water_reminder_page.dart';
@@ -137,7 +140,16 @@ class AppRouter {
             NewsDetailScreen(article: state.extra as NewsArticleModel),
       ),
 
-      _route(RouteNames.sos_device, (_) => const SosAlertPage()),
+      _route(RouteNames.sos_device, (_) => const SosDevicePage()),
+      GoRoute(
+        path: RouteNames.sos_device_pair,
+        builder: (context, state) => const SosPairPage(),
+      ),
+      GoRoute(
+        path: RouteNames.sos_device_manage,
+        builder: (context, state) =>
+            SosManagePage(deviceId: state.extra as String),
+      ),
       GoRoute(
         path: RouteNames.sos_alert,
         builder: (context, state) {
