@@ -13,6 +13,8 @@ class RouteNames {
   static const profile_height = '/profile_height';
   static const profile_weight = '/profile_weight';
   static const sos_device = '/sos_device';
+  static const sos_device_pair = '/sos_device/pair';
+  static const sos_device_manage = '/sos_device/manage';
   static const sos_alert = '/sos_alert';
   static const drug_lookup = '/drug_lookup';
   static const hospitalFinder = '/hospital_finder';

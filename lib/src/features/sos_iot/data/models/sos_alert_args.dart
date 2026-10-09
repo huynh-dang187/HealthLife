@@ -1,6 +1,7 @@
 /// Tham số truyền vào màn hình báo động khẩn cấp SOS.
 class SosAlertArgs {
   const SosAlertArgs({
+    this.alertId,
     this.deviceName = 'Nút SOS Khẩn Cấp',
     this.batteryLevel = 100,
     this.triggeredAt,
@@ -8,6 +9,9 @@ class SosAlertArgs {
     this.latitude = 21.0285,
     this.longitude = 105.8542,
   });
+
+  /// ID bản ghi cảnh báo trong `sos_alerts` (dùng để xác nhận đã xử lý).
+  final String? alertId;
 
   /// Tên thiết bị gây báo động.
   final String deviceName;
@@ -29,6 +33,7 @@ class SosAlertArgs {
 
   /// Chuyển đổi thành Map để truyền qua payload của notification.
   Map<String, dynamic> toJson() => {
+    'alertId': alertId,
     'deviceName': deviceName,
     'batteryLevel': batteryLevel.toString(),
     'triggeredAt': triggeredAt?.toIso8601String(),
@@ -39,6 +44,7 @@ class SosAlertArgs {
 
   /// Parse từ payload JSON của local notification.
   static SosAlertArgs? fromJson(Map<String, dynamic> json) => SosAlertArgs(
+    alertId: json['alertId']?.toString(),
     deviceName: json['deviceName']?.toString() ?? 'Nút SOS Khẩn Cấp',
     batteryLevel: int.tryParse(json['batteryLevel']?.toString() ?? '') ?? 100,
     triggeredAt:
@@ -59,6 +65,7 @@ class SosAlertArgs {
     if (deviceId == null || deviceId.toString().isEmpty) return null;
 
     return SosAlertArgs(
+      alertId: data['alertId']?.toString(),
       deviceName: data['deviceName']?.toString() ?? 'Nút SOS Khẩn Cấp',
       batteryLevel: int.tryParse(data['batteryLevel']?.toString() ?? '') ?? 100,
       triggeredAt:
