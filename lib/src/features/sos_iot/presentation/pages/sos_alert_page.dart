@@ -6,6 +6,7 @@ import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 import 'package:healthlife/src/features/sos_iot/data/models/sos_alert_args.dart';
+import 'package:healthlife/src/features/sos_iot/data/repositories/sos_device_repository.dart';
 
 import '../cubit/sos_alert_cubit.dart';
 import '../cubit/sos_alert_state.dart';
@@ -27,7 +28,7 @@ class SosAlertPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SosAlertCubit(),
+      create: (_) => SosAlertCubit(SosDeviceRepository()),
       child: _SosAlertView(args: args),
     );
   }
@@ -127,6 +128,10 @@ class _SosAlertViewState extends State<_SosAlertView>
 
   Future<void> _onStopAlarm(SosAlertCubit cubit) async {
     await cubit.stopAlarm();
+  }
+
+  Future<void> _onAcknowledge(SosAlertCubit cubit) async {
+    await cubit.acknowledge(widget.args.alertId);
     if (!mounted) return;
     Navigator.of(context).pop();
   }
@@ -146,24 +151,32 @@ class _SosAlertViewState extends State<_SosAlertView>
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Column(
                 children: [
-                  const Spacer(),
-                  SosHeroPulse(scale: _scale, opacity: _fade),
-                  40.gap,
-                  AppText.bold(
-                    context.tr(LocaleKeys.sos_alert_title),
-                    fontSize: 26,
-                    color: Colors.white,
-                    textAlign: TextAlign.center,
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SosHeroPulse(scale: _scale, opacity: _fade),
+                          40.gap,
+                          AppText.bold(
+                            context.tr(LocaleKeys.sos_alert_title),
+                            fontSize: 26,
+                            color: Colors.white,
+                            textAlign: TextAlign.center,
+                          ),
+                          16.gap,
+                          SosAlertInfoCard(
+                            deviceName: widget.args.deviceName,
+                            batteryLevel: widget.args.batteryLevel,
+                            time: _timeText,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  16.gap,
-                  SosAlertInfoCard(
-                    deviceName: widget.args.deviceName,
-                    batteryLevel: widget.args.batteryLevel,
-                    time: _timeText,
-                  ),
-                  const Spacer(),
                   SosAlertActionButtons(
                     onStop: () => _onStopAlarm(context.read<SosAlertCubit>()),
+                    onAcknowledge: () =>
+                        _onAcknowledge(context.read<SosAlertCubit>()),
                     onCall: () =>
                         _onCallEmergency(context.read<SosAlertCubit>()),
                     onMap: () async {

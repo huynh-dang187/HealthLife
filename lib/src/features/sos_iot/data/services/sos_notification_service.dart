@@ -198,6 +198,26 @@ class SosNotificationService {
     }
   }
 
+  /// Xoá FCM token của user hiện tại khi đăng xuất, tránh push đi sai người
+  /// khi đổi tài khoản trên cùng thiết bị.
+  Future<void> clearTokenForCurrentUser() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+    try {
+      await FirebaseMessaging.instance.deleteToken();
+    } catch (_) {
+      // Bỏ qua: token sẽ được cấp lại khi đăng nhập.
+    }
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'fcmToken': FieldValue.delete(),
+        'fcmTokenUpdatedAt': FieldValue.serverTimestamp(),
+      });
+    } catch (_) {
+      // Offline/thiếu quyền: bỏ qua, không chặn đăng xuất.
+    }
+  }
+
   void _onNotificationTap(NotificationResponse response) {
     final payload = response.payload;
     if (payload == null) return;

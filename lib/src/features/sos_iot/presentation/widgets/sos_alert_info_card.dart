@@ -35,11 +35,11 @@ class SosAlertInfoCard extends StatelessWidget {
             value: deviceName,
           ),
           12.gap,
-          _InfoRow(
-            icon: Icons.battery_full,
-            label: context.tr(LocaleKeys.sos_battery_level),
-            value: '$batteryLevel%',
-          ),
+          // _InfoRow(
+          //   icon: Icons.battery_full,
+          //   label: context.tr(LocaleKeys.sos_battery_level),
+          //   value: '$batteryLevel%',
+          // ),
           12.gap,
           _InfoRow(
             icon: Icons.access_time,

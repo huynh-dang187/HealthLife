@@ -1,15 +1,18 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../data/repositories/sos_device_repository.dart';
 import 'sos_alert_state.dart';
 
 /// ViewModel cho màn hình báo động khẩn cấp SOS.
 ///
 /// Chịu trách nhiệm phát/tắt còi, gọi điện khẩn cấp và mở bản đồ.
 class SosAlertCubit extends Cubit<SosAlertState> {
-  SosAlertCubit() : super(const SosAlertInitial());
+  SosAlertCubit(this._repo) : super(const SosAlertInitial());
 
+  final SosDeviceRepository _repo;
   final AudioPlayer _player = AudioPlayer();
 
   /// Bắt đầu hú còi khẩn cấp (loop vô hạn).
@@ -49,6 +52,17 @@ class SosAlertCubit extends Cubit<SosAlertState> {
       queryParameters: {'q': '$lat,$lng'},
     );
     if (await canLaunchUrl(uri)) await launchUrl(uri);
+  }
+
+  /// Người nhận xác nhận đã xử lý cảnh báo: tắt còi và đánh dấu trên Firestore.
+  Future<void> acknowledge(String? alertId) async {
+    await stopAlarm();
+    if (alertId == null || alertId.isEmpty) return;
+    try {
+      await _repo.acknowledgeAlert(alertId);
+    } catch (e) {
+      debugPrint('[SosAlert] acknowledge lỗi: $e');
+    }
   }
 
   @override

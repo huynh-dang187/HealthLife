@@ -15,9 +15,74 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // users: chỉ người đó (đã xác thực) đọc/ghi profile của mình
+    // sos_devices: một thiết bị cho phép tối đa 3 user ghép nối (recipientIds).
+    // - Đọc: user đã đăng nhập (cần đọc để kiểm tra mã khi ghép).
+    // - Tạo: chỉ user đầu tiên tạo, với danh sách người nhận chứa đúng mình.
+    // - Cập nhật: thêm mình khi chưa đủ 3 (nối), hoặc gỡ một thành viên bất kỳ
+    //   (rời nhóm tự do / xoá thành viên khác) — chỉ người đang kết nối được sửa.
+    match /sos_devices/{deviceId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+          && request.resource.data.recipientIds is list
+          && request.resource.data.recipientIds.hasOnly([request.auth.uid]);
+      allow update: if request.auth != null
+          && resource.data.recipientIds is list
+          && request.resource.data.recipientIds is list
+          && request.resource.data.recipientIds.size() <= 3
+          && (
+            // A) Thêm đúng 1 người:
+            //    - người trong nhóm mời thêm 1 người bất kỳ (chưa đủ 3), hoặc
+            //    - tự join: mình chưa có, sau update chỉ thêm đúng mình
+            (request.resource.data.recipientIds.size()
+                    == resource.data.recipientIds.size() + 1
+                && resource.data.recipientIds.size() < 3
+                && request.resource.data.recipientIds
+                    .hasAll(resource.data.recipientIds)
+                && (
+                  resource.data.recipientIds.hasAny([request.auth.uid])
+                  || (!resource.data.recipientIds.hasAny([request.auth.uid])
+                      && request.resource.data.recipientIds
+                          .hasAny([request.auth.uid]))
+                ))
+            // B) Gỡ đúng 1 người (xoá thành viên / tự rời nhóm):
+            //    mình là người trong nhóm
+            || (request.resource.data.recipientIds.size()
+                    == resource.data.recipientIds.size() - 1
+                && resource.data.recipientIds.hasAny([request.auth.uid])
+                && resource.data.recipientIds
+                    .hasAll(request.resource.data.recipientIds))
+            // C) Sửa thông tin thiết bị (tên / SĐT khẩn cấp): người nhận,
+            //    không đổi recipientIds.
+            || (resource.data.recipientIds.hasAny([request.auth.uid])
+                && request.resource.data.diff(resource.data).affectedKeys()
+                    .hasOnly(['deviceName', 'emergencyPhone', 'updatedAt']))
+          );
+    }
+
+    // sos_alerts: chỉ người ghép nối với device đó (nằm trong recipientIds)
+    // đọc được lịch sử cảnh báo, và được xác nhận đã xử lý.
+    function isDeviceRecipient(deviceId) {
+      let device = get(/databases/$(database)/documents/sos_devices/$(deviceId));
+      return device != null
+          && device.data.recipientIds is list
+          && device.data.recipientIds.hasAny([request.auth.uid]);
+    }
+    match /sos_alerts/{alertId} {
+      allow read: if request.auth != null
+          && isDeviceRecipient(resource.data.deviceId);
+      allow update: if request.auth != null
+          && isDeviceRecipient(resource.data.deviceId)
+          && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['status', 'acknowledgedBy', 'acknowledgedAt'])
+          && request.resource.data.status == 'acknowledged'
+          && request.resource.data.acknowledgedBy == request.auth.uid;
+    }
+
+    // users: mọi user đã đăng nhập đọc được (tìm người nhận theo SĐT,
+    // hiện tên), mỗi user chỉ ghi profile của chính mình
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
 
       // meal_logs: nhật ký ăn, chỉ chủ sở hữu đọc/ghi
       match /meal_logs/{logId} {

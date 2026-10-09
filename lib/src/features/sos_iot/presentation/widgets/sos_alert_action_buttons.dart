@@ -4,16 +4,18 @@ import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 
-/// Vùng 3 nút thao tác: Tắt còi / Gọi khẩn cấp / Xem vị trí.
+/// Vùng các nút thao tác: Tắt còi / Đã xử lý / Gọi khẩn cấp / Xem vị trí.
 class SosAlertActionButtons extends StatelessWidget {
   const SosAlertActionButtons({
     super.key,
     required this.onStop,
+    required this.onAcknowledge,
     required this.onCall,
     required this.onMap,
   });
 
   final VoidCallback onStop;
+  final VoidCallback onAcknowledge;
   final VoidCallback onCall;
   final VoidCallback onMap;
 
@@ -39,6 +41,29 @@ class SosAlertActionButtons extends StatelessWidget {
               context.tr(LocaleKeys.sos_stop_alarm),
               fontSize: 17,
               color: Colors.red.shade900,
+            ),
+          ),
+        ),
+        12.gap,
+        // Xác nhận đã xử lý: đóng màn hình + đánh dấu trên hệ thống.
+        SizedBox(
+          width: double.infinity,
+          height: 54,
+          child: ElevatedButton(
+            onPressed: onAcknowledge,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white.withValues(alpha: 0.15),
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: BorderSide(color: Colors.white.withValues(alpha: 0.6)),
+              ),
+            ),
+            child: AppText.bold(
+              context.tr(LocaleKeys.sos_alert_acknowledge),
+              fontSize: 16,
+              color: Colors.white,
             ),
           ),
         ),

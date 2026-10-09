@@ -221,6 +221,24 @@ class AuthRepository {
     return doc.data()?['profileCompleted'] ?? false;
   }
 
+  /// Lưu SĐT (user.phoneNumber, dạng E.164) xuống users/{uid} để tìm kiếm
+  /// người nhận SOS theo số điện thoại. Merge để không đè field khác.
+  Future<void> savePhoneToProfile(User user) async {
+    final phone = user.phoneNumber;
+    if (phone == null || phone.isEmpty) return;
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set({
+            'phone': phone,
+            'phoneUpdatedAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+    } catch (e) {
+      debugPrint('[AuthRepo] savePhoneToProfile lỗi: $e');
+    }
+  }
+
   /// Map lỗi FirebaseAuth -> thông báo đã localize.
   String mapAuthError(Object error) {
     if (error is FirebaseAuthException) {
