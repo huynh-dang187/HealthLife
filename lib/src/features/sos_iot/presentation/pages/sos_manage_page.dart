@@ -122,77 +122,16 @@ class _SosManageViewState extends State<_SosManageView> {
   }
 
   Future<void> _showEditDialog(SosManageCubit cubit, SosDevice device) async {
-    final nameController = TextEditingController(text: device.deviceName);
-    final phoneController = TextEditingController(
-      text: device.emergencyPhone ?? '',
-    );
-    final saved = await showDialog<bool>(
+    final result = await showDialog<(String, String?)>(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        backgroundColor: UIColors.white,
-        title: AppText.semiBold(
-          tr(LocaleKeys.sos_manage_edit_device),
-          fontSize: 16,
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppText.medium(
-              tr(LocaleKeys.sos_manage_device_name),
-              fontSize: 13,
-              color: UIColors.textBody,
-            ),
-            8.gap,
-            AppTF.common(
-              controller: nameController,
-              hintText: LocaleKeys.sos_manage_device_name,
-            ),
-            16.gap,
-            AppText.medium(
-              tr(LocaleKeys.sos_manage_emergency_phone),
-              fontSize: 13,
-              color: UIColors.textBody,
-            ),
-            8.gap,
-            AppTF.common(
-              controller: phoneController,
-              hintText: LocaleKeys.sos_manage_emergency_phone_hint,
-              keyboardType: TextInputType.phone,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext, false),
-            child: AppText.medium(
-              tr(LocaleKeys.sos_manage_cancel),
-              fontSize: 14,
-              color: UIColors.textBody,
-            ),
-          ),
-          ValueListenableBuilder<TextEditingValue>(
-            valueListenable: nameController,
-            builder: (dialogContext, value, _) => AppButton.fill(
-              onTap: () => Navigator.pop(dialogContext, true),
-              title: tr(LocaleKeys.sos_manage_save),
-              enable: value.text.trim().isNotEmpty,
-            ),
-          ),
-        ],
-      ),
+      builder: (_) => _EditDeviceDialog(device: device),
     );
+    if (result == null) return;
 
-    final name = nameController.text.trim();
-    final phone = phoneController.text.trim();
-    nameController.dispose();
-    phoneController.dispose();
-
-    if (saved != true) return;
     final ok = await cubit.updateDeviceSettings(
       deviceId: widget.deviceId,
-      deviceName: name,
-      emergencyPhone: phone.isEmpty ? null : phone,
+      deviceName: result.$1,
+      emergencyPhone: result.$2,
     );
     if (ok && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -627,6 +566,99 @@ class _StatusChip extends StatelessWidget {
         fontSize: 11,
         color: color,
       ),
+    );
+  }
+}
+
+/// Dialog sửa tên thiết bị + SĐT khẩn cấp.
+///
+/// Tự quản [TextEditingController] và dispose đúng vòng đời để tránh
+/// lỗi deactivate InheritedElement khi dialog đang đóng.
+/// Trả về `(deviceName, emergencyPhone)` khi lưu, `null` khi huỷ.
+class _EditDeviceDialog extends StatefulWidget {
+  const _EditDeviceDialog({required this.device});
+
+  final SosDevice device;
+
+  @override
+  State<_EditDeviceDialog> createState() => _EditDeviceDialogState();
+}
+
+class _EditDeviceDialogState extends State<_EditDeviceDialog> {
+  late final TextEditingController _nameController = TextEditingController(
+    text: widget.device.deviceName,
+  );
+  late final TextEditingController _phoneController = TextEditingController(
+    text: widget.device.emergencyPhone ?? '',
+  );
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  void _save() {
+    final name = _nameController.text.trim();
+    final phone = _phoneController.text.trim();
+    Navigator.pop(context, (name, phone.isEmpty ? null : phone));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: UIColors.white,
+      title: AppText.semiBold(
+        tr(LocaleKeys.sos_manage_edit_device),
+        fontSize: 16,
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppText.medium(
+            tr(LocaleKeys.sos_manage_device_name),
+            fontSize: 13,
+            color: UIColors.textBody,
+          ),
+          8.gap,
+          AppTF.common(
+            controller: _nameController,
+            hintText: LocaleKeys.sos_manage_device_name,
+          ),
+          16.gap,
+          AppText.medium(
+            tr(LocaleKeys.sos_manage_emergency_phone),
+            fontSize: 13,
+            color: UIColors.textBody,
+          ),
+          8.gap,
+          AppTF.common(
+            controller: _phoneController,
+            hintText: LocaleKeys.sos_manage_emergency_phone_hint,
+            keyboardType: TextInputType.phone,
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: AppText.medium(
+            tr(LocaleKeys.sos_manage_cancel),
+            fontSize: 14,
+            color: UIColors.textBody,
+          ),
+        ),
+        ValueListenableBuilder<TextEditingValue>(
+          valueListenable: _nameController,
+          builder: (context, value, _) => AppButton.fill(
+            onTap: _save,
+            title: tr(LocaleKeys.sos_manage_save),
+            enable: value.text.trim().isNotEmpty,
+          ),
+        ),
+      ],
     );
   }
 }
