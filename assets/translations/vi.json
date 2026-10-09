@@ -420,6 +420,9 @@
   "sos_pair_failed": "Ghép nối thất bại",
   "sos_pair_try_again": "Thử lại",
   "sos_pair_view_device": "Xem thiết bị",
+  "sos_pair_not_found_title": "Không tìm thấy thiết bị",
+  "sos_pair_not_found_message": "Chưa có thiết bị với mã {code}. Bạn có muốn tạo mới?",
+  "sos_pair_create_new": "Tạo mới",
 
   "sos_manage_title": "Quản lý thiết bị",
   "sos_manage_recipients_title": "Người nhận ({count}/3)",

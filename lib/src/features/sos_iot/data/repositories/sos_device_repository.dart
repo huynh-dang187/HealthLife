@@ -15,6 +15,9 @@ enum SosPairStatus {
 
   /// Thiết bị đã đạt tối đa 3 người nhận.
   deviceFull,
+
+  /// Chưa tồn tại thiết bị với mã này (cần người dùng xác nhận tạo mới).
+  notFound,
 }
 
 /// Truy cập `sos_devices/{deviceId}` + `sos_alerts` + tra cứu `users`.
@@ -68,15 +71,20 @@ class SosDeviceRepository {
       .where('recipientIds', arrayContains: uid)
       .snapshots()
       .map(
-        (q) => q.docs
-            .where((d) => d.exists)
-            .map(SosDevice.fromSnapshot)
-            .toList(),
+        (q) =>
+            q.docs.where((d) => d.exists).map(SosDevice.fromSnapshot).toList(),
       );
 
   /// Ghép nối: tạo doc nếu chưa có, ngược lại thêm mình vào người nhận (≤3).
   /// Throw [FormatException] nếu mã không hợp lệ.
-  Future<SosPairStatus> pair(String rawCode) async {
+  ///
+  /// Nếu thiết bị chưa tồn tại và [createIfMissing] = false thì trả về
+  /// [SosPairStatus.notFound] để UI hỏi xác nhận trước khi tạo mới (tránh
+  /// tạo "thiết bị ma" do gõ nhầm mã).
+  Future<SosPairStatus> pair(
+    String rawCode, {
+    bool createIfMissing = false,
+  }) async {
     if (!isValidDeviceCode(rawCode)) {
       throw const FormatException('invalid_device_code');
     }
@@ -87,6 +95,7 @@ class SosDeviceRepository {
     return _db.runTransaction((tx) async {
       final snap = await tx.get(ref);
       if (!snap.exists) {
+        if (!createIfMissing) return SosPairStatus.notFound;
         tx.set(ref, {
           'deviceName': 'Nút SOS $deviceId',
           'recipientIds': [uid],
@@ -98,8 +107,9 @@ class SosDeviceRepository {
         return SosPairStatus.paired;
       }
 
-      final recipients =
-          List<String>.from(snap.data()?['recipientIds'] ?? const []);
+      final recipients = List<String>.from(
+        snap.data()?['recipientIds'] ?? const [],
+      );
       if (recipients.contains(uid)) return SosPairStatus.alreadyJoined;
       if (recipients.length >= maxRecipients) return SosPairStatus.deviceFull;
 
@@ -117,8 +127,9 @@ class SosDeviceRepository {
     await _db.runTransaction((tx) async {
       final snap = await tx.get(ref);
       if (!snap.exists) return;
-      final recipients =
-          List<String>.from(snap.data()?['recipientIds'] ?? const []);
+      final recipients = List<String>.from(
+        snap.data()?['recipientIds'] ?? const [],
+      );
       if (recipients.contains(targetUid)) return;
       if (recipients.length >= maxRecipients) {
         throw StateError('device_full');
@@ -145,11 +156,17 @@ class SosDeviceRepository {
     await _db.runTransaction((tx) async {
       final snap = await tx.get(ref);
       if (!snap.exists) return;
-      final recipients =
-          List<String>.from(snap.data()?['recipientIds'] ?? const []);
+      final recipients = List<String>.from(
+        snap.data()?['recipientIds'] ?? const [],
+      );
       if (!recipients.contains(targetUid)) return;
+      final remaining = recipients.where((u) => u != targetUid).toList();
+      if (remaining.isEmpty) {
+        tx.delete(ref);
+        return;
+      }
       tx.update(ref, {
-        'recipientIds': recipients.where((u) => u != targetUid).toList(),
+        'recipientIds': remaining,
         'updatedAt': FieldValue.serverTimestamp(),
       });
     });

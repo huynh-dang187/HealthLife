@@ -20,7 +20,9 @@ const String sosChannelId = 'sos_emergency_v5';
 /// Hàm chạy ở isolate nền khi app bị kill/background.
 /// Nhận FCM data-only và bung màn hình full-screen bằng local notification.
 @pragma('vm:entry-point')
-Future<void> sosFirebaseMessagingBackgroundHandler(RemoteMessage message) async {
+Future<void> sosFirebaseMessagingBackgroundHandler(
+  RemoteMessage message,
+) async {
   final data = message.data;
   if (data.isEmpty || data['type'] != 'sos_alert') return;
 
@@ -129,8 +131,8 @@ class SosNotificationService {
     );
     await createSosNotificationChannel(_localNotifications);
 
-    final android =
-        _localNotifications.resolvePlatformSpecificImplementation<
+    final android = _localNotifications
+        .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin
         >();
     await android?.requestNotificationsPermission();
@@ -138,7 +140,9 @@ class SosNotificationService {
     final fcm = FirebaseMessaging.instance;
     await fcm.requestPermission(alert: true, badge: true, sound: true);
 
-    FirebaseMessaging.onBackgroundMessage(sosFirebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onBackgroundMessage(
+      sosFirebaseMessagingBackgroundHandler,
+    );
     FirebaseMessaging.onMessage.listen((message) => _handleMessage(message));
     FirebaseMessaging.instance.onTokenRefresh.listen(_onTokenRefresh);
 
@@ -177,9 +181,10 @@ class SosNotificationService {
 
   Future<void> _saveFcmToken(String uid) async {
     try {
-      final token = await FirebaseMessaging.instance
-          .getToken()
-          .timeout(const Duration(seconds: 5), onTimeout: () => null);
+      final token = await FirebaseMessaging.instance.getToken().timeout(
+        const Duration(seconds: 5),
+        onTimeout: () => null,
+      );
       if (token == null) return;
       await _writeToken(uid, token);
     } catch (_) {
@@ -215,6 +220,15 @@ class SosNotificationService {
       });
     } catch (_) {
       // Offline/thiếu quyền: bỏ qua, không chặn đăng xuất.
+    }
+  }
+
+  /// Xoá thông báo SOS đang hiển thị (dừng tiếng chuông của notification).
+  Future<void> cancelAlert() async {
+    try {
+      await _localNotifications.cancel(id: 0);
+    } catch (_) {
+      // Bỏ qua nếu plugin chưa khởi tạo (vd. mở từ deep link).
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/repositories/sos_device_repository.dart';
+import '../../data/services/sos_notification_service.dart';
 import 'sos_alert_state.dart';
 
 /// ViewModel cho màn hình báo động khẩn cấp SOS.
@@ -34,6 +35,7 @@ class SosAlertCubit extends Cubit<SosAlertState> {
       await _player.stop();
       await _player.release();
     } catch (_) {}
+    await SosNotificationService.instance.cancelAlert();
     if (!isClosed) emit(const SosAlertStopped());
   }
 

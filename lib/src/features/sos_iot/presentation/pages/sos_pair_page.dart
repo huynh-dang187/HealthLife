@@ -50,24 +50,78 @@ class _SosPairViewState extends State<_SosPairView> {
     context.read<SosPairCubit>().pair(_codeController.text.trim());
   }
 
+  /// Khi mã chưa tồn tại, hỏi xác nhận trước khi tạo thiết bị mới.
+  Future<void> _onStateChanged(SosPairState state) async {
+    if (state is! SosPairNotFound) return;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: UIColors.white,
+        title: AppText.semiBold(
+          tr(LocaleKeys.sos_pair_not_found_title),
+          fontSize: 16,
+        ),
+        content: AppText.medium(
+          tr(
+            LocaleKeys.sos_pair_not_found_message,
+            namedArgs: {'code': state.deviceId},
+          ),
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: AppText.medium(tr(LocaleKeys.sos_manage_cancel)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: AppText.semiBold(
+              tr(LocaleKeys.sos_pair_create_new),
+              color: UIColors.coral,
+            ),
+          ),
+        ],
+      ),
+    );
+    if (!mounted) return;
+    final cubit = context.read<SosPairCubit>();
+    if (ok == true) {
+      await cubit.pair(state.deviceId, createIfMissing: true);
+    } else {
+      cubit.reset();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: UIColors.lightBackground,
-      appBar: AppAppBar(title: tr(LocaleKeys.sos_pair_title), centerTitle: true),
+      appBar: AppAppBar(
+        title: tr(LocaleKeys.sos_pair_title),
+        centerTitle: true,
+      ),
       body: SafeArea(
-        child: BlocBuilder<SosPairCubit, SosPairState>(
-          builder: (context, state) {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-              child: switch (state) {
-                SosPairLoading() => _buildPairing(),
-                SosPairDone(:final alreadyJoined) =>
-                  _buildDone(context, state.deviceId, alreadyJoined),
-                _ => _buildForm(context, state),
-              },
-            );
-          },
+        child: BlocListener<SosPairCubit, SosPairState>(
+          listener: (context, state) => _onStateChanged(state),
+          child: BlocBuilder<SosPairCubit, SosPairState>(
+            builder: (context, state) {
+              return SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 32,
+                ),
+                child: switch (state) {
+                  SosPairLoading() => _buildPairing(),
+                  SosPairDone(:final alreadyJoined) => _buildDone(
+                    context,
+                    state.deviceId,
+                    alreadyJoined,
+                  ),
+                  _ => _buildForm(context, state),
+                },
+              );
+            },
+          ),
         ),
       ),
     );

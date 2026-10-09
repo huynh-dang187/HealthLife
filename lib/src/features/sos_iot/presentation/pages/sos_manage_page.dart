@@ -220,7 +220,8 @@ class _SosManageViewState extends State<_SosManageView> {
                       },
                     ),
                   ),
-                  if (recipients.length < SosDeviceRepository.maxRecipients) ...[
+                  if (recipients.length <
+                      SosDeviceRepository.maxRecipients) ...[
                     10.gap,
                     AppButton.outline(
                       onTap: () => _showAddDialog(cubit, device),
@@ -262,7 +263,6 @@ class _SosManageViewState extends State<_SosManageView> {
   }
 
   Widget _buildHeader(SosManageCubit cubit, SosDevice device, int count) {
-    final online = device.isOnline;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -287,13 +287,6 @@ class _SosManageViewState extends State<_SosManageView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText.bold(device.deviceName, fontSize: 16),
-                4.gap,
-                NameTag(
-                  online: online,
-                  labelKey: online
-                      ? LocaleKeys.sos_hub_online
-                      : LocaleKeys.sos_hub_offline,
-                ),
               ],
             ),
           ),
@@ -316,37 +309,6 @@ class _SosManageViewState extends State<_SosManageView> {
   }
 
   Widget _sectionTitle(String text) => AppText.semiBold(text, fontSize: 16);
-}
-
-/// Tag nhỏ "Trực tuyến / Ngoại tuyến" của thiết bị.
-class NameTag extends StatelessWidget {
-  const NameTag({super.key, required this.online, required this.labelKey});
-
-  final bool online;
-  final String labelKey;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 8,
-          height: 8,
-          decoration: BoxDecoration(
-            color: online ? UIColors.green : UIColors.dustyRose,
-            shape: BoxShape.circle,
-          ),
-        ),
-        const SizedBox(width: 6),
-        AppText.medium(
-          tr(labelKey),
-          fontSize: 12,
-          color: UIColors.textBody,
-        ),
-      ],
-    );
-  }
 }
 
 class _RecipientTile extends StatelessWidget {
@@ -514,8 +476,9 @@ class _AlertsHistory extends StatelessWidget {
                             ),
                             2.gap,
                             AppText.medium(
-                              DateFormat('HH:mm dd/MM/yyyy')
-                                  .format(a.triggeredAt),
+                              DateFormat(
+                                'HH:mm dd/MM/yyyy',
+                              ).format(a.triggeredAt),
                               fontSize: 12,
                               color: UIColors.textBody,
                             ),

@@ -404,6 +404,9 @@ abstract class  LocaleKeys {
   static const sos_pair_failed = 'sos_pair_failed';
   static const sos_pair_try_again = 'sos_pair_try_again';
   static const sos_pair_view_device = 'sos_pair_view_device';
+  static const sos_pair_not_found_title = 'sos_pair_not_found_title';
+  static const sos_pair_not_found_message = 'sos_pair_not_found_message';
+  static const sos_pair_create_new = 'sos_pair_create_new';
   static const sos_manage_title = 'sos_manage_title';
   static const sos_manage_recipients_title = 'sos_manage_recipients_title';
   static const sos_manage_add_recipient = 'sos_manage_add_recipient';

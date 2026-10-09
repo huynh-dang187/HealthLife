@@ -114,7 +114,6 @@ class _SosDeviceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final online = device.isOnline;
     final lastText = device.lastTriggeredAt == null
         ? tr(LocaleKeys.sos_hub_never_triggered)
         : DateFormat('HH:mm dd/MM/yyyy').format(device.lastTriggeredAt!);
@@ -138,14 +137,12 @@ class _SosDeviceCard extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: online
-                    ? UIColors.green.withAlpha(24)
-                    : UIColors.lightGray,
+                color: UIColors.coral.withAlpha(24),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.warning_amber_rounded,
-                color: online ? UIColors.green : UIColors.textBody,
+                color: UIColors.coral,
               ),
             ),
             12.gap,
@@ -157,31 +154,12 @@ class _SosDeviceCard extends StatelessWidget {
                   6.gap,
                   Row(
                     children: [
-                      Container(
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: online ? UIColors.green : UIColors.dustyRose,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      6.gap,
-                      AppText.medium(
-                        tr(
-                          online
-                              ? LocaleKeys.sos_hub_online
-                              : LocaleKeys.sos_hub_offline,
-                        ),
-                        fontSize: 12,
-                        color: UIColors.textBody,
-                      ),
-                      12.gap,
                       const Icon(
                         Icons.battery_std,
                         size: 14,
                         color: UIColors.textBody,
                       ),
-                      2.gap,
+                      4.gap,
                       AppText.medium(
                         '${device.batteryLevel}%',
                         fontSize: 12,

@@ -128,6 +128,8 @@ class _SosAlertViewState extends State<_SosAlertView>
 
   Future<void> _onStopAlarm(SosAlertCubit cubit) async {
     await cubit.stopAlarm();
+    if (!mounted) return;
+    Navigator.of(context).pop();
   }
 
   Future<void> _onAcknowledge(SosAlertCubit cubit) async {

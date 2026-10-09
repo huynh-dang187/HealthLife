@@ -419,6 +419,9 @@
   "sos_pair_failed": "Pairing failed",
   "sos_pair_try_again": "Try again",
   "sos_pair_view_device": "View device",
+  "sos_pair_not_found_title": "Device not found",
+  "sos_pair_not_found_message": "No device found for code {code}. Create a new one?",
+  "sos_pair_create_new": "Create new",
 
   "sos_manage_title": "Manage device",
   "sos_manage_recipients_title": "Recipients ({count}/3)",

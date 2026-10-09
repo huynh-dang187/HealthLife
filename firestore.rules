@@ -25,6 +25,11 @@ service cloud.firestore {
       allow create: if request.auth != null
           && request.resource.data.recipientIds is list
           && request.resource.data.recipientIds.hasOnly([request.auth.uid]);
+      // - Xoá: người nhận cuối cùng rời nhóm → doc rỗng, tự dọn.
+      allow delete: if request.auth != null
+          && resource.data.recipientIds is list
+          && resource.data.recipientIds.hasAny([request.auth.uid])
+          && resource.data.recipientIds.size() <= 1;
       allow update: if request.auth != null
           && resource.data.recipientIds is list
           && request.resource.data.recipientIds is list
