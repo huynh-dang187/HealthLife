@@ -609,6 +609,7 @@ class _EditDeviceDialogState extends State<_EditDeviceDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: UIColors.white,
+      scrollable: true,
       title: AppText.semiBold(
         tr(LocaleKeys.sos_manage_edit_device),
         fontSize: 16,
