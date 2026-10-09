@@ -198,8 +198,14 @@ class AppText extends StatelessWidget {
     // widget này tự build lại -> .tr() dịch lại theo ngôn ngữ mới.
     context.locale;
 
+    // Chỉ dịch khi text thực sự là một locale key tồn tại; chuỗi động
+    // (tên máy, SĐT, thời gian...) hoặc chuỗi đã dịch sẵn được giữ nguyên,
+    // tránh log "Localization key [...] not found".
+    final display =
+        text.trExists(context: context) ? text.tr(namedArgs: namedArgs) : text;
+
     return Text(
-      text.tr(namedArgs: namedArgs),
+      display,
       style: style,
       maxLines: maxLines,
       textAlign: textAlign,

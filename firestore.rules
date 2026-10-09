@@ -27,24 +27,22 @@ service cloud.firestore {
           && request.resource.data.recipientIds.hasOnly([request.auth.uid]);
       allow update: if request.auth != null
           && resource.data.recipientIds is list
+          && request.resource.data.recipientIds is list
+          && request.resource.data.recipientIds.size() <= 3
           && (
             // A) Thêm đúng 1 người:
             //    - người trong nhóm mời thêm 1 người bất kỳ (chưa đủ 3), hoặc
             //    - tự join: mình chưa có, sau update chỉ thêm đúng mình
             (request.resource.data.recipientIds.size()
                     == resource.data.recipientIds.size() + 1
-                && request.resource.data.recipientIds
-                    .diff(resource.data.recipientIds)
-                    .affectedKeys()
-                    .size() == 1
                 && resource.data.recipientIds.size() < 3
+                && request.resource.data.recipientIds
+                    .hasAll(resource.data.recipientIds)
                 && (
                   resource.data.recipientIds.hasAny([request.auth.uid])
                   || (!resource.data.recipientIds.hasAny([request.auth.uid])
                       && request.resource.data.recipientIds
-                          .diff(resource.data.recipientIds)
-                          .affectedKeys()
-                          .hasOnly([request.auth.uid]))
+                          .hasAny([request.auth.uid]))
                 ))
             // B) Gỡ đúng 1 người (xoá thành viên / tự rời nhóm):
             //    mình là người trong nhóm
@@ -52,9 +50,7 @@ service cloud.firestore {
                     == resource.data.recipientIds.size() - 1
                 && resource.data.recipientIds.hasAny([request.auth.uid])
                 && resource.data.recipientIds
-                    .diff(request.resource.data.recipientIds)
-                    .affectedKeys()
-                    .size() == 1)
+                    .hasAll(request.resource.data.recipientIds))
           );
     }
 
@@ -62,7 +58,7 @@ service cloud.firestore {
     // đọc được lịch sử cảnh báo.
     function isDeviceRecipient(deviceId) {
       let device = get(/databases/$(database)/documents/sos_devices/$(deviceId));
-      return device != null && device.exists
+      return device != null
           && device.data.recipientIds is list
           && device.data.recipientIds.hasAny([request.auth.uid]);
     }
