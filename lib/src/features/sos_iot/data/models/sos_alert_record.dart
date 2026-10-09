@@ -9,6 +9,8 @@ class SosAlertRecord {
   final String status;
   final int batteryLevel;
 
+  bool get isAcknowledged => status == 'acknowledged';
+
   const SosAlertRecord({
     required this.alertId,
     required this.deviceId,

@@ -394,6 +394,7 @@
   "sos_battery_level": "Mức pin",
   "sos_time": "Thời gian",
   "sos_stop_alarm": "TẮT CÒI BÁO ĐỘNG",
+  "sos_alert_acknowledge": "ĐÃ XỬ LÝ",
   "sos_call_family": "GỌI NGƯỜI THÂN",
   "sos_view_location": "XEM VỊ TRÍ",
 
@@ -435,6 +436,14 @@
   "sos_manage_alerts_title": "Lịch sử cảnh báo",
   "sos_manage_no_alerts": "Chưa có cảnh báo nào",
   "sos_manage_alert_triggered": "Đã kích hoạt",
+  "sos_manage_alert_acknowledged": "Đã xử lý",
+  "sos_manage_alert_pending": "Chưa xử lý",
+  "sos_manage_edit_device": "Sửa thiết bị",
+  "sos_manage_device_name": "Tên thiết bị",
+  "sos_manage_emergency_phone": "SĐT khẩn cấp",
+  "sos_manage_emergency_phone_hint": "VD: 0901234567",
+  "sos_manage_save": "Lưu",
+  "sos_manage_saved": "Đã lưu",
 
   "tab_home": "Trang chủ",
   "tab_activity": "Hoạt động",

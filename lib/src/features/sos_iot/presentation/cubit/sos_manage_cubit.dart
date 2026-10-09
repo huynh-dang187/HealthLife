@@ -71,4 +71,26 @@ class SosManageCubit extends Cubit<SosManageState> {
       return false;
     }
   }
+
+  /// Sửa tên thiết bị / SĐT khẩn cấp. Trả `true` nếu thành công.
+  Future<bool> updateDeviceSettings({
+    required String deviceId,
+    required String deviceName,
+    String? emergencyPhone,
+  }) async {
+    emit(const SosManageBusy(SosManageAction.editDevice));
+    try {
+      await _repo.updateDeviceSettings(
+        deviceId,
+        deviceName: deviceName,
+        emergencyPhone: emergencyPhone,
+      );
+      emit(const SosManageIdle());
+      return true;
+    } catch (e) {
+      debugPrint('[SosManage] updateDeviceSettings lỗi: $e');
+      emit(const SosManageError('sos_pair_failed'));
+      return false;
+    }
+  }
 }

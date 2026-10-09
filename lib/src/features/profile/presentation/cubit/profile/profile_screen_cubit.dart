@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:healthlife/src/features/sos_iot/data/services/sos_notification_service.dart';
 import 'package:healthlife/src/shared/enums/bloc_status.dart';
 
 import 'profile_screen_state.dart';
@@ -91,6 +92,7 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
       ),
     );
     try {
+      await SosNotificationService.instance.clearTokenForCurrentUser();
       await FirebaseAuth.instance.signOut();
       await GoogleSignIn.instance.signOut();
       emit(

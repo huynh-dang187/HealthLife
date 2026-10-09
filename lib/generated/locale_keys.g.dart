@@ -380,6 +380,7 @@ abstract class  LocaleKeys {
   static const sos_battery_level = 'sos_battery_level';
   static const sos_time = 'sos_time';
   static const sos_stop_alarm = 'sos_stop_alarm';
+  static const sos_alert_acknowledge = 'sos_alert_acknowledge';
   static const sos_call_family = 'sos_call_family';
   static const sos_view_location = 'sos_view_location';
   static const sos_hub_title = 'sos_hub_title';
@@ -418,6 +419,14 @@ abstract class  LocaleKeys {
   static const sos_manage_alerts_title = 'sos_manage_alerts_title';
   static const sos_manage_no_alerts = 'sos_manage_no_alerts';
   static const sos_manage_alert_triggered = 'sos_manage_alert_triggered';
+  static const sos_manage_alert_acknowledged = 'sos_manage_alert_acknowledged';
+  static const sos_manage_alert_pending = 'sos_manage_alert_pending';
+  static const sos_manage_edit_device = 'sos_manage_edit_device';
+  static const sos_manage_device_name = 'sos_manage_device_name';
+  static const sos_manage_emergency_phone = 'sos_manage_emergency_phone';
+  static const sos_manage_emergency_phone_hint = 'sos_manage_emergency_phone_hint';
+  static const sos_manage_save = 'sos_manage_save';
+  static const sos_manage_saved = 'sos_manage_saved';
   static const tab_home = 'tab_home';
   static const tab_activity = 'tab_activity';
   static const tab_nutrition = 'tab_nutrition';

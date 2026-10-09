@@ -51,11 +51,16 @@ service cloud.firestore {
                 && resource.data.recipientIds.hasAny([request.auth.uid])
                 && resource.data.recipientIds
                     .hasAll(request.resource.data.recipientIds))
+            // C) Sửa thông tin thiết bị (tên / SĐT khẩn cấp): người nhận,
+            //    không đổi recipientIds.
+            || (resource.data.recipientIds.hasAny([request.auth.uid])
+                && request.resource.data.diff(resource.data).affectedKeys()
+                    .hasOnly(['deviceName', 'emergencyPhone', 'updatedAt']))
           );
     }
 
     // sos_alerts: chỉ người ghép nối với device đó (nằm trong recipientIds)
-    // đọc được lịch sử cảnh báo.
+    // đọc được lịch sử cảnh báo, và được xác nhận đã xử lý.
     function isDeviceRecipient(deviceId) {
       let device = get(/databases/$(database)/documents/sos_devices/$(deviceId));
       return device != null
@@ -65,6 +70,12 @@ service cloud.firestore {
     match /sos_alerts/{alertId} {
       allow read: if request.auth != null
           && isDeviceRecipient(resource.data.deviceId);
+      allow update: if request.auth != null
+          && isDeviceRecipient(resource.data.deviceId)
+          && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['status', 'acknowledgedBy', 'acknowledgedAt'])
+          && request.resource.data.status == 'acknowledged'
+          && request.resource.data.acknowledgedBy == request.auth.uid;
     }
 
     // users: mọi user đã đăng nhập đọc được (tìm người nhận theo SĐT,

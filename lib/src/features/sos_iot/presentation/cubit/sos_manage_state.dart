@@ -1,4 +1,4 @@
-enum SosManageAction { addRecipient, removeRecipient, leave }
+enum SosManageAction { addRecipient, removeRecipient, leave, editDevice }
 
 sealed class SosManageState {
   const SosManageState();

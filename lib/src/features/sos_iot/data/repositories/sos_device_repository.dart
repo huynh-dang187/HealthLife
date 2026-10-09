@@ -166,6 +166,28 @@ class SosDeviceRepository {
         (q) => q.docs.map(SosAlertRecord.fromSnapshot).toList(),
       );
 
+  /// Đánh dấu cảnh báo đã được xử lý (người nhận xác nhận).
+  Future<void> acknowledgeAlert(String alertId) async {
+    await _db.collection('sos_alerts').doc(alertId).update({
+      'status': 'acknowledged',
+      'acknowledgedBy': _uid,
+      'acknowledgedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  /// Sửa thông tin thiết bị (tên hiển thị / SĐT khẩn cấp). Không đổi người nhận.
+  Future<void> updateDeviceSettings(
+    String deviceId, {
+    required String deviceName,
+    String? emergencyPhone,
+  }) async {
+    await _deviceRef(deviceId).update({
+      'deviceName': deviceName.trim(),
+      'emergencyPhone': emergencyPhone,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
   Future<SosUserInfo?> fetchUser(String uid) async {
     final snap = await _db.collection('users').doc(uid).get();
     if (!snap.exists) return null;

@@ -393,6 +393,7 @@
   "sos_battery_level": "Battery level",
   "sos_time": "Time",
   "sos_stop_alarm": "STOP ALARM",
+  "sos_alert_acknowledge": "MARK AS HANDLED",
   "sos_call_family": "CALL FAMILY",
   "sos_view_location": "VIEW LOCATION",
 
@@ -434,6 +435,14 @@
   "sos_manage_alerts_title": "Alert history",
   "sos_manage_no_alerts": "No alerts yet",
   "sos_manage_alert_triggered": "Triggered",
+  "sos_manage_alert_acknowledged": "Handled",
+  "sos_manage_alert_pending": "Pending",
+  "sos_manage_edit_device": "Edit device",
+  "sos_manage_device_name": "Device name",
+  "sos_manage_emergency_phone": "Emergency phone",
+  "sos_manage_emergency_phone_hint": "e.g. 0901234567",
+  "sos_manage_save": "Save",
+  "sos_manage_saved": "Saved",
 
   "tab_home": "Home",
   "tab_activity": "Activity",

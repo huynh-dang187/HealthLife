@@ -121,6 +121,89 @@ class _SosManageViewState extends State<_SosManageView> {
     );
   }
 
+  Future<void> _showEditDialog(SosManageCubit cubit, SosDevice device) async {
+    final nameController = TextEditingController(text: device.deviceName);
+    final phoneController = TextEditingController(
+      text: device.emergencyPhone ?? '',
+    );
+    final saved = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: UIColors.white,
+        title: AppText.semiBold(
+          tr(LocaleKeys.sos_manage_edit_device),
+          fontSize: 16,
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppText.medium(
+              tr(LocaleKeys.sos_manage_device_name),
+              fontSize: 13,
+              color: UIColors.textBody,
+            ),
+            8.gap,
+            AppTF.common(
+              controller: nameController,
+              hintText: LocaleKeys.sos_manage_device_name,
+            ),
+            16.gap,
+            AppText.medium(
+              tr(LocaleKeys.sos_manage_emergency_phone),
+              fontSize: 13,
+              color: UIColors.textBody,
+            ),
+            8.gap,
+            AppTF.common(
+              controller: phoneController,
+              hintText: LocaleKeys.sos_manage_emergency_phone_hint,
+              keyboardType: TextInputType.phone,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: AppText.medium(
+              tr(LocaleKeys.sos_manage_cancel),
+              fontSize: 14,
+              color: UIColors.textBody,
+            ),
+          ),
+          ValueListenableBuilder<TextEditingValue>(
+            valueListenable: nameController,
+            builder: (dialogContext, value, _) => AppButton.fill(
+              onTap: () => Navigator.pop(dialogContext, true),
+              title: tr(LocaleKeys.sos_manage_save),
+              enable: value.text.trim().isNotEmpty,
+            ),
+          ),
+        ],
+      ),
+    );
+
+    final name = nameController.text.trim();
+    final phone = phoneController.text.trim();
+    nameController.dispose();
+    phoneController.dispose();
+
+    if (saved != true) return;
+    final ok = await cubit.updateDeviceSettings(
+      deviceId: widget.deviceId,
+      deviceName: name,
+      emergencyPhone: phone.isEmpty ? null : phone,
+    );
+    if (ok && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(tr(LocaleKeys.sos_manage_saved)),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<SosManageCubit>();
@@ -164,7 +247,7 @@ class _SosManageViewState extends State<_SosManageView> {
               return ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
-                  _buildHeader(device, recipients.length),
+                  _buildHeader(cubit, device, recipients.length),
                   20.gap,
                   _sectionTitle(
                     tr(
@@ -239,7 +322,7 @@ class _SosManageViewState extends State<_SosManageView> {
     );
   }
 
-  Widget _buildHeader(SosDevice device, int count) {
+  Widget _buildHeader(SosManageCubit cubit, SosDevice device, int count) {
     final online = device.isOnline;
     return Container(
       padding: const EdgeInsets.all(16),
@@ -279,6 +362,14 @@ class _SosManageViewState extends State<_SosManageView> {
             '$count/${SosDeviceRepository.maxRecipients}',
             fontSize: 15,
             color: UIColors.green,
+          ),
+          AppButton.widget(
+            onTap: () => _showEditDialog(cubit, device),
+            child: const Icon(
+              Icons.edit_outlined,
+              color: UIColors.textBody,
+              size: 20,
+            ),
           ),
         ],
       ),
@@ -489,6 +580,10 @@ class _AlertsHistory extends StatelessWidget {
                               fontSize: 12,
                               color: UIColors.textBody,
                             ),
+                            6.gap,
+                            _StatusChip(
+                              acknowledged: a.isAcknowledged,
+                            ),
                           ],
                         ),
                       ),
@@ -504,6 +599,34 @@ class _AlertsHistory extends StatelessWidget {
               .toList(),
         );
       },
+    );
+  }
+}
+
+/// Nhãn trạng thái xử lý của một cảnh báo.
+class _StatusChip extends StatelessWidget {
+  const _StatusChip({required this.acknowledged});
+
+  final bool acknowledged;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = acknowledged ? UIColors.green : UIColors.coral;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withAlpha(20),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: AppText.semiBold(
+        tr(
+          acknowledged
+              ? LocaleKeys.sos_manage_alert_acknowledged
+              : LocaleKeys.sos_manage_alert_pending,
+        ),
+        fontSize: 11,
+        color: color,
+      ),
     );
   }
 }
