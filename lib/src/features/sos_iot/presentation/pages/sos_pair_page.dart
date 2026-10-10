@@ -1,19 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
-import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/app_bar.dart';
-import 'package:healthlife/src/core/presentation/widgets/button.dart';
-import 'package:healthlife/src/core/presentation/widgets/text.dart';
-import 'package:healthlife/src/core/presentation/widgets/text_field.dart';
 
 import '../../data/repositories/sos_device_repository.dart';
 import '../cubit/sos_pair_cubit.dart';
 import '../cubit/sos_pair_state.dart';
+import '../widgets/sos_pair/sos_confirm_create_dialog.dart';
+import '../widgets/sos_pair/sos_pair_done_view.dart';
+import '../widgets/sos_pair/sos_pair_form.dart';
+import '../widgets/sos_pair/sos_pair_loading_view.dart';
 
 /// SOS_01 — ghép nối thiết bị bằng mã in trên nút SOS.
 /// SOS_03 — hiển thị kết quả ghép nối (thành công / đã nối trước đó / lỗi).
@@ -53,36 +52,7 @@ class _SosPairViewState extends State<_SosPairView> {
   /// Khi mã chưa tồn tại, hỏi xác nhận trước khi tạo thiết bị mới.
   Future<void> _onStateChanged(SosPairState state) async {
     if (state is! SosPairNotFound) return;
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        backgroundColor: UIColors.white,
-        title: AppText.semiBold(
-          tr(LocaleKeys.sos_pair_not_found_title),
-          fontSize: 16,
-        ),
-        content: AppText.medium(
-          tr(
-            LocaleKeys.sos_pair_not_found_message,
-            namedArgs: {'code': state.deviceId},
-          ),
-          textAlign: TextAlign.center,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext, false),
-            child: AppText.medium(tr(LocaleKeys.sos_manage_cancel)),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext, true),
-            child: AppText.semiBold(
-              tr(LocaleKeys.sos_pair_create_new),
-              color: UIColors.coral,
-            ),
-          ),
-        ],
-      ),
-    );
+    final ok = await showSosConfirmCreateDialog(context, state.deviceId);
     if (!mounted) return;
     final cubit = context.read<SosPairCubit>();
     if (ok == true) {
@@ -111,146 +81,24 @@ class _SosPairViewState extends State<_SosPairView> {
                   vertical: 32,
                 ),
                 child: switch (state) {
-                  SosPairLoading() => _buildPairing(),
-                  SosPairDone(:final alreadyJoined) => _buildDone(
-                    context,
-                    state.deviceId,
-                    alreadyJoined,
+                  SosPairLoading() => const SosPairLoadingView(),
+                  SosPairDone(:final alreadyJoined) => SosPairDoneView(
+                    deviceId: state.deviceId,
+                    alreadyJoined: alreadyJoined,
+                    onView: () => context.pop(),
                   ),
-                  _ => _buildForm(context, state),
+                  _ => SosPairForm(
+                    controller: _codeController,
+                    errorKey: state is SosPairError ? state.messageKey : null,
+                    onSubmit: _submit,
+                    onReset: () => context.read<SosPairCubit>().reset(),
+                  ),
                 },
               );
             },
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildPairing() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        48.gap,
-        const Center(
-          child: SizedBox(
-            width: 32,
-            height: 32,
-            child: CircularProgressIndicator(strokeWidth: 3),
-          ),
-        ),
-        24.gap,
-        Center(
-          child: AppText.medium(
-            tr(LocaleKeys.sos_pair_pairing),
-            color: UIColors.textBody,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDone(BuildContext context, String deviceId, bool alreadyJoined) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        16.gap,
-        Center(
-          child: Container(
-            width: 64,
-            height: 64,
-            decoration: BoxDecoration(
-              color: UIColors.green.withAlpha(24),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.check_rounded,
-              color: UIColors.green,
-              size: 36,
-            ),
-          ),
-        ),
-        20.gap,
-        Center(
-          child: AppText.bold(
-            tr(
-              alreadyJoined
-                  ? LocaleKeys.sos_pair_already_joined
-                  : LocaleKeys.sos_pair_success,
-            ),
-            fontSize: 18,
-          ),
-        ),
-        12.gap,
-        Center(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: UIColors.lightGray,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: AppText.semiBold(
-              deviceId,
-              color: UIColors.textBody,
-            ),
-          ),
-        ),
-        40.gap,
-        AppButton.fill(
-          onTap: () => context.pop(),
-          title: tr(LocaleKeys.sos_pair_view_device),
-          color: UIColors.green,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildForm(BuildContext context, SosPairState state) {
-    final errorKey = state is SosPairError ? state.messageKey : null;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AppText.medium(
-          tr(LocaleKeys.sos_pair_subtitle),
-          color: UIColors.textBody,
-        ),
-        24.gap,
-        AppText.semiBold(tr(LocaleKeys.sos_pair_code_label)),
-        8.gap,
-        AppTF.common(
-          controller: _codeController,
-          hintText: LocaleKeys.sos_pair_code_hint,
-          onSubmitted: (_) => _submit(),
-          autofocus: true,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_-]')),
-            LengthLimitingTextInputFormatter(
-              SosDeviceRepository.maxDeviceCodeLength,
-            ),
-          ],
-          textColor: errorKey != null ? UIColors.error : null,
-        ),
-        if (errorKey != null) ...[
-          10.gap,
-          AppText.medium(
-            tr(errorKey),
-            color: UIColors.error,
-            fontSize: 13,
-          ),
-        ],
-        24.gap,
-        AppButton.fill(
-          onTap: _submit,
-          title: tr(LocaleKeys.sos_pair_button),
-        ),
-        if (errorKey != null) ...[
-          12.gap,
-          AppButton.outline(
-            onTap: () => context.read<SosPairCubit>().reset(),
-            title: tr(LocaleKeys.sos_pair_try_again),
-          ),
-        ],
-      ],
     );
   }
 }
