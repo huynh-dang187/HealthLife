@@ -10,9 +10,9 @@ import 'package:healthlife/src/features/sos_iot/data/repositories/sos_device_rep
 
 import '../cubit/sos_alert_cubit.dart';
 import '../cubit/sos_alert_state.dart';
-import '../widgets/sos_alert_action_buttons.dart';
-import '../widgets/sos_alert_info_card.dart';
-import '../widgets/sos_hero_pulse.dart';
+import '../widgets/sos_alert/sos_alert_action_buttons.dart';
+import '../widgets/sos_alert/sos_alert_info_card.dart';
+import '../widgets/sos_alert/sos_hero_pulse.dart';
 
 /// Màn hình báo động khẩn cấp SOS (full-screen, nền đỏ đậm).
 ///
@@ -128,6 +128,8 @@ class _SosAlertViewState extends State<_SosAlertView>
 
   Future<void> _onStopAlarm(SosAlertCubit cubit) async {
     await cubit.stopAlarm();
+    if (!mounted) return;
+    Navigator.of(context).pop();
   }
 
   Future<void> _onAcknowledge(SosAlertCubit cubit) async {
@@ -179,13 +181,6 @@ class _SosAlertViewState extends State<_SosAlertView>
                         _onAcknowledge(context.read<SosAlertCubit>()),
                     onCall: () =>
                         _onCallEmergency(context.read<SosAlertCubit>()),
-                    onMap: () async {
-                      final cubit = context.read<SosAlertCubit>();
-                      await cubit.openMap(
-                        widget.args.latitude,
-                        widget.args.longitude,
-                      );
-                    },
                   ),
                   8.gap,
                 ],

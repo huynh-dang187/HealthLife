@@ -4,11 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/repositories/sos_device_repository.dart';
+import '../../data/services/sos_notification_service.dart';
 import 'sos_alert_state.dart';
 
 /// ViewModel cho màn hình báo động khẩn cấp SOS.
 ///
-/// Chịu trách nhiệm phát/tắt còi, gọi điện khẩn cấp và mở bản đồ.
+/// Chịu trách nhiệm phát/tắt còi và gọi điện khẩn cấp.
 class SosAlertCubit extends Cubit<SosAlertState> {
   SosAlertCubit(this._repo) : super(const SosAlertInitial());
 
@@ -34,6 +35,7 @@ class SosAlertCubit extends Cubit<SosAlertState> {
       await _player.stop();
       await _player.release();
     } catch (_) {}
+    await SosNotificationService.instance.cancelAlert();
     if (!isClosed) emit(const SosAlertStopped());
   }
 
@@ -42,15 +44,6 @@ class SosAlertCubit extends Cubit<SosAlertState> {
     final phone = phoneNumber.trim();
     if (phone.isEmpty) return;
     final uri = Uri(scheme: 'tel', path: phone);
-    if (await canLaunchUrl(uri)) await launchUrl(uri);
-  }
-
-  /// Mở Google Maps tại vị trí đã cho.
-  Future<void> openMap(double lat, double lng) async {
-    final uri = Uri(
-      scheme: 'geo',
-      queryParameters: {'q': '$lat,$lng'},
-    );
     if (await canLaunchUrl(uri)) await launchUrl(uri);
   }
 

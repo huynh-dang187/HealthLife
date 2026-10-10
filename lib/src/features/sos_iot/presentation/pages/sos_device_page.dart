@@ -12,6 +12,8 @@ import 'package:healthlife/src/shared/router/route_names.dart';
 
 import '../../data/models/sos_device.dart';
 import '../../data/repositories/sos_device_repository.dart';
+import '../widgets/sos_device/sos_device_card.dart';
+import '../widgets/sos_device/sos_device_empty_view.dart';
 
 /// Hub "Thiết bị SOS": danh sách thiết bị đã kết nối của user.
 class SosDevicePage extends StatelessWidget {
@@ -55,151 +57,25 @@ class SosDevicePage extends StatelessWidget {
             }
 
             final devices = snapshot.data!;
-            if (devices.isEmpty) return const _SosEmptyView();
+            if (devices.isEmpty) {
+              return SosDeviceEmptyView(
+                onAdd: () => context.push(RouteNames.sos_device_pair),
+              );
+            }
 
             return ListView.separated(
               padding: const EdgeInsets.all(16),
               itemCount: devices.length,
               separatorBuilder: (context, index) => 12.gap,
-              itemBuilder: (context, index) => _SosDeviceCard(
+              itemBuilder: (context, index) => SosDeviceCard(
                 device: devices[index],
+                onTap: () => context.push(
+                  RouteNames.sos_device_manage,
+                  extra: devices[index].deviceId,
+                ),
               ),
             );
           },
-        ),
-      ),
-    );
-  }
-}
-
-class _SosEmptyView extends StatelessWidget {
-  const _SosEmptyView();
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            48.gap,
-            const Icon(
-              Icons.sos,
-              color: UIColors.coral,
-              size: 72,
-            ),
-            16.gap,
-            AppText.medium(
-              tr(LocaleKeys.sos_hub_empty),
-              color: UIColors.textBody,
-              textAlign: TextAlign.center,
-            ),
-            24.gap,
-            AppButton.fill(
-              onTap: () => context.push(RouteNames.sos_device_pair),
-              title: tr(LocaleKeys.sos_hub_add),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SosDeviceCard extends StatelessWidget {
-  const _SosDeviceCard({required this.device});
-
-  final SosDevice device;
-
-  @override
-  Widget build(BuildContext context) {
-    final online = device.isOnline;
-    final lastText = device.lastTriggeredAt == null
-        ? tr(LocaleKeys.sos_hub_never_triggered)
-        : DateFormat('HH:mm dd/MM/yyyy').format(device.lastTriggeredAt!);
-
-    return InkWell(
-      borderRadius: BorderRadius.circular(12),
-      onTap: () => context.push(
-        RouteNames.sos_device_manage,
-        extra: device.deviceId,
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: UIColors.lightCard,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: UIColors.separate),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: online
-                    ? UIColors.green.withAlpha(24)
-                    : UIColors.lightGray,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                Icons.warning_amber_rounded,
-                color: online ? UIColors.green : UIColors.textBody,
-              ),
-            ),
-            12.gap,
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppText.bold(device.deviceName, fontSize: 15),
-                  6.gap,
-                  Row(
-                    children: [
-                      Container(
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: online ? UIColors.green : UIColors.dustyRose,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      6.gap,
-                      AppText.medium(
-                        tr(
-                          online
-                              ? LocaleKeys.sos_hub_online
-                              : LocaleKeys.sos_hub_offline,
-                        ),
-                        fontSize: 12,
-                        color: UIColors.textBody,
-                      ),
-                      12.gap,
-                      const Icon(
-                        Icons.battery_std,
-                        size: 14,
-                        color: UIColors.textBody,
-                      ),
-                      2.gap,
-                      AppText.medium(
-                        '${device.batteryLevel}%',
-                        fontSize: 12,
-                        color: UIColors.textBody,
-                      ),
-                    ],
-                  ),
-                  4.gap,
-                  AppText.medium(
-                    '${tr(LocaleKeys.sos_hub_last_trigger)}: $lastText',
-                    fontSize: 12,
-                    color: UIColors.textBody,
-                  ),
-                ],
-              ),
-            ),
-            const Icon(Icons.chevron_right, color: UIColors.textBody),
-          ],
         ),
       ),
     );

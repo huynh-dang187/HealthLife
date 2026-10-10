@@ -4,20 +4,18 @@ import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/extensions/num_x.dart';
 import 'package:healthlife/src/core/presentation/widgets/text.dart';
 
-/// Vùng các nút thao tác: Tắt còi / Đã xử lý / Gọi khẩn cấp / Xem vị trí.
+/// Vùng các nút thao tác: Tắt còi / Đã xử lý / Gọi khẩn cấp.
 class SosAlertActionButtons extends StatelessWidget {
   const SosAlertActionButtons({
     super.key,
     required this.onStop,
     required this.onAcknowledge,
     required this.onCall,
-    required this.onMap,
   });
 
   final VoidCallback onStop;
   final VoidCallback onAcknowledge;
   final VoidCallback onCall;
-  final VoidCallback onMap;
 
   @override
   Widget build(BuildContext context) {
@@ -68,24 +66,10 @@ class SosAlertActionButtons extends StatelessWidget {
           ),
         ),
         14.gap,
-        Row(
-          children: [
-            Expanded(
-              child: _SecondaryButton(
-                icon: Icons.phone,
-                label: context.tr(LocaleKeys.sos_call_family),
-                onTap: onCall,
-              ),
-            ),
-            14.gap,
-            Expanded(
-              child: _SecondaryButton(
-                icon: Icons.map,
-                label: context.tr(LocaleKeys.sos_view_location),
-                onTap: onMap,
-              ),
-            ),
-          ],
+        _SecondaryButton(
+          icon: Icons.phone,
+          label: context.tr(LocaleKeys.sos_call_family),
+          onTap: onCall,
         ),
       ],
     );
@@ -106,6 +90,7 @@ class _SecondaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      width: double.infinity,
       height: 56,
       child: OutlinedButton.icon(
         onPressed: onTap,
