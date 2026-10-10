@@ -9,7 +9,7 @@ import 'sos_alert_state.dart';
 
 /// ViewModel cho màn hình báo động khẩn cấp SOS.
 ///
-/// Chịu trách nhiệm phát/tắt còi, gọi điện khẩn cấp và mở bản đồ.
+/// Chịu trách nhiệm phát/tắt còi và gọi điện khẩn cấp.
 class SosAlertCubit extends Cubit<SosAlertState> {
   SosAlertCubit(this._repo) : super(const SosAlertInitial());
 
@@ -44,15 +44,6 @@ class SosAlertCubit extends Cubit<SosAlertState> {
     final phone = phoneNumber.trim();
     if (phone.isEmpty) return;
     final uri = Uri(scheme: 'tel', path: phone);
-    if (await canLaunchUrl(uri)) await launchUrl(uri);
-  }
-
-  /// Mở Google Maps tại vị trí đã cho.
-  Future<void> openMap(double lat, double lng) async {
-    final uri = Uri(
-      scheme: 'geo',
-      queryParameters: {'q': '$lat,$lng'},
-    );
     if (await canLaunchUrl(uri)) await launchUrl(uri);
   }
 

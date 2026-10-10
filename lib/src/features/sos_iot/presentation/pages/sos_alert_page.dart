@@ -181,13 +181,6 @@ class _SosAlertViewState extends State<_SosAlertView>
                         _onAcknowledge(context.read<SosAlertCubit>()),
                     onCall: () =>
                         _onCallEmergency(context.read<SosAlertCubit>()),
-                    onMap: () async {
-                      final cubit = context.read<SosAlertCubit>();
-                      await cubit.openMap(
-                        widget.args.latitude,
-                        widget.args.longitude,
-                      );
-                    },
                   ),
                   8.gap,
                 ],

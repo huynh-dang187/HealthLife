@@ -331,7 +331,8 @@ class _RecipientTile extends StatelessWidget {
       future: nameFuture,
       builder: (context, snapshot) {
         final info = snapshot.data;
-        final display = info?.displayName ?? 'Người dùng';
+        final display =
+            info?.displayName ?? tr(LocaleKeys.sos_manage_unknown_user);
         final phone = info?.phone ?? '';
         return Container(
           margin: const EdgeInsets.only(bottom: 8),
@@ -375,7 +376,7 @@ class _RecipientTile extends StatelessWidget {
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: AppText.semiBold(
-                              'Tôi',
+                              tr(LocaleKeys.sos_manage_me),
                               fontSize: 11,
                               color: UIColors.green,
                             ),

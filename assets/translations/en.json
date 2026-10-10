@@ -395,16 +395,12 @@
   "sos_stop_alarm": "STOP ALARM",
   "sos_alert_acknowledge": "MARK AS HANDLED",
   "sos_call_family": "CALL FAMILY",
-  "sos_view_location": "VIEW LOCATION",
 
   "sos_hub_title": "SOS Button",
   "sos_hub_empty": "You haven't connected any SOS button",
   "sos_hub_add": "Add device",
-  "sos_hub_online": "Online",
-  "sos_hub_offline": "Offline",
   "sos_hub_never_triggered": "Never triggered",
   "sos_hub_last_trigger": "Last alert",
-  "sos_hub_manage": "Manage",
 
   "sos_pair_title": "Pair device",
   "sos_pair_subtitle": "Enter the device code printed on the SOS button",
@@ -424,6 +420,8 @@
   "sos_pair_create_new": "Create new",
 
   "sos_manage_title": "Manage device",
+  "sos_manage_unknown_user": "User",
+  "sos_manage_me": "Me",
   "sos_manage_recipients_title": "Recipients ({count}/3)",
   "sos_manage_add_recipient": "Add recipient",
   "sos_manage_phone_hint": "Enter recipient's phone number",
