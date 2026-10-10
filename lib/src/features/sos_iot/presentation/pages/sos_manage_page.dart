@@ -14,9 +14,9 @@ import '../../data/models/sos_device.dart';
 import '../../data/repositories/sos_device_repository.dart';
 import '../cubit/sos_manage_cubit.dart';
 import '../cubit/sos_manage_state.dart';
-import '../widgets/sos_manage/sos_add_recipient_dialog.dart';
+import '../widgets/sos_manage/sos_add_recipient_sheet.dart';
 import '../widgets/sos_manage/sos_alerts_history.dart';
-import '../widgets/sos_manage/sos_edit_device_dialog.dart';
+import '../widgets/sos_manage/sos_edit_device_sheet.dart';
 import '../widgets/sos_manage/sos_manage_header.dart';
 import '../widgets/sos_manage/sos_recipient_tile.dart';
 
@@ -73,10 +73,7 @@ class _SosManageViewState extends State<_SosManageView> {
   }
 
   Future<void> _showAddDialog(SosManageCubit cubit, SosDevice device) async {
-    final phone = await showDialog<String>(
-      context: context,
-      builder: (_) => const SosAddRecipientDialog(),
-    );
+    final phone = await showSosAddRecipientSheet(context);
     final trimmed = phone?.trim() ?? '';
     if (trimmed.isEmpty) return;
     await cubit.addRecipientByPhone(
@@ -87,10 +84,7 @@ class _SosManageViewState extends State<_SosManageView> {
   }
 
   Future<void> _showEditDialog(SosManageCubit cubit, SosDevice device) async {
-    final result = await showDialog<(String, String?)>(
-      context: context,
-      builder: (_) => SosEditDeviceDialog(device: device),
-    );
+    final result = await showSosEditDeviceSheet(context, device);
     if (result == null) return;
 
     final ok = await cubit.updateDeviceSettings(

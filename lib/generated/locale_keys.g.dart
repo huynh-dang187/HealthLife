@@ -408,6 +408,7 @@ abstract class  LocaleKeys {
   static const sos_manage_me = 'sos_manage_me';
   static const sos_manage_recipients_title = 'sos_manage_recipients_title';
   static const sos_manage_add_recipient = 'sos_manage_add_recipient';
+  static const sos_manage_add_recipient_desc = 'sos_manage_add_recipient_desc';
   static const sos_manage_phone_hint = 'sos_manage_phone_hint';
   static const sos_manage_user_not_found = 'sos_manage_user_not_found';
   static const sos_manage_already_added = 'sos_manage_already_added';

@@ -424,6 +424,7 @@
   "sos_manage_me": "Me",
   "sos_manage_recipients_title": "Recipients ({count}/3)",
   "sos_manage_add_recipient": "Add recipient",
+  "sos_manage_add_recipient_desc": "Enter the phone number of the person who will receive SOS alerts",
   "sos_manage_phone_hint": "Enter recipient's phone number",
   "sos_manage_user_not_found": "No user found with this phone number",
   "sos_manage_already_added": "This person is already on the list",

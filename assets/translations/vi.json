@@ -425,6 +425,7 @@
   "sos_manage_me": "Tôi",
   "sos_manage_recipients_title": "Người nhận ({count}/3)",
   "sos_manage_add_recipient": "Thêm người nhận",
+  "sos_manage_add_recipient_desc": "Nhập số điện thoại của người muốn nhận cảnh báo SOS",
   "sos_manage_phone_hint": "Nhập số điện thoại người nhận",
   "sos_manage_user_not_found": "Không tìm thấy người dùng với SĐT này",
   "sos_manage_already_added": "Người này đã trong danh sách",
