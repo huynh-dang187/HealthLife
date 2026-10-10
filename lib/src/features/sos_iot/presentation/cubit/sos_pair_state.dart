@@ -29,3 +29,10 @@ final class SosPairError extends SosPairState {
 
   final String messageKey;
 }
+
+/// Chưa có thiết bị với mã này; UI cần hỏi xác nhận tạo mới.
+final class SosPairNotFound extends SosPairState {
+  const SosPairNotFound(this.deviceId);
+
+  final String deviceId;
+}

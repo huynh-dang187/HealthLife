@@ -9,8 +9,6 @@ class SosDevice {
   final DateTime? lastTriggeredAt;
   final List<String> recipientIds;
   final String? emergencyPhone;
-  final double? latitude;
-  final double? longitude;
 
   const SosDevice({
     required this.deviceId,
@@ -20,8 +18,6 @@ class SosDevice {
     required this.recipientIds,
     this.lastTriggeredAt,
     this.emergencyPhone,
-    this.latitude,
-    this.longitude,
   });
 
   bool containsUser(String uid) => recipientIds.contains(uid);
@@ -40,8 +36,6 @@ class SosDevice {
       lastTriggeredAt: ts is Timestamp ? ts.toDate() : null,
       recipientIds: List<String>.from(data['recipientIds'] ?? const []),
       emergencyPhone: data['emergencyPhone']?.toString(),
-      latitude: (data['latitude'] as num?)?.toDouble(),
-      longitude: (data['longitude'] as num?)?.toDouble(),
     );
   }
 }

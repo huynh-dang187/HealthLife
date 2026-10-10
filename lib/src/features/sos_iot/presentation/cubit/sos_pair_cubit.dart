@@ -10,12 +10,24 @@ class SosPairCubit extends Cubit<SosPairState> {
   final SosDeviceRepository _repo;
 
   /// Ghép nối bằng mã thiết bị (nhập tay).
-  Future<void> pair(String rawCode) async {
+  ///
+  /// [createIfMissing] = true sẽ tạo thiết bị mới khi mã chưa tồn tại
+  /// (chỉ gọi sau khi người dùng xác nhận).
+  Future<void> pair(String rawCode, {bool createIfMissing = false}) async {
     emit(const SosPairLoading());
     try {
-      final status = await _repo.pair(rawCode);
+      final status = await _repo.pair(
+        rawCode,
+        createIfMissing: createIfMissing,
+      );
       if (status == SosPairStatus.deviceFull) {
         emit(const SosPairError('sos_pair_device_full'));
+        return;
+      }
+      if (status == SosPairStatus.notFound) {
+        emit(
+          SosPairNotFound(SosDeviceRepository.normalizeDeviceCode(rawCode)),
+        );
         return;
       }
       emit(
