@@ -5,10 +5,10 @@ import 'package:healthlife/generated/assets.gen.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
 
-import '../../../../common/constants/colors.dart';
-import '../../../../common/extensions/num_x.dart';
-import '../../../../core/presentation/widgets/text.dart';
-import 'items/quick_feature_item.dart';
+import '../../../../../common/constants/colors.dart';
+import '../../../../../common/extensions/num_x.dart';
+import '../../../../../core/presentation/widgets/text.dart';
+import '../items/quick_feature_item.dart';
 
 class QuickFeatures extends StatelessWidget {
   const QuickFeatures({super.key});
