@@ -237,6 +237,9 @@ abstract class  LocaleKeys {
   static const home_quick_water_reminder = 'home_quick_water_reminder';
   static const home_quick_activity_dashboard = 'home_quick_activity_dashboard';
   static const home_search_hint = 'home_search_hint';
+  static const home_search_hint_1 = 'home_search_hint_1';
+  static const home_search_hint_2 = 'home_search_hint_2';
+  static const home_search_hint_3 = 'home_search_hint_3';
   static const home_health_experience_title = 'home_health_experience_title';
   static const home_health_experience_subtitle = 'home_health_experience_subtitle';
   static const home_greeting_hello = 'home_greeting_hello';
