@@ -7,6 +7,7 @@ import 'package:healthlife/src/features/daily_tips/presentation/pages/daily_tip_
 
 import '../../../../../common/constants/colors.dart';
 import '../../../../../common/extensions/num_x.dart';
+import '../../../../../core/presentation/widgets/animated_bubbles.dart';
 import '../../../../../core/presentation/widgets/text.dart';
 
 class GreetingBanner extends StatelessWidget {
@@ -14,67 +15,71 @@ class GreetingBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return Stack(
+      children: [
+        const Positioned.fill(child: AnimatedBubbles()),
+        Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppText.regular(
-                context.tr(LocaleKeys.home_greeting_hello),
-                fontSize: 14,
-                color: UIColors.black.withValues(alpha: 0.6),
-              ),
-              6.gap,
-              AppText.regular(
-                '👋',
-              ),
-            ],
-          ),
-          2.gap,
-          AppText.italic(
-            _greetingName(context),
-            fontSize: 26,
-            color: UIColors.black,
-            fontWeight: FontWeight.bold,
-          ),
-          6.gap,
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              color: UIColors.white.withValues(alpha: 0.55),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text.rich(
-              TextSpan(
+              Row(
                 children: [
-                  TextSpan(
-                    text: context.tr(LocaleKeys.home_greeting_welcome_to),
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: UIColors.black.withValues(alpha: 0.75),
-                    ),
+                  AppText.medium(
+                    context.tr(LocaleKeys.home_greeting_hello),
+                    fontSize: 14,
+                    color: UIColors.black.withValues(alpha: 0.6),
                   ),
-                  TextSpan(
-                    text: 'HLIFE',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: UIColors.coral,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  const TextSpan(text: '!'),
                 ],
               ),
-            ),
+              2.gap,
+              AppText.italic(
+                _greetingName(context),
+                fontSize: 26,
+                color: UIColors.black,
+                fontWeight: FontWeight.bold,
+              ),
+              6.gap,
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
+                decoration: BoxDecoration(
+                  color: UIColors.white.withValues(alpha: 0.55),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: context.tr(LocaleKeys.home_greeting_welcome_to),
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: UIColors.black.withValues(alpha: 0.75),
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'HLIFE',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: UIColors.coral,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const TextSpan(text: '!'),
+                    ],
+                  ),
+                ),
+              ),
+              20.gap,
+              DailyTipCard(),
+              24.gap,
+            ],
           ),
-          20.gap,
-          DailyTipCard(),
-          24.gap,
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
