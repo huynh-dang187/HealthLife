@@ -20,21 +20,24 @@ class DashboardAppBar extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: AnimatedSearchHint(
-              controller: searchHome,
-              hintPadding: const EdgeInsets.only(left: 12, right: 30),
-              hints: [
-                context.tr(LocaleKeys.home_search_hint_1),
-                context.tr(LocaleKeys.home_search_hint_2),
-                context.tr(LocaleKeys.home_search_hint_3),
-              ],
-              child: AppTF.common(
+            child: SizedBox(
+              height: 46,
+              child: AnimatedSearchHint(
                 controller: searchHome,
-                rightWidget: Assets.svg.iconSearch.svg(
-                  width: 18,
-                  colorFilter: UIColors.darkBackground.filter,
+                hintPadding: const EdgeInsets.only(left: 12, right: 30),
+                hints: [
+                  context.tr(LocaleKeys.home_search_hint_1),
+                  context.tr(LocaleKeys.home_search_hint_2),
+                  context.tr(LocaleKeys.home_search_hint_3),
+                ],
+                child: AppTF.common(
+                  controller: searchHome,
+                  rightWidget: Assets.svg.iconSearch.svg(
+                    width: 18,
+                    colorFilter: UIColors.darkBackground.filter,
+                  ),
+                  borderCicular: 23,
                 ),
-                borderCicular: 23,
               ),
             ),
           ),
