@@ -16,13 +16,10 @@ class AnimatedSearchHint extends StatefulWidget {
   });
 
   final Widget child;
-
   final List<String> hints;
-
   final TextEditingController? controller;
-
   final EdgeInsets hintPadding;
-
+  final double barHeight;
   final double fontSize;
   final Duration holdDuration;
   final Duration transitionDuration;
@@ -90,7 +87,11 @@ class _AnimatedSearchHintState extends State<AnimatedSearchHint>
         clipBehavior: Clip.none,
         children: [
           widget.child,
-          Positioned.fill(
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: widget.barHeight,
             child: IgnorePointer(
               child: AnimatedOpacity(
                 opacity: _visible ? 1 : 0,
