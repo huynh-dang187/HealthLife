@@ -3,7 +3,6 @@ import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/common/constants/colors.dart';
 import 'package:healthlife/src/shared/router/route_names.dart';
 
-/// Một mục chức năng hiển thị trong drawer trang chủ.
 class DrawerFeature {
   const DrawerFeature({
     required this.icon,

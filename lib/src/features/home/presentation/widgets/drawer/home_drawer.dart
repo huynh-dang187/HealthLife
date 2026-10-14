@@ -82,8 +82,8 @@ class HomeDrawer extends StatelessWidget {
           backgroundColor: UIColors.lightBackground,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(24),
-              bottomRight: Radius.circular(24),
+              topLeft: Radius.circular(24),
+              bottomLeft: Radius.circular(24),
             ),
           ),
           child: SafeArea(
@@ -125,17 +125,17 @@ class HomeDrawer extends StatelessWidget {
                           color: UIColors.textBody,
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: DrawerTile(
+                          icon: Icons.logout_rounded,
+                          color: UIColors.pink,
+                          label: context.tr(LocaleKeys.profile_logout),
+                          trailing: const SizedBox.shrink(),
+                          onTap: () => _confirmLogout(context),
+                        ),
+                      ),
                     ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
-                  child: DrawerTile(
-                    icon: Icons.logout_rounded,
-                    color: UIColors.pink,
-                    label: context.tr(LocaleKeys.profile_logout),
-                    trailing: const SizedBox.shrink(),
-                    onTap: () => _confirmLogout(context),
                   ),
                 ),
               ],

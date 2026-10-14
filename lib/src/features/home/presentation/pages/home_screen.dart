@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
             )..start(),
             child: Scaffold(
               backgroundColor: UIColors.lightBackground,
-              drawer: const HomeDrawer(),
+              endDrawer: const HomeDrawer(),
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(statusBarHeight + 54),
                 child: Container(

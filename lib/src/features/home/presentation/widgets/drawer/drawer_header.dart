@@ -38,7 +38,7 @@ class HomeDrawerHeader extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [Color(0xFFE877A0), Color(0xFFF6A9C4)],
         ),
-        borderRadius: BorderRadius.only(topRight: Radius.circular(24)),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(24)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
