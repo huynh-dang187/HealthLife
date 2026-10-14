@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthlife/generated/locale_keys.g.dart';
 import '../../../../common/constants/colors.dart';
 import '../../../../common/extensions/num_x.dart';
 import '../../../../core/presentation/widgets/app_bar.dart';
@@ -52,7 +53,7 @@ class WaterReminderPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: const Color(0xFFF7F9FC),
         appBar: AppAppBar(
-          title: 'water_reminder_title'.tr(),
+          title: LocaleKeys.water_reminder_title.tr(),
           centerTitle: true,
           bgColor: const Color(0xFFF7F9FC),
           rightBtns: [
@@ -124,13 +125,15 @@ class WaterReminderPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         AppText.bold(
-                          'water_reminder_today_history'.tr(),
+                          LocaleKeys.water_reminder_today_history.tr(),
                           fontSize: 16,
                           color: UIColors.text,
                         ),
                         AppText.medium(
-                          'water_reminder_logs_count'.tr(
-                            namedArgs: {'count': state.todayLogs.length.toString()},
+                          LocaleKeys.water_reminder_logs_count.tr(
+                            namedArgs: {
+                              'count': state.todayLogs.length.toString(),
+                            },
                           ),
                           fontSize: 13,
                           color: UIColors.textBody,
@@ -158,13 +161,13 @@ class WaterReminderPage extends StatelessWidget {
                             ),
                             12.gap,
                             AppText.medium(
-                              'water_reminder_no_logs_today'.tr(),
+                              LocaleKeys.water_reminder_no_logs_today.tr(),
                               color: UIColors.textBody,
                               fontSize: 14,
                             ),
                             4.gap,
                             AppText.regular(
-                              'water_reminder_no_logs_hint'.tr(),
+                              LocaleKeys.water_reminder_no_logs_hint.tr(),
                               color: const Color(0xFFB0BEC5),
                               fontSize: 12,
                             ),

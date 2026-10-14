@@ -8,15 +8,37 @@ import 'package:timezone/timezone.dart' as tz;
 
 class WaterNotificationService {
   static final WaterNotificationService _instance =
-  WaterNotificationService._internal();
+      WaterNotificationService._internal();
 
   factory WaterNotificationService() => _instance;
 
   WaterNotificationService._internal();
 
   final FlutterLocalNotificationsPlugin _notificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
   bool _isInitialized = false;
+
+  /// ID riêng cho thông báo thử (không trùng chuỗi nhắc định kỳ 1000+).
+  static const int _testNotificationId = 9999;
+
+  /// Cấu hình hiển thị dùng chung cho nhắc định kỳ và thông báo thử.
+  NotificationDetails _buildNotificationDetails() {
+    return NotificationDetails(
+      android: AndroidNotificationDetails(
+        'water_reminder_channel',
+        LocaleKeys.water_reminder_title.tr(),
+        channelDescription: LocaleKeys.water_reminder_channel_desc.tr(),
+        importance: Importance.max,
+        priority: Priority.high,
+        icon: '@mipmap/ic_launcher',
+      ),
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      ),
+    );
+  }
 
   /// Khởi tạo dịch vụ thông báo
   Future<void> initNotification() async {
@@ -53,16 +75,18 @@ class WaterNotificationService {
   /// Xin quyền hiển thị thông báo & báo thức chính xác trên Android/iOS
   Future<void> requestPermissions() async {
     if (Platform.isAndroid) {
-      final androidImplementation =
-      _notificationsPlugin.resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
+      final androidImplementation = _notificationsPlugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
 
       await androidImplementation?.requestNotificationsPermission();
       await androidImplementation?.requestExactAlarmsPermission();
     } else if (Platform.isIOS) {
-      final iosImplementation =
-      _notificationsPlugin.resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin>();
+      final iosImplementation = _notificationsPlugin
+          .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin
+          >();
       await iosImplementation?.requestPermissions(
         alert: true,
         badge: true,
@@ -106,27 +130,13 @@ class WaterNotificationService {
       int notificationId = 1000;
       final now = DateTime.now();
 
-      final androidDetails = AndroidNotificationDetails(
-        'water_reminder_channel',
-        LocaleKeys.water_reminder_title.tr(),
-        channelDescription: LocaleKeys.water_reminder_channel_desc.tr(),
-        importance: Importance.max,
-        priority: Priority.high,
-        icon: '@mipmap/ic_launcher',
-      );
+      final notificationDetails = _buildNotificationDetails();
 
-      final notificationDetails = NotificationDetails(
-        android: androidDetails,
-        iOS: DarwinNotificationDetails(
-          presentAlert: true,
-          presentBadge: true,
-          presentSound: true,
-        ),
-      );
-
-      for (int currentMinutes = startTotalMinutes;
-      currentMinutes <= endTotalMinutes;
-      currentMinutes += intervalMinutes) {
+      for (
+        int currentMinutes = startTotalMinutes;
+        currentMinutes <= endTotalMinutes;
+        currentMinutes += intervalMinutes
+      ) {
         final slotHour = currentMinutes ~/ 60;
         final slotMinute = currentMinutes % 60;
 
@@ -147,8 +157,8 @@ class WaterNotificationService {
 
           await _notificationsPlugin.zonedSchedule(
             id: notificationId++,
-            title: 'water_reminder_notification_title'.tr(),
-            body: 'water_reminder_notification_body'.tr(),
+            title: LocaleKeys.water_reminder_notification_title.tr(),
+            body: LocaleKeys.water_reminder_notification_body.tr(),
             scheduledDate: tzScheduledDate,
             notificationDetails: notificationDetails,
             androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -160,6 +170,36 @@ class WaterNotificationService {
       }
     } catch (e) {
       debugPrint('Lỗi schedulePeriodicReminders: $e');
+    }
+  }
+
+  /// Hiện ngay 1 thông báo thử (không hẹn giờ).
+  /// Trả về false nếu không có quyền hiển thị hoặc gửi thất bại.
+  Future<bool> showTestNotification() async {
+    try {
+      await initNotification();
+
+      if (Platform.isAndroid) {
+        final androidImplementation = _notificationsPlugin
+            .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin
+            >();
+        final granted =
+            await androidImplementation?.requestNotificationsPermission() ??
+            false;
+        if (!granted) return false;
+      }
+
+      await _notificationsPlugin.show(
+        id: _testNotificationId,
+        title: LocaleKeys.water_reminder_test_notification_title.tr(),
+        body: LocaleKeys.water_reminder_test_notification_body.tr(),
+        notificationDetails: _buildNotificationDetails(),
+      );
+      return true;
+    } catch (e) {
+      debugPrint('Lỗi showTestNotification: $e');
+      return false;
     }
   }
 }

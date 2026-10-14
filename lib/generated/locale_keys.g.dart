@@ -169,6 +169,8 @@ abstract class  LocaleKeys {
   static const water_reminder_notification_body = 'water_reminder_notification_body';
   static const water_reminder_test_notification_title = 'water_reminder_test_notification_title';
   static const water_reminder_test_notification_body = 'water_reminder_test_notification_body';
+  static const water_reminder_test_sent = 'water_reminder_test_sent';
+  static const water_reminder_test_failed = 'water_reminder_test_failed';
   static const water_reminder_settings_subtitle = 'water_reminder_settings_subtitle';
   static const water_reminder_goal_label = 'water_reminder_goal_label';
   static const water_reminder_enabled_sub = 'water_reminder_enabled_sub';
@@ -242,6 +244,14 @@ abstract class  LocaleKeys {
   static const home_greeting_fallback_name = 'home_greeting_fallback_name';
   static const home_news_section_title = 'home_news_section_title';
   static const home_news_view_all = 'home_news_view_all';
+  static const home_summary_water_title = 'home_summary_water_title';
+  static const home_summary_water_goal = 'home_summary_water_goal';
+  static const home_summary_water_subtitle = 'home_summary_water_subtitle';
+  static const home_summary_water_add = 'home_summary_water_add';
+  static const home_summary_step_title = 'home_summary_step_title';
+  static const home_summary_step_goal = 'home_summary_step_goal';
+  static const home_summary_step_percent = 'home_summary_step_percent';
+  static const home_summary_step_streak = 'home_summary_step_streak';
   static const medicine_prescription = 'medicine_prescription';
   static const medicine_detail_title = 'medicine_detail_title';
   static const medicine_detail_category = 'medicine_detail_category';

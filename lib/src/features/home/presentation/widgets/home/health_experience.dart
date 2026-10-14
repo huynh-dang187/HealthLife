@@ -2,10 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
 
-import '../../../../common/constants/colors.dart';
-import '../../../../common/extensions/num_x.dart';
-import '../../../../core/presentation/widgets/text.dart';
-import '../../../../features/quiz_card/presentation/widgets/daily_quiz_carousel.dart';
+import '../../../../../common/constants/colors.dart';
+import '../../../../../common/extensions/num_x.dart';
+import '../../../../../core/presentation/widgets/text.dart';
+import '../../../../../features/quiz_card/presentation/widgets/daily_quiz_carousel.dart';
 
 class HealthExperience extends StatelessWidget {
   const HealthExperience({super.key});

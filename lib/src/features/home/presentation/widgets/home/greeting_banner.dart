@@ -5,9 +5,9 @@ import 'package:healthlife/generated/locale_keys.g.dart';
 import 'package:healthlife/src/core/presentation/blocs/user/user_cubit.dart';
 import 'package:healthlife/src/features/daily_tips/presentation/pages/daily_tip_card.dart';
 
-import '../../../../common/constants/colors.dart';
-import '../../../../common/extensions/num_x.dart';
-import '../../../../core/presentation/widgets/text.dart';
+import '../../../../../common/constants/colors.dart';
+import '../../../../../common/extensions/num_x.dart';
+import '../../../../../core/presentation/widgets/text.dart';
 
 class GreetingBanner extends StatelessWidget {
   const GreetingBanner({super.key});

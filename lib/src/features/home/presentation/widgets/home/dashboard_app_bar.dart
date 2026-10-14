@@ -2,10 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:healthlife/generated/assets.gen.dart';
 import 'package:healthlife/generated/locale_keys.g.dart';
+import 'package:healthlife/src/common/extensions/color_extension.dart';
 import 'package:healthlife/src/core/presentation/widgets/text_field.dart';
 
-import '../../../../common/constants/colors.dart';
-import '../../../../common/extensions/num_x.dart';
+import '../../../../../common/constants/colors.dart';
+import '../../../../../common/extensions/num_x.dart';
 
 // ignore: must_be_immutable
 class DashboardAppBar extends StatelessWidget {
@@ -22,18 +23,13 @@ class DashboardAppBar extends StatelessWidget {
               controller: searchHome,
               rightWidget: Assets.svg.iconSearch.svg(
                 width: 18,
-                color: UIColors.darkBackground,
+                colorFilter: UIColors.darkBackground.filter,
               ),
               borderCicular: 23,
               hintText: context.tr(LocaleKeys.home_search_hint),
             ),
           ),
-          10.gap,
-          _RoundAction(
-            icon: Assets.svg.icNotification.svg(width: 18),
-            onTap: () {},
-          ),
-          8.gap,
+          12.gap,
           _RoundAction(
             icon: Assets.svg.icDrawer.svg(width: 18),
             onTap: () {},

@@ -7,6 +7,7 @@ import '../../../../common/extensions/num_x.dart';
 import '../../../../core/presentation/widgets/button.dart';
 import '../../../../core/presentation/widgets/text.dart';
 import '../../data/models/water_settings_model.dart';
+import '../../services/water_notification_service.dart';
 
 class WaterSettingsDialog extends StatefulWidget {
   final WaterSettingsModel settings;
@@ -396,6 +397,8 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
                 ],
               ),
             ],
+            18.gap,
+            _buildTestButton(context),
           ],
         ),
       ),
@@ -456,6 +459,57 @@ class _WaterSettingsDialogState extends State<WaterSettingsDialog> {
           color: UIColors.text,
         ),
       ],
+    );
+  }
+
+  Widget _buildTestButton(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        final ok = await WaterNotificationService().showTestNotification();
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              context.tr(
+                ok
+                    ? LocaleKeys.water_reminder_test_sent
+                    : LocaleKeys.water_reminder_test_failed,
+              ),
+            ),
+          ),
+        );
+      },
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
+        decoration: BoxDecoration(
+          color: _lightBlue,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: const Color(0xFFCFE9F5),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.notifications_active_rounded,
+              size: 18,
+              color: _primaryColor,
+            ),
+            8.gap,
+            AppText.semiBold(
+              context.tr(LocaleKeys.water_reminder_test_10s),
+              fontSize: 13,
+              color: _primaryColor,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
