@@ -32,7 +32,7 @@ class DashboardAppBar extends StatelessWidget {
           12.gap,
           _RoundAction(
             icon: Assets.svg.icDrawer.svg(width: 18),
-            onTap: () {},
+            onTap: () => Scaffold.of(context).openDrawer(),
           ),
         ],
       ),

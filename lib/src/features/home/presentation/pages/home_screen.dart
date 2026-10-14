@@ -16,6 +16,7 @@ import 'package:hive_ce/hive.dart';
 import '../../../../common/constants/colors.dart';
 import '../../../../features/daily_tips/data/repositories/daily_tip_repository.dart';
 import '../../../../features/daily_tips/presentation/cubit/daily_tip_cubit.dart';
+import '../widgets/drawer/home_drawer.dart';
 import '../widgets/home/dashboard_app_bar.dart';
 import '../widgets/home/greeting_banner.dart';
 import '../widgets/home/health_experience.dart';
@@ -48,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
             )..start(),
             child: Scaffold(
               backgroundColor: UIColors.lightBackground,
+              drawer: const HomeDrawer(),
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(statusBarHeight + 54),
                 child: Container(

@@ -242,6 +242,10 @@ abstract class  LocaleKeys {
   static const home_greeting_hello = 'home_greeting_hello';
   static const home_greeting_welcome_to = 'home_greeting_welcome_to';
   static const home_greeting_fallback_name = 'home_greeting_fallback_name';
+  static const home_drawer_features = 'home_drawer_features';
+  static const home_drawer_chatbot = 'home_drawer_chatbot';
+  static const home_drawer_steps = 'home_drawer_steps';
+  static const home_drawer_water = 'home_drawer_water';
   static const home_news_section_title = 'home_news_section_title';
   static const home_news_view_all = 'home_news_view_all';
   static const home_summary_water_title = 'home_summary_water_title';
