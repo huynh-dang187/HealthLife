@@ -78,6 +78,7 @@ dev_dependencies:
   build_runner: ^2.15.1
   hive_ce_generator: ^1.4.0
   flutter_gen_runner: ^5.15.0
+  flutter_launcher_icons: ^0.13.1
 
 dependency_overrides:
   # permission_handler_android 14.x cần compileSdk 37 + AGP 9 (kotlin DSL mới),
@@ -92,7 +93,7 @@ flutter_gen:
 
 flutter:
   uses-material-design: true
-
+  
   assets:
     - assets/lottie/intro/
     - assets/svg/
@@ -118,3 +119,8 @@ flutter:
           weight: 800
         - asset: assets/fonts/inter/Inter_28pt-Black.ttf
           weight: 900
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/png/ic_heathLife.png"
+  min_sdk_android: 21
