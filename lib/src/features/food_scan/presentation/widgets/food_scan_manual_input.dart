@@ -26,6 +26,7 @@ class FoodScanManualInput extends StatelessWidget {
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
+            color: UIColors.text,
           ),
         ),
         const SizedBox(height: 12),
@@ -35,20 +36,28 @@ class FoodScanManualInput extends StatelessWidget {
               child: Container(
                 height: 48,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBEBEB),
+                  color: UIColors.lightGray,
                   borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: UIColors.lightBorder,
+                    width: 1,
+                  ),
                 ),
                 child: TextField(
                   controller: controller,
                   style: const TextStyle(
-                    color: UIColors.black,
+                    color: UIColors.text,
                     fontSize: 14,
                   ),
                   decoration: InputDecoration(
                     hintText: 'manual_input_hint'.tr(),
+                    hintStyle: const TextStyle(
+                      color: UIColors.textBody,
+                      fontSize: 14,
+                    ),
                     prefixIcon: const Icon(
                       Icons.text_fields,
-                      color: Colors.black54,
+                      color: UIColors.textBody,
                     ),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(
@@ -66,7 +75,9 @@ class FoodScanManualInput extends StatelessWidget {
                     ? null
                     : () => onAnalyze(controller.text),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4856D0),
+                  backgroundColor: UIColors.pink,
+                  foregroundColor: UIColors.white,
+                  elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

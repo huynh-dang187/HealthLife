@@ -22,12 +22,19 @@ class FoodScanResultSection extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFFAF0F0),
+        color: UIColors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: const Color(0xFFE8D5D5),
-          width: 1.5,
+          color: UIColors.lightBorder,
+          width: 1,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: UIColors.black.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,6 +44,7 @@ class FoodScanResultSection extends StatelessWidget {
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
+              color: UIColors.text,
             ),
           ),
           const SizedBox(height: 12),
@@ -63,7 +71,7 @@ class FoodScanResultSection extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF234433),
+                color: UIColors.text,
               ),
             ),
             const SizedBox(height: 12),
@@ -73,22 +81,22 @@ class FoodScanResultSection extends StatelessWidget {
                 _NutrientChip(
                   label: 'calories'.tr(),
                   value: '${nutritionResult!.calories} kcal',
-                  color: Colors.orange,
+                  color: const Color(0xFFF97316),
                 ),
                 _NutrientChip(
                   label: 'protein'.tr(),
                   value: '${nutritionResult!.proteinG}g',
-                  color: Colors.blue,
+                  color: UIColors.pink,
                 ),
                 _NutrientChip(
                   label: 'fat'.tr(),
                   value: '${nutritionResult!.fatG}g',
-                  color: Colors.red,
+                  color: const Color(0xFFE9A13B),
                 ),
                 _NutrientChip(
                   label: 'carbs'.tr(),
                   value: '${nutritionResult!.carbsG}g',
-                  color: Colors.green,
+                  color: const Color(0xFF2563EB),
                 ),
               ],
             ),
@@ -97,14 +105,13 @@ class FoodScanResultSection extends StatelessWidget {
             if (nutritionResult!.assessment.isNotEmpty)
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: UIColors.white,
-                  borderRadius: BorderRadius.circular(12),
+                  color: const Color(0xFFF6FAF7),
+                  borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: const Color(
-                      0xFF234433,
-                    ).withValues(alpha: 30),
+                    color: const Color(0xFF34C759).withValues(alpha: 0.25),
+                    width: 1,
                   ),
                 ),
                 child: Column(
@@ -113,28 +120,28 @@ class FoodScanResultSection extends StatelessWidget {
                     Row(
                       children: [
                         const Icon(
-                          Icons.rate_review,
+                          Icons.rate_review_outlined,
                           size: 18,
-                          color: Color(0xFF234433),
+                          color: Color(0xFF2E7D32),
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: 8),
                         Text(
                           'nutrition_assessment'.tr(),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
-                            color: Color(0xFF234433),
+                            color: Color(0xFF2E7D32),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
                     Text(
                       nutritionResult!.assessment,
                       style: const TextStyle(
                         fontSize: 13,
-                        color: Colors.black87,
-                        height: 1.3,
+                        color: UIColors.text,
+                        height: 1.45,
                       ),
                     ),
                   ],
@@ -148,7 +155,7 @@ class FoodScanResultSection extends StatelessWidget {
             'disclaimer_note'.tr(),
             style: const TextStyle(
               fontSize: 12,
-              color: Colors.grey,
+              color: UIColors.textBody,
             ),
           ),
         ],
@@ -172,30 +179,40 @@ class _NutrientChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 2),
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        margin: const EdgeInsets.symmetric(horizontal: 3),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 10),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: color.withValues(alpha: 10)),
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: color.withValues(alpha: 0.25),
+            width: 1,
+          ),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 11,
                 color: color,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             Text(
               value,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: UIColors.text,
               ),
             ),
           ],

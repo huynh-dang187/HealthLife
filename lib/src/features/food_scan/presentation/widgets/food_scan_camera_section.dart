@@ -24,7 +24,7 @@ class FoodScanCameraSection extends StatelessWidget {
         child: Wrap(
           children: [
             ListTile(
-              leading: const Icon(Icons.camera_alt, color: Color(0xFF4856D0)),
+              leading: const Icon(Icons.camera_alt, color: UIColors.pink),
               title: Text('camera'.tr()),
               onTap: () {
                 Navigator.maybePop(bottomSheetContext);
@@ -34,7 +34,7 @@ class FoodScanCameraSection extends StatelessWidget {
             ListTile(
               leading: const Icon(
                 Icons.photo_library,
-                color: Color(0xFF4856D0),
+                color: UIColors.pink,
               ),
               title: Text('gallery'.tr()),
               onTap: () {
@@ -60,12 +60,19 @@ class FoodScanCameraSection extends StatelessWidget {
             height: 320,
             margin: const EdgeInsets.only(bottom: 40),
             decoration: BoxDecoration(
-              color: const Color(0xFFFAF0F0),
+              color: UIColors.white,
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                color: const Color(0xFFE8D5D5),
-                width: 1.5,
+                color: UIColors.lightBorder,
+                width: 1,
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: UIColors.black.withValues(alpha: 0.04),
+                  blurRadius: 10,
+                  offset: const Offset(0, 3),
+                ),
+              ],
             ),
             child: image != null
                 ? ClipRRect(
@@ -85,7 +92,7 @@ class FoodScanCameraSection extends StatelessWidget {
 errorBuilder: (_, _, _) => Container(
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: const Color(0xFF234433),
+                                  color: UIColors.pink.withValues(alpha: 0.4),
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(16),
@@ -103,7 +110,7 @@ errorBuilder: (_, _, _) => Container(
                                 errorBuilder: (_, _, _) => const Icon(
                                   Icons.camera_alt,
                                   size: 64,
-                                  color: Color(0xFF666666),
+                                  color: UIColors.textBody,
                                 ),
                               ),
                               const SizedBox(height: 16),
@@ -123,7 +130,7 @@ errorBuilder: (_, _, _) => Container(
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   fontSize: 12,
-                                  color: Colors.grey,
+                                  color: UIColors.textBody,
                                 ),
                               ),
                             ],
@@ -145,7 +152,7 @@ errorBuilder: (_, _, _) => Container(
                   width: 80,
                   height: 80,
                   decoration: const BoxDecoration(
-                    color: Color(0xFF234433),
+                    color: UIColors.pink,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(

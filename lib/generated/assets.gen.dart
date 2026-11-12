@@ -83,6 +83,9 @@ class $AssetsPngGen {
   /// File path: assets/png/ic_frame.png
   AssetGenImage get icFrame => const AssetGenImage('assets/png/ic_frame.png');
 
+  /// File path: assets/png/ic_hLife.png
+  AssetGenImage get icHLife => const AssetGenImage('assets/png/ic_hLife.png');
+
   /// File path: assets/png/ic_hospital_finder.png
   AssetGenImage get icHospitalFinder =>
       const AssetGenImage('assets/png/ic_hospital_finder.png');
@@ -147,6 +150,7 @@ class $AssetsPngGen {
     icFind,
     icFootCounter,
     icFrame,
+    icHLife,
     icHospitalFinder,
     icIntroduction1,
     icIntroduction2,
