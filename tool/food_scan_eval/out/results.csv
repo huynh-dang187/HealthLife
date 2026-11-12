@@ -1,0 +1,23 @@
+id,food_name_expected,is_food,food_name_predicted,name_matched,calories_expected,calories_predicted,calories_abs_err,protein_expected,protein_predicted,protein_abs_err,fat_expected,fat_predicted,fat_abs_err,carbs_expected,carbs_predicted,carbs_abs_err,error
+1,Phở bò,true,Phở bò,true,450.0,450.0,0.0,27.0,24.0,3.0,12.0,12.0,0.0,55.0,60.0,5.0,
+2,Bánh mì thịt,true,Bánh mì thịt,true,450.0,450.0,0.0,18.0,20.0,2.0,16.0,18.0,2.0,55.0,52.0,3.0,
+3,Cơm tấm sườn nướng,true,Cơm tấm sườn nướng,true,600.0,600.0,0.0,25.0,26.0,1.0,20.0,20.0,0.0,75.0,78.0,3.0,
+4,Bún chả,true,Bún chả,true,550.0,600.0,50.0,25.0,28.0,3.0,22.0,24.0,2.0,60.0,65.0,5.0,
+5,Gỏi cuốn,true,Gỏi cuốn,true,150.0,220.0,70.0,8.0,12.0,4.0,3.0,4.5,1.5,20.0,33.0,13.0,
+6,Chả giò,true,Chả giò,true,330.0,260.0,70.0,10.0,11.0,1.0,20.0,16.0,4.0,28.0,19.0,9.0,
+7,Bánh cuốn,true,Bánh cuốn,true,300.0,380.0,80.0,12.0,14.0,2.0,6.0,12.0,6.0,50.0,54.0,4.0,
+8,Bún bò Huế,true,Bún bò Huế,true,480.0,530.0,50.0,25.0,28.5,3.5,15.0,18.2,3.1999999999999993,60.0,63.8,3.799999999999997,
+9,Cơm gà,true,Cơm gà,true,550.0,600.0,50.0,28.0,32.0,4.0,15.0,20.0,5.0,70.0,70.0,0.0,
+10,Mì Quảng,true,Mì Quảng,true,500.0,500.0,0.0,22.0,22.5,0.5,16.0,18.0,2.0,65.0,62.0,3.0,
+11,Bánh xèo,true,Bánh xèo,true,400.0,400.0,0.0,12.0,16.0,4.0,18.0,20.0,2.0,45.0,38.0,7.0,
+12,Xôi gà,true,Xôi gà,true,500.0,550.0,50.0,20.0,25.0,5.0,12.0,18.0,6.0,75.0,70.0,5.0,
+13,Cháo thịt,true,Cháo thịt,true,250.0,320.0,70.0,12.0,15.0,3.0,6.0,7.0,1.0,35.0,48.0,13.0,
+14,Canh chua cá,true,Canh chua cá,true,180.0,200.0,20.0,15.0,20.0,5.0,6.0,6.0,0.0,15.0,15.0,0.0,
+15,Rau muống xào tỏi,true,Rau muống xào tỏi,true,120.0,130.0,10.0,4.0,3.5,0.5,8.0,9.5,1.5,8.0,6.5,1.5,
+16,Thịt kho trứng,true,Thịt kho trứng,true,450.0,480.0,30.0,22.0,28.0,6.0,30.0,35.0,5.0,10.0,12.0,2.0,
+17,Bún riêu cua,true,Bún riêu cua,true,400.0,480.0,80.0,20.0,22.5,2.5,12.0,18.0,6.0,50.0,57.5,7.5,
+18,Phở gà,,,,,,,,,,,,,,,,"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash, description: Generate content requests per day limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.
+Please retry in 43m40.707017134s."
+19,Hủ tiếu Nam Vang,true,Hủ tiếu Nam Vang,true,420.0,450.0,30.0,20.0,25.5,5.5,10.0,14.5,4.5,60.0,54.0,6.0,
+20,Bánh bao,true,Bánh bao,true,300.0,350.0,50.0,10.0,12.0,2.0,12.0,13.0,1.0,38.0,46.0,8.0,

@@ -12,7 +12,7 @@ function todayKey() {
 }
 
 async function fetchTipFromGemini(apiKey) {
-  // 1. Danh sách các chủ đề cố định
+  
   const categories = [
     'dinh dưỡng',
     'vận động',
@@ -22,7 +22,7 @@ async function fetchTipFromGemini(apiKey) {
     'tổng quát',
   ];
 
-  // 2. Chọn ngẫu nhiên 1 chủ đề từ code trước khi gọi Gemini
+  
   const selectedCategory = categories[Math.floor(Math.random() * categories.length)];
 
   const genAI = new GoogleGenerativeAI(apiKey);
@@ -30,11 +30,11 @@ async function fetchTipFromGemini(apiKey) {
     model: 'gemini-3.6-flash',
     generationConfig: {
       responseMimeType: 'application/json',
-      temperature: 0.9, // Tăng tính sáng tạo, tránh lặp lại các mẹo quen thuộc
+      temperature: 0.9, 
     },
   });
 
-  // 3. Ép Gemini viết lời khuyên đúng cho chủ đề đã bốc thăm
+
   const prompt = `
 Bạn là chuyên gia chăm sóc sức khỏe. Hôm nay hãy đưa ra MỘT lời khuyên sức khỏe ngắn gọn, thiết thực, khoa học và dễ áp dụng bằng tiếng Việt.
 
